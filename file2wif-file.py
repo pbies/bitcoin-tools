@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# pip3 install base58
+
 import base58
 import hashlib
 import sys
