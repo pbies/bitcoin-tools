@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# private hex bitcoin btc key to wif wallet import format
+privhex="$1"
+#echo privhex: "$1"
+privbin=$(echo -n "$privhex" | xxd -r -p )
+#echo privbin: "$privbin"
+hex80=$(echo -n "80" | xxd -r -p )
+#echo hex80: "$hex80"
+hexprivbin="$hex80$privbin"
+#echo hexprivbin: "$hexprivbin"
+sha1=$(echo -n "$hexprivbin" | sha256sum )
+#echo "SHA256(hexprivbin):" "$sha1"
+shahex=$(echo -n "$sha1" | xxd -r -p )
+sha2=$(echo -n "$shahex" | sha256sum )
+#echo "SHA256(SHA256(hexprivbin)):" "$sha2"
+chksum=${sha2:0:8}
+#echo "checksum:" "$chksum"
+binchksum=$(echo -n "$chksum" | xxd -r -p )
+keychksum="$hexprivbin$binchksum"
+#echo "keychksum:" "$keychksum"
+hexkcs=$(echo -n "$keychksum" | xxd -p -c 80 )
+#echo "hexkcs:" "$hexkcs"
+
+declare -a base58=(1 2 3 4 5 6 7 8 9 A B C D E F G H J K L M N P Q R S T U V W X Y Z a b c d e f g h i j k m n o p q r s t u v w x y z)
+
+encodeBase58() {
+    local n
+    echo -n "$1" | sed -e's/^\(\(00\)*\).*/\1/' -e's/00/1/g' | tr -d '\n'
+    dc -e "16i ${1^^} [3A ~r d0<x]dsxx +f" |
+    while read -r n; do echo -n "${base58[n]}"; done
+}
+
+#echo -n "WIF: "
+encodeBase58 $hexkcs
+echo

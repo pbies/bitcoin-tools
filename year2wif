@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+for j in {1970..2015}; do
+	./privhex2wif $j$j$j$j$j$j$j$j$j$j$j$j$j$j$j$j
+done

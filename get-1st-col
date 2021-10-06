@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cut -f1 -d" " < input.txt > output.txt

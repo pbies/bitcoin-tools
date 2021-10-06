@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+> output.txt
+while IFS= read -r p; do
+	echo "$p 0" >> output.txt
+done < "input.txt"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+>output.txt
+while read -r p; do
+	e=$(echo -n "$p" | base64)
+	#echo "$p -> $e"
+	echo "$e" >> output.txt
+done < "$1"

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+seq 0 18000000000 | while read n; do
+	printf "%064X\n" $n
+done >> output.txt
