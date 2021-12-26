@@ -1,8 +1,10 @@
-# bitcoin-tools
- Random Bitcoin Tools
+bitcoin-tools
+=============
 
-Work in progress!
+        Random Bitcoin Tools
 
-(C) 2021 Piotr Biesiada
+        Work in progress!
 
-Other copyrights are for their respective owners.
+        (C) 2021 Piotr Biesiada
+
+        Other copyrights are for their respective owners.
