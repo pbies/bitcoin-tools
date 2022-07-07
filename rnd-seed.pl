@@ -5,11 +5,11 @@ use File::Slurp;
 use Time::HiRes qw(time);
 
 sub measure_time(&) {
-    my($btime, $etime);
-    $btime = time();
-    &{$_[0]}();
-    $etime = time();
-    warn "elapsed time was: ", ($etime - $btime)*1000, " ms\n";
+	my($btime, $etime);
+	$btime = time();
+	&{$_[0]}();
+	$etime = time();
+	warn "elapsed time was: ", ($etime - $btime)*1000, " ms\n";
 };
 
 my $seed="seed.txt";

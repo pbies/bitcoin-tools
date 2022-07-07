@@ -7,18 +7,18 @@ import hashlib
 import sys
 
 def b58(str):
-    return base58.b58decode_check(str)
+	return base58.b58decode_check(str)
 
 def main():
-    with open("input.txt") as f:
-        content = f.readlines()
+	with open("input.txt") as f:
+		content = f.readlines()
 
-    content = [x.strip() for x in content]
+	content = [x.strip() for x in content]
 
-    o = open('output.txt','w')
+	o = open('output.txt','w')
 
-    for line in content:
-        o.write(b58(line).hex() + "\n")
+	for line in content:
+		o.write(b58(line).hex() + "\n")
 
 if __name__ == '__main__':
-    main()
+	main()

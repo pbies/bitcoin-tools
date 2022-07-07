@@ -7,19 +7,19 @@ import hashlib
 import sys
 
 def b58(hex):
-    return base58.b58encode_check(hex)
+	return base58.b58encode_check(hex)
 
 def main():
-    with open("input.txt") as f:
-        content = f.readlines()
+	with open("input.txt") as f:
+		content = f.readlines()
 
-    content = [x.strip() for x in content]
+	content = [x.strip() for x in content]
 
-    o = open('output.txt','w')
+	o = open('output.txt','w')
 
-    for line in content:
-        s1=bytearray.fromhex(line)
-        o.write(b58(s1).decode('ascii') + "\n")
+	for line in content:
+		s1=bytearray.fromhex(line)
+		o.write(b58(s1).decode('ascii') + "\n")
 
 if __name__ == '__main__':
-    main()
+	main()
