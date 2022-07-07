@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	./keyhunter-v4.py "$f" > "$f.txt"
+done
