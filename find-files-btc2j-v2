@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+find . -name '*.dat' | parallel -j 8 ./bitcoin2john.py {} | tee result.txt
