@@ -16,9 +16,7 @@ for l in tqdm(content, total=len(content), unit=" lines"):
 	line=l.rstrip('\n')
 	a=line.encode('utf-8')
 	b=hashlib.sha256(a).digest()
-	c=b.hex()
-	d='80'+c
-	f=bytes.fromhex(d)
+	f=b'\x80'+b
 	g=base58.b58encode_check(f)
 	h=g.decode('utf-8')+" 0 # "+line+"\n"
 	outfile.write(h)
