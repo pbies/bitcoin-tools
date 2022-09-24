@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	./bitcoin2john.py "$f" >> "hashes.txt"
+done

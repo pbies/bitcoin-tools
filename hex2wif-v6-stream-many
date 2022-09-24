@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+for f in *.txt; do
+	./hex2wif-v6-stream.py "$f"
+done
