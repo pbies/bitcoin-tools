@@ -1,9 +1,12 @@
+#!/usr/bin/env python3
 import ecdsa
 import hashlib
 import base58
 
+# input: 32 chars of priv key in hex
+# output: public addr base58_check
 
-with open("my_private_key.txt", "r") as f:    #Input file path
+with open("input.txt", "r") as f:    #Input file path
       for line in f:
 
                   #Convert hex private key to bytes
@@ -36,5 +39,5 @@ with open("my_private_key.txt", "r") as f:    #Input file path
 
          print(final_address)
 
-         with open("my_addresses.txt", "a") as i:
-            i.write(final_address)
+         with open("1.txt", "a") as i:
+            i.write(final_address+'\n')

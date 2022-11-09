@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+echo === Starting script ===
+while IFS= read -r addr; do
+	echo -n Testing $addr...
+	result=$(curl -s https://blockchain.info/unspent?active=$addr)
+	if [[ $result == error* ]]
+	then
+		echo curl error!
+	else
+		len=${#addr}
+		if [ $len -ne 34 ]
+		then
+			echo interesting! Adding to result.txt.
+			echo $addr >> result.txt
+		else
+			echo empty!
+		fi
+	fi
+done < addrs.txt
+echo === Script finished ===

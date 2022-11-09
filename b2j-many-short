@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 for f in *.dat; do
-	./keyhunter-v5.py "$f" >> "keys.txt"
+	./b2jshort.py "$f" >> "hashes.txt"
 done
