@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	echo -n "$f:" >> "hashes.txt"
+	./b2jshort.py "$f" >> "hashes.txt"
+done

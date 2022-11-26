@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# needs pywallet.py
+
+o="!dumps.txt"
+e="!errors.txt"
+
+for f in *.dat; do
+	echo -e "\n!!! $f below\n"
+	echo -e "\n!!! $f errors below\n" >> "$e"
+	>&2 echo "Now processing $f..."
+	./pywallet.py -d -w "$f" 2>> "$e"
+done >> "$o"
