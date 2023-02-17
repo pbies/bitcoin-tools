@@ -11,6 +11,7 @@ def worker(key):
 	pub=privtopub(priv)
 	addr=pubtoaddr(pub)
 	outfile.write(addr+'\n')
+	outfile.flush()
 
 with open("input.txt","r") as f:
-	process_map(worker, f.readlines(), max_workers=6, chunksize=20)
+	process_map(worker, f.readlines(), max_workers=6, chunksize=3100)
