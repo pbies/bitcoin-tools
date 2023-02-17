@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# (C) 2022 Piotr Biesiada
 
 import sys
 

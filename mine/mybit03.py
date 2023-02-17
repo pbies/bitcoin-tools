@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-print("mybit (C) 2022 Piotr Biesiada")
 # mybit build 1
 
 import sys

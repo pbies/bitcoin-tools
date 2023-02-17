@@ -7,7 +7,7 @@ from tqdm import tqdm
 import base58
 import hashlib
 
-outfile = open("output.txt","wb")
+outfile = open("output.txt","w")
 
 cnt=int(check_output(["wc", "-l", "input.txt"]).split()[0])
 
@@ -15,6 +15,6 @@ with open("input.txt","rb") as f:
 	for line in tqdm(f, total=cnt, unit=" lines"):
 		x=line.rstrip(b'\n')
 		h=base58.b58decode_check(x)
-		outfile.write(h+b'\n')
+		outfile.write(h.hex()+'\n')
 
 outfile.close()

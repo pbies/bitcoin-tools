@@ -5,7 +5,7 @@ bitcoin-tools
 
         Work in progress!
 
-        (C) 2021 Piotr Biesiada
+        (C) 2019-2023 Piotr Biesiada
 
         Other copyrights are for their respective owners.
 

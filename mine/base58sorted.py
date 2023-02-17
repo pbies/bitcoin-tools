@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# decode many base58check
+
 import sys
 import os
 import base58
