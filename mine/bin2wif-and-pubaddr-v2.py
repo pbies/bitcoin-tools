@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# convert 32-bytes of private key to public address and WIF
+
 import base58
 import hashlib
 from bitcoin import *

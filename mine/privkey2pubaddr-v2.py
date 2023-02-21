@@ -6,18 +6,18 @@ from subprocess import check_output
 from tqdm import tqdm
 
 # input: priv key base58_check
-# output: pub addr base58_check
+# output: the same priv key \n pub addr base58_check
 
 outfile = open("output.txt","wb")
 
-cnt=int(check_output(["wc", "-l", "input.txt"]).split()[0])
+cnt=sum(1 for line in open("input.txt", 'r'))
 
 with open("input.txt","rb") as f:
-		Private_key=f.read(32)
-		#line=line.rstrip(b'\n')
+	for line in tqdm(f, total=cnt, unit=" lines"):
+		line=line.rstrip(b'\n')
 		# WIF to private key by https://en.bitcoin.it/wiki/Wallet_import_format
-		#Private_key = base58.b58decode_check(line) 
-		#Private_key = Private_key[1:]
+		Private_key = base58.b58decode_check(line) 
+		Private_key = Private_key[1:]
 
 		# Private key to public key (ecdsa transformation)
 		signing_key = ecdsa.SigningKey.from_string(Private_key, curve = ecdsa.SECP256k1)
@@ -39,4 +39,4 @@ with open("input.txt","rb") as f:
 
 		# encode address to base58 and print
 		result_address = base58.b58encode(bin_addr)
-		outfile.write(result_address+b"\n")
+		outfile.write(line+b" = "+result_address+b"\n")

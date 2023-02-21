@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# private hex bitcoin btc key to wif wallet import format
+
+# generate 2 bytes 0-255, convert them to WIFs
+
 import base58
 import hashlib
 import sys
@@ -11,10 +13,11 @@ def sha256(hex):
 	return hashlib.sha256(hex).digest()
 
 def main():
-	for y in range(55296):
-			k = sha256(chr(y).encode('utf-8'))
+	for x in range(256):
+		for y in range(256):
+			k = sha256(bytearray([x,y]))
 			extend = '80' + k.hex()
-			print(b58(bytes.fromhex(extend)).decode('utf-8'))
+			print(b58(bytes.fromhex(extend)).decode('utf-8')+' 0')
 			#print(chr(y),end='')
 
 if __name__ == '__main__':

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+# many brainwallets to WIFs; sha256 twice
+
 import base58
 import hashlib
 import sys
 
 with open("input.txt","rb") as f:
-    content = f.readlines()
+	content = f.readlines()
 
 content = [x.strip() for x in content]
 

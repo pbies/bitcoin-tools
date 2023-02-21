@@ -5,7 +5,7 @@ import hashlib
 import sys
 
 with open("04uniq.txt","r") as f:
-    content = f.readlines()
+	content = f.readlines()
 
 content = [x.strip() for x in content]
 

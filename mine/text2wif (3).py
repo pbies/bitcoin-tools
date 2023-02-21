@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 
-# many base58check to hex
+# many brainwallets to WIFs
+
+# pip3 install base58
 
 import base58
 import hashlib
 import sys
 
-def b58(str):
-	return base58.b58decode_check(str)
+def b58(hex):
+	return base58.b58encode_check(hex)
+
+def sha256(hex):
+	return hashlib.sha256(hex).digest()
 
 def main():
 	with open("input.txt") as f:
@@ -18,7 +23,9 @@ def main():
 	o = open('output.txt','w')
 
 	for line in content:
-		o.write(b58(line).hex() + "\n")
+		k = sha256(line.encode('utf-8'))
+		extend = '80' + k.hex()
+		o.write(b58(bytes.fromhex(extend)) + " 0\n")
 
 if __name__ == '__main__':
 	main()

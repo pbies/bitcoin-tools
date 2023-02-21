@@ -8,7 +8,7 @@ import binascii
 
 outfile = open("output.txt","wb")
 
-cnt=int(check_output(["wc", "-l", "input.txt"]).split()[0])
+cnt=sum(1 for line in open("input.txt", 'r'))
 
 with open("input.txt","r") as f:
 	for line in tqdm(f, total=cnt, unit=" lines"):

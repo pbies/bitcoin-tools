@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# empty brainwallet phrase to WIF
+
 import base58
 import hashlib
 

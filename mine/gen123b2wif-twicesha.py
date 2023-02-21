@@ -15,7 +15,15 @@ def to_wif(data):
 
 o=open("wallet.txt","w")
 
+for b1 in range(256):
+	o.write(to_wif(bytes([b1]))+' 0\n')
+
+for b1 in range(256):
+	for b2 in range(256):
+		o.write(to_wif(bytes([b1,b2]))+' 0\n')
+
 for b1 in range(17):
 	for b2 in range(256):
 		for b3 in range(256):
-			o.write(to_wif(bytes(61)+bytes([b1,b2,b3]))+' 0\n')
+			o.write(to_wif(bytes([b1,b2,b3]))+' 0\n')
+

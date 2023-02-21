@@ -6,11 +6,11 @@ from subprocess import check_output
 from tqdm import tqdm
 
 # input: priv key base58_check
-# output: the same priv key \n pub addr base58_check
+# output: pub addr base58_check
 
 outfile = open("output.txt","wb")
 
-cnt=int(check_output(["wc", "-l", "input.txt"]).split()[0])
+cnt=sum(1 for line in open("input.txt", 'r'))
 
 with open("input.txt","rb") as f:
 	for line in tqdm(f, total=cnt, unit=" lines"):
@@ -39,4 +39,4 @@ with open("input.txt","rb") as f:
 
 		# encode address to base58 and print
 		result_address = base58.b58encode(bin_addr)
-		outfile.write(line+b" = "+result_address+b"\n")
+		outfile.write(result_address+b"\n")

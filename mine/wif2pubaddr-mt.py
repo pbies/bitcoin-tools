@@ -7,10 +7,13 @@ import base58
 outfile = open("output.txt","w")
 
 def worker(key):
-	priv=base58.b58decode_check(key[:-1])[1:]
+	try:
+		priv=base58.b58decode_check(key[:-1])[1:]
+	except:
+		return
 	pub=privtopub(priv)
 	addr=pubtoaddr(pub)
-	outfile.write(addr+'\n')
+	outfile.write(addr+' '+key)
 	outfile.flush()
 
 with open("input.txt","r") as f:

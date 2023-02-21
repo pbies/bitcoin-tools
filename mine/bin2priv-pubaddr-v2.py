@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# convert private key to public address
+
 import bitcoin
 import sys
 
