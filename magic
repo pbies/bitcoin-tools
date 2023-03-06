@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+grep -Ff "gte1mBTC1.txt" "output.txt" > "wspolne.txt"
+bell

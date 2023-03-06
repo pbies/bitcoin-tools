@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# patterns are in $1
+grep -Ff "$1" "$2" > "$3"

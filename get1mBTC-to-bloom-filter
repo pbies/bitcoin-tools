@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -e
+echo "### Public addresses downloader and converter to bloom filter ###"
+echo [01/11] Download the addresses
+#wget http://addresses.loyce.club/blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz
+echo [02/11] Unpack the archive
+#gunzip blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz
+echo [03/11] Check lowest balance line
+line=$(grep -m 1 -bne $'\t99999$' blockchair_bitcoin_addresses_and_balance_LATEST.tsv | cut -d ":" -f 2)
+echo [04/11] Get only with proper balance
+head -c $line blockchair_bitcoin_addresses_and_balance_LATEST.tsv > int1.txt
+echo [05/11] Get rid of first line
+tail -n +2 int1.txt > int2.txt
+echo [06/11] Get only addresses, sort and write to file
+cut -f 1 int2.txt | sort > gte1mBTC.txt
+echo [07/11] Search for incompatible addresses
+line=$(grep -m 1 -bne $'^bc1p' "gte1mBTC.txt" | cut -d ":" -f 2)
+echo [08/11] Get only compatible addresses
+head -c $line "gte1mBTC.txt" > int3.txt
+echo [09/11] Convert addresses to hash160
+~/bitcoin-tool/bitcoin-tool --batch --input-type address --output-type public-key-rmd --input-format base58check --network bitcoin --output-format hex --input-file int3.txt | sort > "hash160.txt"
+echo [10/11] Convert hex to bloom filter
+~/brainflayer/hex2blf "hash160.txt" bloom.blf
+echo [11/11] Finished!
