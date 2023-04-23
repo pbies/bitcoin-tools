@@ -37,3 +37,6 @@ def intToBytes2(s):
 
 def countLines(file):
 	return sum(1 for line in open(file, 'r'))
+
+def reverseString(s):
+	return s[::-1]
