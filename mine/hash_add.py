@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import hashlib
 import secp256k1
 from bloomfilter import BloomFilter, ScalableBloomFilter, SizeGrowthRate

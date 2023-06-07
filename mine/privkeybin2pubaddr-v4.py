@@ -10,8 +10,6 @@ from tqdm import tqdm
 
 outfile = open("output.txt","wb")
 
-cnt=sum(1 for line in open("input.txt", 'r'))
-
 with open("input.bin","rb") as f:
 	Private_key=f.read(32)
 	#line=line.rstrip(b'\n')
