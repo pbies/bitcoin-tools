@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+while read -r p; do
+	echo "$p" | ./bx mnemonic-to-seed -p "" | ./bx hd-new | ./bx hd-private -d -i 44 | ./bx hd-private -d -i 0 | ./bx hd-private -d -i 0 | ./bx hd-to-ec | sed 's/$/01/' | ./bx base58check-encode -v 128
+done < input.txt
