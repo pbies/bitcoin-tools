@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ping -i 0 $1 $2

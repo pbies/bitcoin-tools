@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cat /dev/zero | pv -B 1M | nc "$1" 3333

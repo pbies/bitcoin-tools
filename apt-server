@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+apt-get -y update
+
+packets=(
+	apache2
+	containerd
+	docker-ce
+	docker.io
+	mailutils
+	mysql-server
+	openssl
+	php7.4
+	php7.4-gd
+	php7.4-mbstring
+	php7.4-mysql
+	php7.4-xml
+	postfix
+	pyzor
+	samba
+	ssh
+	sshd
+	sshfs
+)
+
+for packet in ${packets[*]}
+do
+	apt-get install -y "$packet"
+done
+
+apt-get clean
+apt-get -y autoclean
+apt-get -y autoremove
+
+sync

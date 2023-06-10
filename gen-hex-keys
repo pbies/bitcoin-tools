@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Generate 1000 random private keys in hex format
+
+keys=1000
+openssl rand $[32*keys] | xxd -p -c32 > hexkeys

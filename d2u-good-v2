@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+for i in ./*.txt
+do
+	echo "$i"
+	pv "$i" | dos2unix -f > tmp.txt
+	mv tmp.txt "$i"
+done
+echo -ne "\x7"

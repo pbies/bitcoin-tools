@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+7zz a -m0=lzma2 -mx=9 "$1.7z" "$1"

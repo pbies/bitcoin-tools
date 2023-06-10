@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo === READ 1GiB /dev/mmcblk0 ===
+sync
+time dd if=/dev/mmcblk0 of=/dev/null bs=1M count=1k conv=fdatasync status=progress
+sync

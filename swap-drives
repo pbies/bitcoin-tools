@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DRIVE1="${1}"
+DRIVE2="${2}"
+BS="${3:-16M}"
+block="${4:-0}"
+TMP="$( mktemp ~/$$.XXXX )"
+
+while true; do
+	dd if=$DRIVE1 of=$TMP bs=$BS skip=$block
+	dd if=$DRIVE2 of=$DRIVE1 bs=$BS skip=$block seek=$block
+	dd if=$TMP of=$DRIVE2 bs=$BS seek=$block || break
+	block=$(( block += 1 ))
+	echo $block > ~/block.info
+done

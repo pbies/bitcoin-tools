@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# $1 - domain.com
+# $2 - .ext
+# $3 - domain.com/path/
+
+wget \
+	--recursive \
+	--no-clobber \
+	--page-requisites \
+	--html-extension \
+	--convert-links \
+	--domains $1 \
+	--no-parent \
+	-A $2 \
+		$3

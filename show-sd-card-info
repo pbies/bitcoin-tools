@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+udisks --show-info /dev/mmcblk0

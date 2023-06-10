@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# give only number in hex
+# up to 7fffffffffffffff
+printf "%d\n" 0x$1

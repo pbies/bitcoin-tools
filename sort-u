@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+for file in *;
+do
+	echo "$file"
+	sort -u "$file" | pv > "$file.sorted"
+	mv "$file.sorted" "$file"
+done
+echo -ne "\x7"

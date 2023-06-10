@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+price=$(curl -s -m 10 --retry 5 https://api.coindesk.com/v1/bpi/currentprice/PLN.json | jq '.bpi.PLN.rate')
+date=$(date "+%Y-%m-%d %H:%M:%S")
+price=${price/,/}
+price=${price//\"/}
+price=${price/./,}
+echo $date $price >> /root/btc.txt

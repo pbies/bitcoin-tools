@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+apt-get -y update
+
+packets=(
+	chntpw
+	firefox
+	libreoffice
+	lxde
+	nvidia-driver
+	tightvncserver
+	xorg
+	xorgxrdp
+)
+
+for packet in ${packets[*]}
+do
+	apt-get install -y "$packet"
+done
+
+apt-get clean
+apt-get -y autoclean
+apt-get -y autoremove
+
+sync

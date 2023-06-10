@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+echo -n "Password: "
+read -s p
+echo
+for file in ./*.rar;
+do
+	echo -n "$file"...
+	if unrar t -p"$p" "$file" > /dev/null; then
+		echo ok
+	else
+		echo Error!
+	fi
+done

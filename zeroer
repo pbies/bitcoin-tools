@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+f="./zeros.tmp"
+sync
+df -HB MiB .
+pv /dev/zero >> "$f"
+sync
+pv /dev/zero >> "$f"
+sync
+df -HB 1 .
+echo -n cleaning...
+rm "$f"
+echo ok
+sync
+df -HB MiB .

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rar a -m5 -ma5 -hp "$1.rar" "$1"

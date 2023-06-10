@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# command line parameters:
+# $1 input: file with patterns to search for
+# $2 input: file in which you search for patterns
+# $3 output: file to which put found matches
+
+grep -a -Ff "$1" "$2" | tee -a "$3"
+>&2 echo -ne "\x7"

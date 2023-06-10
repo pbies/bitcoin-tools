@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+fdisk -l /dev/mmcblk?
+fdisk -l /dev/nvme?n?
+fdisk -l /dev/sd?
+fdisk -l /dev/vd?

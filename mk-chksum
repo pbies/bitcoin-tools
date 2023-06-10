@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+pv -B 1M "$1" | sha256sum -b > "$1.sha256"

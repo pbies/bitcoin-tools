@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+sync
+[ -z "/dev/$1" ] || pv -B 1M "/dev/$1" > /dev/null

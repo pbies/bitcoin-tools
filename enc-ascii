@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+gpg -c --armor --cipher-algo AES256 "$1"

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+f="./nul-file.tmp"
+sync
+df -HB MiB .
+cat /dev/zero | pv -B 1M >> "$f"
+sync
+cat /dev/zero | pv -B 512 >> "$f"
+sync
+df -HB 1 .
+echo ok

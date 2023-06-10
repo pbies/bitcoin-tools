@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+exit 1
+
+size=2048
+drive=sdb
+
+{
+	echo "label: gpt"
+#	echo "label-id: 89B1365E-CD48-4A4C-95FB-117A92909321"
+	echo "device: /dev/$drive"
+	echo "unit: sectors"
+	echo "first-lba: 2048"
+#	echo "last-lba: 1953525134"
+	echo
+	# exFAT type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
+	# NTFS type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
+	# ext4 type=0FC63DAF-8483-4772-8E79-3D69D8477DE4
+	for i in {0..127}; do
+		echo "start=" $(($i*$size+2048)) ", size=$size, type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7"
+	done
+} | sfdisk /dev/$drive || exit 1
+
+exit 1
+
+for i in {1..128}; do
+	mkfs.exfat -n $i "/dev/$drive$i"
+done

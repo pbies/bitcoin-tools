@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# 9900K WSL 2,50 GB/s
+cat /dev/zero | pv -B 1M | pigz -1 > /dev/null

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# pip install auto-py-to-exe
+
+pyinstaller --noconfirm --onefile --console "$1"

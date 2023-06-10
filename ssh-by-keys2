@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# copy key to server
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub "$1"

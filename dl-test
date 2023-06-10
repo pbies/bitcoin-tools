@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+time wget http://speed.hetzner.de/1GB.bin
+rm ./1GB.bin

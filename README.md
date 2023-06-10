@@ -1,7 +1,7 @@
         bitcoin-tools
         =============
 
-        Random Bitcoin Tools
+        Random Bitcoin Tools and Bash scripts
 
         Work in progress!
 

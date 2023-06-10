@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+folder1="$1"
+folder2="$2"
+readarray -t files <<< "$(find "$folder1" -type f -printf "%f\n" | sort)"
+
+count=${#files[@]}
+count=$(( count - 1 ))
+
+for i in $(eval echo "{0..$count}")
+do
+	fn="${files[$i]}"
+	if [ -f "$folder2/$fn" ]; then
+		cmp -s "$folder1/$fn" "$folder2/$fn"
+		if [ $? -gt 0 ]; then
+			echo "$fn differs!"
+		fi
+	else
+		echo "$fn is missing!"
+	fi
+done

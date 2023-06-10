@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+for i in ./*.txt
+do
+	s=$(stat -c "%s" "$i" | numfmt --to=iec)
+	echo "$i - $s"
+	pv -c "$i" | dos2unix -f | pv -c | sort -u | pv -c > tmp.txt
+	mv tmp.txt "$i"
+done
+echo -ne "\x7"

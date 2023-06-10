@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+f="/etc/resolv.conf"
+chattr -i "$f"
+rm -f "$f"
+echo "nameserver 1.1.1.1" >> "$f"
+echo "nameserver 8.8.8.8" >> "$f"
+chattr +i "$f"

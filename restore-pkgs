@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+dpkg --clear-selections
+dpkg --set-selections < pkgs.txt
+apt-get dselect-upgrade

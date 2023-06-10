@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+mount | column -t | sort

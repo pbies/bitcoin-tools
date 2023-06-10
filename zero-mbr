@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+sync
+dd if=/dev/zero of="/dev/$1" bs=512 count=1
+sync

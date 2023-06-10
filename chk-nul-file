@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+LC_CTYPE=C pv "$1" | grep -qP '[^\x00]'
+code=$?
+if [ $code -eq 0 ]
+then
+	echo not NUL found!
+else
+	echo only NULs
+fi

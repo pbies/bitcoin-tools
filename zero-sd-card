@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+sync
+pv -B 1M < /dev/zero > /dev/mmcblk0
+sync

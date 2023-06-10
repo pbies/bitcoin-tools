@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ntpdate -u tempus1.gum.gov.pl > /dev/null

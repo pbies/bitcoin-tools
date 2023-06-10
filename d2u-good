@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for i in ./*.txt
+do
+	echo "$i"
+	dos2unix -f < "$i" > tmp.txt
+	mv tmp.txt "$i"
+done

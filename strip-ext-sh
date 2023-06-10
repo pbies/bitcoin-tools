@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rename 's/\.sh$//' "*.sh"
