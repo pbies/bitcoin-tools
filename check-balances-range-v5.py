@@ -8,7 +8,7 @@ from tqdm import tqdm
 import os
 import random
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YBYyZuWJpHTkq_ufppjI1HHoUB69NCi2"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 
 outfile = open("eth.txt","a")
