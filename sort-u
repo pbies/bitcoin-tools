@@ -5,4 +5,4 @@ do
 	sort -u "$file" | pv > "$file.sorted"
 	mv "$file.sorted" "$file"
 done
-echo -ne "\x7"
+>&2 echo -ne "\x7"

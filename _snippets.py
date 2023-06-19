@@ -87,5 +87,5 @@ def str_to_hex(text):
 	return "".join(x.encode('hex') for x in text)
 
 def wif_to_privatekey(s):
-	b = base58.bs58decode_check(s)
+	b = base58.b58decode_check(s)
 	return b.encode('hex')

@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-i=$1
-o=$2
-fr=$3
-to1=$4
+
+# params: 1=input 2=output 3=from 4=to
+
+i="$1"
+o="$2"
+fr="$3"
+to1="$4"
 to2=$((to1+1))
-sed -n "${fr},${to1}p;${to2}q" $i > $o
+sed -n "${fr},${to1}p;${to2}q" "$i" > "$o"
+>&2 echo -ne "\x7"

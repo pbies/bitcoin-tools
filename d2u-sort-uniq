@@ -6,4 +6,4 @@ do
 	pv -cN in "$i" | dos2unix -f | sort -u | pv -cN out > tmp.txt
 	mv tmp.txt "$i"
 done
-echo -ne "\x7"
+>&2 echo -ne "\x7"
