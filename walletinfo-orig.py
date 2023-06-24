@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys, os.path, bsddb.db, struct, binascii
 
 def hex_padding(s, length):
