@@ -12,6 +12,7 @@ import re
 import struct
 import unittest
 # import utils
+from ecdsa import SigningKey, SECP256k1
 
 def b58_to_bytes(s):
 	return base58.b58decode_check(s)
@@ -43,8 +44,8 @@ def hex_to_bytes(hex):
 def hex_to_int(hex):
 	return int(hex, 16)
 
-def int_to_bytes(i):
-	return chr(i).encode('utf-8')
+#def int_to_bytes(i):
+#	return chr(i).encode()
 
 #def int_to_bytes2(i):
 #	return bytearray([i])
@@ -59,12 +60,12 @@ def int_to_bytes3(value, length = None):
 		result.reverse()
 	return str(bytearray(result))
 
-def int_to_bytes4(number):
-	# 32 = number of zeros preceding
-	return number.to_bytes(32,'big')
+def int_to_bytes4(number, length):
+	# length = zero-fill bytes
+	return number.to_bytes(length,'big')
 
-def int_to_bytes5(number):
-	return str.encode(str(number))
+#def int_to_bytes5(number):
+#	return str.encode(str(number))
 
 def int_to_str(number):
 	return str(number)
@@ -72,8 +73,32 @@ def int_to_str(number):
 def int_to_hex(i):
 	return hex(i)
 
+def pubkey_to_addr(pk):
+	if (ord(bytearray.fromhex(pk[-2:])) % 2 == 0):
+		public_key_compressed = '02'
+	else:
+		public_key_compressed = '03'
+	public_key_compressed += pk[2:66]
+	hex_str = bytearray.fromhex(public_key_compressed)
+	sha = hashlib.sha256()
+	sha.update(hex_str)
+	sha.hexdigest()
+	rip = hashlib.new('ripemd160')
+	rip.update(sha.digest())
+	key_hash = rip.hexdigest()
+	modified_key_hash = "00" + key_hash
+	sha = hashlib.sha256()
+	hex_str = bytearray.fromhex(modified_key_hash)
+	sha.update(hex_str)
+	sha.hexdigest()
+	sha_2 = hashlib.sha256()
+	sha_2.update(sha.digest())
+	checksum = sha_2.hexdigest()[:8]
+	byte_25_address = modified_key_hash + checksum
+	return base58.b58encode(bytes(bytearray.fromhex(byte_25_address))).decode('utf-8')
+
 def pvk_to_addr(s):
-	return pubkey_to_addr(pvk_to_publickey(s))
+	return pubkey_to_addr(pvk_to_pubkey(s))
 
 def pvk_to_wif(key_bytes):
 	return base58.b58encode_check(b'\x80' + key_bytes)
@@ -81,15 +106,10 @@ def pvk_to_wif(key_bytes):
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
 
-def pvk_to_publickey(b):
-	sk = ecdsa.SigningKey.from_string(b, curve=ecdsa.SECP256k1)
+def pvk_to_pubkey(h):
+	sk = ecdsa.SigningKey.from_string(h, curve=ecdsa.SECP256k1)
 	vk = sk.verifying_key
 	return (b'\04' + sk.verifying_key.to_string()).hex()
-
-def pubkey_to_addr(b):
-	ripemd160 = hashlib.new('ripemd160')
-	ripemd160.update(hashlib.sha256(str.encode(b)).digest())
-	return base58.b58encode_check(ripemd160.digest())
 
 def reverse_string(s):
 	return s[::-1]
@@ -113,17 +133,14 @@ print(bytes_to_hex(b'\x80\x00'))
 print(count_lines('_snippets.py'))
 print(hex_to_bytes('8000'))
 print(hex_to_int('8000'))
-print(int_to_bytes(32768))
 print(int_to_bytes3(32768))
-print(int_to_bytes4(32768))
-print(int_to_bytes5(32768))
 print(int_to_str(65))
 print(int_to_hex(32768))
+print(pubkey_to_addr('0430210c23b1a047bc9bdbb13448e67deddc108946de6de639bcc75d47c0216b1be383c4a8ed4fac77c0d2ad737d8499a362f483f8fe39d1e86aaed578a9455dfc'))
 print(pvk_to_addr(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xA8\x38\xB1\x35\x05\xB2\x68\x67'))
 print(pvk_to_wif(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xA8\x38\xB1\x35\x05\xB2\x68\x67'))
 print(pvk_to_wif2('000000000000000000000000000000000000000000000001a838b13505b26867'))
-print(pvk_to_publickey(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xA8\x38\xB1\x35\x05\xB2\x68\x67'))
-print(pubkey_to_addr('00906ed6dc0f6fce98865e698f2e5b1579f109373435ad38deb32b035c725ce0'))
+print(pvk_to_pubkey(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xA8\x38\xB1\x35\x05\xB2\x68\x67'))
 print(reverse_string('abc def xyz'))
 print(str_to_bytes('ABC'))
 print(str_to_hex('ABC'))
