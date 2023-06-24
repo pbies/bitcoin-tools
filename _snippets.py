@@ -82,7 +82,6 @@ def pubkey_to_addr(pk):
 	hex_str = bytearray.fromhex(public_key_compressed)
 	sha = hashlib.sha256()
 	sha.update(hex_str)
-	sha.hexdigest()
 	rip = hashlib.new('ripemd160')
 	rip.update(sha.digest())
 	key_hash = rip.hexdigest()
@@ -90,7 +89,6 @@ def pubkey_to_addr(pk):
 	sha = hashlib.sha256()
 	hex_str = bytearray.fromhex(modified_key_hash)
 	sha.update(hex_str)
-	sha.hexdigest()
 	sha_2 = hashlib.sha256()
 	sha_2.update(sha.digest())
 	checksum = sha_2.hexdigest()[:8]
