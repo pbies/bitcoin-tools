@@ -11,7 +11,7 @@ r=requests.get('https://blockchain.info/q/addressbalance/'+addr)
 
 if not r.status_code==200:
 	print('Error',r.status_code)
-	exit()
+	exit(1)
 
 b=int(r.text)
 

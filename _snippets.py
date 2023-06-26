@@ -14,34 +14,40 @@ import unittest
 # import utils
 from ecdsa import SigningKey, SECP256k1
 
-def b58_to_bytes(s):
+def b58c_to_bytes(s): # in: '1KFH... [~34] out: b'\x00...
 	return base58.b58decode_check(s)
 
-def bytes_to_b58(bytes):
+def bytes_to_b58c(bytes): # in: b'\x00\xc8%\xa1... out: b'1KF...
 	return base58.b58encode_check(bytes)
 
-def bytes_to_str(bytes):
-	return bytes.decode("utf-8")
+def b58c_to_hex(s):
+	return base58.b58decode_check(s).hex()
 
-def bytes_to_int(bytes):
+def hex_to_b58c(h):
+	return base58.b58encode_check(bytes.fromhex(h)).decode()
+
+def bytes_to_str(bytes): # in: b'abc1... out: abc1...
+	return bytes.decode('utf-8')
+
+def bytes_to_int(bytes): # in: b'\x80\x00... out: 32768
 	result = 0
 	for b in bytes:
 		result = result * 256 + int(b)
 	return result
 
-def bytes_to_int2(bytes):
-	return int.from_bytes(bytes,"big")
+def bytes_to_int2(bytes): # in: b'\x80\x00... out: 32768
+	return int.from_bytes(bytes,'big')
 
-def bytes_to_hex(bytes):
+def bytes_to_hex(bytes): # in: b'\x80\x00... out: 8000
 	return bytes.hex()
 
-def count_lines(file):
+def count_lines(file): # in: filename out: 151
 	return sum(1 for line in open(file, 'r'))
 
-def hex_to_bytes(hex):
+def hex_to_bytes(hex): # in: '8000... out: b'\x80...
 	return bytes.fromhex(hex)
 
-def hex_to_int(hex):
+def hex_to_int(hex): # in: '8000... out: 32768
 	return int(hex, 16)
 
 #def int_to_bytes(i):
@@ -50,7 +56,7 @@ def hex_to_int(hex):
 #def int_to_bytes2(i):
 #	return bytearray([i])
 
-def int_to_bytes3(value, length = None):
+def int_to_bytes3(value, length = None): # in: int out: bytearray(b'\x80...
 	if not length and value == 0:
 		result = [0]
 	else:
@@ -60,20 +66,20 @@ def int_to_bytes3(value, length = None):
 		result.reverse()
 	return str(bytearray(result))
 
-def int_to_bytes4(number, length):
+def int_to_bytes4(number, length): # in: int, int
 	# length = zero-fill bytes
 	return number.to_bytes(length,'big')
 
 #def int_to_bytes5(number):
 #	return str.encode(str(number))
 
-def int_to_str(number):
+def int_to_str(number): # in: int out: 65
 	return str(number)
 
-def int_to_hex(i):
+def int_to_hex(i): # in: int out: 0x8000
 	return hex(i)
 
-def pubkey_to_addr(pk):
+def pubkey_to_addr(pk): # in: '0430... [130] out: 18ZM...
 	if (ord(bytearray.fromhex(pk[-2:])) % 2 == 0):
 		public_key_compressed = '02'
 	else:
@@ -85,7 +91,7 @@ def pubkey_to_addr(pk):
 	rip = hashlib.new('ripemd160')
 	rip.update(sha.digest())
 	key_hash = rip.hexdigest()
-	modified_key_hash = "00" + key_hash
+	modified_key_hash = '00' + key_hash
 	sha = hashlib.sha256()
 	hex_str = bytearray.fromhex(modified_key_hash)
 	sha.update(hex_str)
@@ -95,35 +101,35 @@ def pubkey_to_addr(pk):
 	byte_25_address = modified_key_hash + checksum
 	return base58.b58encode(bytes(bytearray.fromhex(byte_25_address))).decode('utf-8')
 
-def pvk_to_addr(s):
+def pvk_to_addr(s): # in: b'\x00\x00\x00\x00...  [32] out: 18ZM...
 	return pubkey_to_addr(pvk_to_pubkey(s))
 
-def pvk_to_wif(key_bytes):
+def pvk_to_wif(key_bytes): # in: b'\x00\x00\x00\x00...  [32] out: b'5HpH...
 	return base58.b58encode_check(b'\x80' + key_bytes)
 
-def pvk_to_wif2(key_hex):
+def pvk_to_wif2(key_hex): # in: '0000... [64] out: b'5HpH...
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
 
-def pvk_to_pubkey(h):
+def pvk_to_pubkey(h): # in: b'\x00\x00\x00\x00...  [32] out: 043021...
 	sk = ecdsa.SigningKey.from_string(h, curve=ecdsa.SECP256k1)
 	vk = sk.verifying_key
 	return (b'\04' + sk.verifying_key.to_string()).hex()
 
-def reverse_string(s):
+def reverse_string(s): # in: 'abc1... out: 1cba...
 	return s[::-1]
 
-def str_to_bytes(text):
+def str_to_bytes(text): # in: 'ABC... out: b'ABC...
 	return str.encode(text)
 
-def str_to_hex(text):
-	#return "".join(hex(chr(int(x,8))) for x in text)
+def str_to_hex(text): # in: 'ABC... out: 414243
+	#return ''.join(hex(chr(int(x,8))) for x in text)
 	return binascii.hexlify(text.encode()).decode()
 
-def wif_to_pvk(s):
+def wif_to_pvk(s): #in: '5HpH... [~51] out: 8000... [66]
 	return base58.b58decode_check(s).hex()
 
-print(b58_to_bytes("1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY"))
-print(bytes_to_b58(b'\x00\xc8%\xa1\xec\xf2\xa6\x83\x0cD\x01b\x0c:\x16\xf1\x99PW\xc2\xab'))
+print(b58c_to_bytes('1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY'))
+print(bytes_to_b58c(b'\x00\xc8%\xa1\xec\xf2\xa6\x83\x0cD\x01b\x0c:\x16\xf1\x99PW\xc2\xab'))
 print(bytes_to_str(b'abc123'))
 print(bytes_to_int(b'\x80\x00'))
 print(bytes_to_int2(b'\x80\x00'))

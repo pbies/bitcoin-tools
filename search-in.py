@@ -2,11 +2,11 @@
 
 from bitcoin import *
 
-a=open("found.txt")
+a=open("search-for.txt")
 b=a.readlines()
 c = [x.strip() for x in b]
 
-d=open("pwds.txt","rb")
+d=open("search-in.txt","rb")
 
 f=open("output.txt","w")
 

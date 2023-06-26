@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# patterns are in $1
-grep -a -Ff "$1" "$2" | tee -a "$3"
->&2 echo -ne "\x7"
