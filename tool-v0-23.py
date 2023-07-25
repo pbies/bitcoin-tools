@@ -277,7 +277,7 @@ while True:
 			print('\nPrivate key: '+pvk.hex())
 			print('WIF        : '+pvk_to_wif2(pvk.hex()).decode('ascii'))
 			print('Public key : '+pvk_to_pubkey(pvk))
-			print('Address    : '+pubkey_to_addr(pvk_to_pubkey(pvk))+'\n')
+			print('Address    : '+pubkey_to_addr(pvk_to_pubkey(pvk)))
 			print()
 		case '':
 			exit(0)
