@@ -16,5 +16,6 @@ for addr in tqdm(i, total=cnt):
 	cksum=Web3.to_checksum_address(addr)
 	bal=w3.eth.get_balance(cksum)
 	if bal>0:
+		print('addr: '+addr+' balance: '+str(bal))
 		o.write('addr: '+addr+' balance: '+str(bal)+'\n')
 		o.flush()

@@ -11,7 +11,7 @@ outfile = open("output.txt","wb")
 cnt=sum(1 for line in open("input.txt", 'r'))
 
 with open("input.txt","rb") as f:
-	for line in tqdm(f, total=cnt, unit=" lines"):
+	for line in tqdm(f, total=cnt):
 		x=line.rstrip(b'\n')
 		sha=hashlib.sha256(x).digest()
 		tmp=b'\x80'+sha

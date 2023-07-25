@@ -21,5 +21,5 @@ for l in tqdm(i, total=cnt):
 	k.update(concat_x_y)
 	eth_addr = '0x' + k.hexdigest()[-40:]
 
-	o.write('private key: '+hex(private_key)+' ')
-	o.write('eth_address: '+eth_addr+'\n')
+	o.write('pvk: '+hex(private_key)+' ')
+	o.write('addr: '+eth_addr+'\n')

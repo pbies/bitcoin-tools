@@ -41,6 +41,9 @@ def bytes_to_int2(bytes): # in: b'\x80\x00... out: 32768
 def bytes_to_hex(bytes): # in: b'\x80\x00... out: 8000
 	return bytes.hex()
 
+def bytes_to_hex2(bytestr):
+	return binascii.hexlify(bytestr).decode('ascii')
+
 def count_lines(file): # in: filename out: 151
 	return sum(1 for line in open(file, 'r'))
 
