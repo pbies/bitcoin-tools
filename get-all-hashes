@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+IFS=$'\n'; set -f
+for f in $(find . -name "*.dat"|sort); do
+	h=$(./b2jshort.py "$f")
+	[ -z "$h" ] || echo "$h:$f"|tee -a ./hashes.txt
+done
+unset IFS; set +f
+>&2 echo -ne "\x7"
