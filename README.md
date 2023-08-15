@@ -12,3 +12,5 @@
 		Other copyrights are for their respective owners.
 
 		ptrbsd (at) gmail
+
+		Bitcoin: bc1q0v0aw087dlwgxml9mjdg2apxjzmvzszhllfwl5
