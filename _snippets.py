@@ -26,7 +26,7 @@ def b58c_to_hex(s):
 def hex_to_b58c(h):
 	return base58.b58encode_check(bytes.fromhex(h)).decode()
 
-def bytes_to_str(bytes): # in: b'abc1... out: abc1...
+def bytes_to_string(bytes): # in: b'abc1... out: abc1...
 	return bytes.decode('utf-8')
 
 def bytes_to_int(bytes): # in: b'\x80\x00... out: 32768
@@ -52,6 +52,9 @@ def hex_to_bytes(hex): # in: '8000... out: b'\x80...
 
 def hex_to_int(hex): # in: '8000... out: 32768
 	return int(hex, 16)
+
+def hex_to_string(h):
+	return bytes.fromhex(h).decode('utf-8')
 
 #def int_to_bytes(i):
 #	return chr(i).encode()
