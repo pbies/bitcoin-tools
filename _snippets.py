@@ -107,16 +107,16 @@ def pubkey_to_addr(pk): # in: '0430... [130] out: 18ZM...
 	byte_25_address = modified_key_hash + checksum
 	return base58.b58encode(bytes(bytearray.fromhex(byte_25_address))).decode('utf-8')
 
-def pvk_to_addr(s): # in: b'\x00\x00\x00\x00...  [32] out: 18ZM...
+def pvk_to_addr(s): # in: b'\x00\x00\x00\x00... [32] out: 18ZM...
 	return pubkey_to_addr(pvk_to_pubkey(s))
 
-def pvk_to_wif(key_bytes): # in: b'\x00\x00\x00\x00...  [32] out: b'5HpH...
+def pvk_to_wif(key_bytes): # in: b'\x00\x00\x00\x00... [32] out: b'5HpH...
 	return base58.b58encode_check(b'\x80' + key_bytes)
 
 def pvk_to_wif2(key_hex): # in: '0000... [64] out: b'5HpH...
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
 
-def pvk_to_pubkey(h): # in: b'\x00\x00\x00\x00...  [32] out: 043021...
+def pvk_to_pubkey(h): # in: b'\x00\x00\x00\x00... [32] out: 043021...
 	sk = ecdsa.SigningKey.from_string(h, curve=ecdsa.SECP256k1)
 	vk = sk.verifying_key
 	return (b'\04' + sk.verifying_key.to_string()).hex()
@@ -133,6 +133,9 @@ def str_to_hex(text): # in: 'ABC... out: 414243
 
 def wif_to_pvk(s): #in: '5HpH... [~51] out: 8000... [66]
 	return base58.b58decode_check(s).hex()
+
+def lines(f):
+	return sum(1 for line in open(f))
 
 print(b58c_to_bytes('1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY'))
 print(bytes_to_b58c(b'\x00\xc8%\xa1\xec\xf2\xa6\x83\x0cD\x01b\x0c:\x16\xf1\x99PW\xc2\xab'))
