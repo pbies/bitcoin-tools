@@ -13,4 +13,4 @@
 
 		ptrbsd (at) gmail
 
-		Bitcoin: bc1q0v0aw087dlwgxml9mjdg2apxjzmvzszhllfwl5
+		Bitcoin: bc1q3yctzptfa49cczu2x77qlu54pewss2qrv0fd3h
