@@ -29,3 +29,6 @@ def pvk_to_wif(z):
 
 def lines(f):
 	return sum(1 for line in open(f))
+
+def st(f):
+	return [line.strip() for line in f]
