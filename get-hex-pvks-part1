@@ -1,0 +1,2 @@
+grep -oE "[0-9a-fA-F]{64}" input.txt > tmp1.txt
+sort -u tmp1.txt > tmp2.txt
