@@ -2,16 +2,18 @@
 
 # pip3 install git+https://github.com/mcdallas/cryptotools.git@master#egg=cryptotools
 # pip3 install p_tqdm
+# pip3 install requests
 
 from cryptotools.BTC import PrivateKey, send
 from p_tqdm import p_map
 import hashlib
 import random
 import sys
+import requests
 
 start=0x20000000000000000
 end=0x3ffffffffffffffff
-u=1024*1024 # range +-
+u=1024*1024*10 # range +-
 right='13zb1hQbWVsc2S7ZTZnP2G4undNNpdh5so'
 
 def int_to_bytes3(value, length = None):
@@ -55,6 +57,10 @@ def go(ra):
 		print(hex(ra))
 		print('WIF: '+getWif(byt))
 		print('\a',flush=True)
+		try:
+			requests.get('https://your.domain.com/WALLET:'+getWif(byt))
+		except:
+			pass
 		with open('found.txt','a') as f:
 			f.write(str(ra))
 			f.write('\n')
@@ -65,10 +71,17 @@ def go(ra):
 		sys.exit(0)
 	return
 
-print('target: '+right,flush=True)
+def growing_range(mid,x): # x = range +-
+	start=mid-x
+	end=mid+x
+	rng = [0] * (x*2-1)
+	rng[::2], rng[1::2] = range(mid, end), range(mid-1, start, -1)
+	return rng
+
+print('target: '+right, flush=True)
 
 while True:
-	ra=random.randint(start,end-u)
-	rb=ra+u
-	print(f'\rfrom: {hex(ra)} to: {hex(rb)} range: {hex(u)}={u}',flush=True)
-	p_map(go, list(range(ra, rb)), num_cpus=8)
+	ra=2890446789805576192
+	#rb=ra+u
+	print(f'\rfrom: {hex(ra-u)} to: {hex(ra+u)} range: {hex(u)}={u}',flush=True)
+	p_map(go, list(growing_range(ra, u)), num_cpus=8)

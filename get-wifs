@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+for f in *.txt;
+do
+	echo "$f"
+	grep -oE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" "$f" | sed 's/$/ 0/' > "$f.out"
+	mv "$f.out" "$f"
+done
+>&2 echo -ne "\x7"

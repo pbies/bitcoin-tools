@@ -76,5 +76,7 @@ print('target: '+right,flush=True)
 while True:
 	ra=random.randint(start,end-u)
 	rb=ra+u
-	print(f'\rfrom: {hex(ra)} to: {hex(rb)} range: {hex(u)}={u}',flush=True)
-	p_map(go, list(range(ra, rb)), num_cpus=40)
+	r=list(range(ra, rb))
+	l=len(r)
+	print(f'\rfrom: {hex(ra)} to: {hex(rb)} range: {hex(l)}={l}',flush=True)
+	p_map(go, r, num_cpus=8)
