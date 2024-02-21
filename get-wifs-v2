@@ -2,7 +2,7 @@
 for f in *.txt;
 do
 	echo "$f"
-	pv "$f" | grep -oE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" | sed 's/$/ 0/' > "$f.out"
+	pv -B 1M "$f" | grep -oE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" | sed 's/$/ 0/' > "$f.out"
 	sort -u "$f.out" > "$f"
 	rm "$f.out"
 done

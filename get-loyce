@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+wget http://addresses.loyce.club/blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz
+pv blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz | gunzip > blockchair_bitcoin_addresses_and_balance_LATEST.tsv
+>&2 echo -ne "\x7"

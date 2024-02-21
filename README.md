@@ -7,7 +7,7 @@
 
 		Commit messages are draft, not production.
 
-		(C) 2019-2023 Piotr Biesiada
+		(C) 2019-2024 Piotr Biesiada
 
 		Other copyrights are for their respective owners.
 
