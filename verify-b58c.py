@@ -18,4 +18,4 @@ for j in tqdm(i,total=cnt):
 		x=base58.b58decode_check(j)
 	except:
 		continue
-	o.write(base58.b58encode_check(x).decode('cp437')+"\n")
+	o.write(base58.b58encode_check(x).decode('ascii')+"\n")
