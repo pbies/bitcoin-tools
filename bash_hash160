@@ -1,0 +1,5 @@
+hash160() {
+    openssl dgst -sha256 -binary |
+    openssl dgst -rmd160 -binary |
+    xxd -p -c 80
+}
