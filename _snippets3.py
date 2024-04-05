@@ -141,15 +141,6 @@ def compressedToUncompressed(compressed_key):
 
 p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
 
-def decompress_pubkey(pk):
-	x = int.from_bytes(pk[1:33], byteorder='big')
-	y_sq = (pow(x, 3, p) + 7) % p
-	y = pow(y_sq, (p + 1) // 4, p)
-	if y % 2 != pk[0] % 2:
-		y = p - y
-	y = y.to_bytes(32, byteorder='big')
-	return b'\x04' + pk[1:33] + y
-
 def hex_public_to_public_addresses(hex_publics):
 	uncompressed = hex_publics[0]
 	public_key_hashC_uncompressed = "00" + sha_ripe_digest(uncompressed)
@@ -241,3 +232,7 @@ def growing_range(mid,x): # x = range +-
 	rng = [0] * (x*2-1)
 	rng[::2], rng[1::2] = range(mid, end), range(mid-1, start, -1)
 	return rng
+
+def int_to_hex(n, hexdigits):
+	h=hex(n)[2:]
+	return '0'*(hexdigits-len(h))+h
