@@ -26,6 +26,6 @@ def go(l):
 	o.write(l+' : '+cksum+'\n')
 	o.flush()
 
-process_map(go, i, max_workers=4)
+process_map(go, i, max_workers=4, chunksize=4000)
 
 o.close()
