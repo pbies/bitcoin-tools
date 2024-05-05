@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	a=$(./b2jshort.py "$f")
+	b=${a:12:64}
+	while [ -f "$b.dat" ]
+	do
+		b="${b}_"
+	done
+	mv "$f" "$b.dat"
+done
+>&2 echo -ne "\x7"
