@@ -7,7 +7,7 @@ from web3.auto import w3
 import base58
 import binascii
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/-ixFHz8NzHoGk2OOYc3EPLH9BxZpHfQ_"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 
