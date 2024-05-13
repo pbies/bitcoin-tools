@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-grep -oE "[0-9a-fA-F]{64}" <&0
+grep -oaE "[0-9a-fA-F]{64}" <&0

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+pv -B 1M blockchair_bitcoin_addresses_and_balance_LATEST.tsv | cut -f 1 | sort -u > addrs-with-bal.txt
+>&2 echo -ne "\x7"

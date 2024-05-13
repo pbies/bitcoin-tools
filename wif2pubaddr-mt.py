@@ -11,10 +11,12 @@ def worker(key):
 		priv=base58.b58decode_check(key[:-1])[1:]
 	except:
 		return
-	pub=privtopub(priv)
-	addr=pubtoaddr(pub)
+	addr=privtoaddr(priv)
 	outfile.write(addr+' '+key)
 	outfile.flush()
 
 with open("input.txt","r") as f:
-	process_map(worker, f.readlines(), max_workers=6, chunksize=3100)
+	process_map(worker, f.readlines(), max_workers=4, chunksize=10000)
+
+import sys
+print('\a',end='',file=sys.stderr)

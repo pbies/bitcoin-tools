@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+pv -B 1M ./*.txt | grep -oaE "[0-9a-fA-F]{64}" > output.txt

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 i=input.txt
 echo wifs:
-pv $i | grep -oE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" | sort -u > wifs.txt
+pv $i | grep -oaE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" | sort -u > wifs.txt
 echo seeds:
-pv $i | grep -oE "[0-9a-fA-F]{128}" | sort -u > seeds-hex.txt
+pv $i | grep -oaE "[0-9a-fA-F]{128}" | sort -u > seeds-hex.txt
 echo pvks:
-pv $i | grep -oE "[0-9a-fA-F]{64}" | sort -u > pvks-hex.txt
+pv $i | grep -oaE "[0-9a-fA-F]{64}" | sort -u > pvks-hex.txt
 >&2 echo -ne "\x7"
