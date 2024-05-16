@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for file in *.txt.*;
+do
+	echo "$file"
+	time ./bw2wif-addr-mt-final-cmdln.py "$file"
+	bell
+done
