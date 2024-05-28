@@ -2,6 +2,6 @@
 for file in *.txt.*;
 do
 	echo "$file"
-	time ./bw2wif-addr-mt-final-cmdln.py "$file"
+	time ./wifs2addrs-v4.py "$file"
 	bell
 done

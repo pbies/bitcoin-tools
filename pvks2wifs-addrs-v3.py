@@ -5,11 +5,7 @@
 
 from hdwallet import HDWallet
 from hdwallet.symbols import BTC
-from pprint import pprint
-from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
-import pprint
-import random
 
 hdwallet = HDWallet(symbol=BTC)
 
@@ -24,7 +20,7 @@ def go(k):
 	outfile.write(hdwallet.p2wpkh_address()+'\n')
 	outfile.write(hdwallet.p2wpkh_in_p2sh_address()+'\n')
 	outfile.write(hdwallet.p2wsh_address()+'\n')
-	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n')
+	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
 infile = open('hex.txt','r')

@@ -15,10 +15,10 @@ hdwallet = HDWallet(symbol=BTC)
 
 def go(k):
 	try:
-		hdwallet.from_private_key(private_key=k)
+		hdwallet.from_wif(k)
 	except:
 		return
-	outfile.write(hdwallet.wif()+'\n')
+	outfile.write(k+'\n')
 	outfile.write(hdwallet.p2pkh_address()+'\n')
 	outfile.write(hdwallet.p2sh_address()+'\n')
 	outfile.write(hdwallet.p2wpkh_address()+'\n')
@@ -27,8 +27,8 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n')
 	outfile.flush()
 
-infile = open('hex.txt','r')
-outfile = open('hex-output.txt','w')
+infile = open('wif.txt','r')
+outfile = open('wif-output.txt','w')
 
 lines = infile.readlines()
 lines = [x.strip() for x in lines]

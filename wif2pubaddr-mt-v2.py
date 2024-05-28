@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 
-# sudo apt install python3-pip
-# pip3 install hdwallet
-
+from bitcoin import *
+from tqdm.contrib.concurrent import process_map
+import base58
 from hdwallet import HDWallet
 from hdwallet.symbols import BTC
-from pprint import pprint
-from tqdm import tqdm
-from tqdm.contrib.concurrent import process_map
-import pprint
-import random
+
+outfile = open("wif-output.txt","w")
 
 hdwallet = HDWallet(symbol=BTC)
 
-def go(k):
+def worker(key):
 	try:
-		hdwallet.from_private_key(private_key=k)
+		hdwallet.from_wif(key)
 	except:
 		return
-	outfile.write(hdwallet.wif()+'\n')
+	outfile.write(key+'\n')
 	outfile.write(hdwallet.p2pkh_address()+'\n')
 	outfile.write(hdwallet.p2sh_address()+'\n')
 	outfile.write(hdwallet.p2wpkh_address()+'\n')
@@ -27,13 +24,8 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n')
 	outfile.flush()
 
-infile = open('hex.txt','r')
-outfile = open('hex-output.txt','w')
-
-lines = infile.readlines()
-lines = [x.strip() for x in lines]
-
-process_map(go, lines, max_workers=4, chunksize=10000)
+with open("wif.txt","r") as f:
+	process_map(worker, f.readlines(), max_workers=4, chunksize=10000)
 
 import sys
 print('\a',end='',file=sys.stderr)

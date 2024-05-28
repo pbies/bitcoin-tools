@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-perl -i -p -e 's/\n/ 0\n/' < input.txt > output.txt
+perl -p -e 's/\n/ 0\n/' < input.txt > output.txt
