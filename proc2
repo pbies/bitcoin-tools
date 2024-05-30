@@ -1,0 +1,5 @@
+# addrs-with-bal.txt
+
+sort -u input.txt.result >b.txt
+./common-in-2-files-v3-sorted addrs-with-bal.txt b.txt > input.txt
+./get-bal-v5.py

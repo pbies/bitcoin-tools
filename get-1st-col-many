@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for file in *.txt;
+do
+	echo "$file"
+	cut -f1 -d" " < "$file" > "$file.1st-col"
+	mv "$file.1st-col" "$file"
+done

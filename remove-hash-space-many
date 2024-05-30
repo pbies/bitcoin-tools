@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+for file in *.txt;
+do
+	echo "$file"
+	sed -i '/^# .*/d' "$file"
+done

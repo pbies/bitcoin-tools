@@ -1,0 +1,7 @@
+# hex.txt
+# addrs-with-bal.txt
+
+./pvks2wifs-addrs-v3.py
+sort -u hex-output.txt >b.txt
+./common-in-2-files-v3-sorted addrs-with-bal.txt b.txt > input.txt
+./get-bal-v5.py
