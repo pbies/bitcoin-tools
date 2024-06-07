@@ -4,3 +4,4 @@ do
 	echo "$file"
 	sed -i '/^# .*/d' "$file"
 done
+>&2 echo -ne "\x7"

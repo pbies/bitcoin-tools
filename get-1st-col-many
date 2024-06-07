@@ -5,3 +5,4 @@ do
 	cut -f1 -d" " < "$file" > "$file.1st-col"
 	mv "$file.1st-col" "$file"
 done
+>&2 echo -ne "\x7"

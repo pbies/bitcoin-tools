@@ -4,3 +4,4 @@ do
 	echo "$file"
 	sed -i 's/ 0//g' "$file"
 done
+>&2 echo -ne "\x7"
