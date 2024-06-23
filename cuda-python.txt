@@ -1,0 +1,102 @@
+2024-06-09
+To leverage GPU support in your Python scripts, you typically use libraries like CUDA, CuPy, or TensorFlow, which can offload computations to the GPU. Here's a brief overview of how to get started with each:
+
+### 1. CUDA with Numba
+Numba is a just-in-time (JIT) compiler that translates a subset of Python and NumPy code into fast machine code. It can use CUDA for GPU acceleration.
+
+#### Installation
+```bash
+pip install numba
+```
+
+#### Example
+```python
+from numba import cuda
+import numpy as np
+
+@cuda.jit
+def vector_add(a, b, c):
+    i = cuda.grid(1)
+    if i < a.size:
+        c[i] = a[i] + b[i]
+
+# Initialize data
+n = 100000
+a = np.ones(n, dtype=np.float32)
+b = np.ones(n, dtype=np.float32)
+c = np.zeros(n, dtype=np.float32)
+
+# Transfer data to GPU
+d_a = cuda.to_device(a)
+d_b = cuda.to_device(b)
+d_c = cuda.to_device(c)
+
+# Configure the blocks and grid
+threads_per_block = 256
+blocks_per_grid = (a.size + (threads_per_block - 1)) // threads_per_block
+
+# Launch the kernel
+vector_add[blocks_per_grid, threads_per_block](d_a, d_b, d_c)
+
+# Copy the result back to the host
+c = d_c.copy_to_host()
+
+print(c[:10])
+```
+
+### 2. CuPy
+CuPy is an open-source array library that uses NVIDIA CUDA for GPU-accelerated computing with a syntax similar to NumPy.
+
+#### Installation
+```bash
+pip install cupy-cuda11x  # Replace x with your CUDA version, e.g., cuda110, cuda111
+```
+
+#### Example
+```python
+import cupy as cp
+
+# Create data on the GPU
+a = cp.ones((1000, 1000))
+b = cp.ones((1000, 1000))
+
+# Perform computation on the GPU
+c = a + b
+
+# Transfer data back to the CPU if needed
+c_cpu = cp.asnumpy(c)
+
+print(c_cpu[:10])
+```
+
+### 3. TensorFlow
+TensorFlow is a popular deep learning library that can leverage GPUs for accelerated computation.
+
+#### Installation
+```bash
+pip install tensorflow
+```
+
+#### Example
+```python
+import tensorflow as tf
+
+# Ensure TensorFlow uses the GPU
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
+# Create some tensors
+a = tf.constant([1.0, 2.0, 3.0])
+b = tf.constant([4.0, 5.0, 6.0])
+
+# Perform computation
+c = tf.add(a, b)
+
+print(c.numpy())
+```
+
+### Choosing the Right Library
+- **Numba (with CUDA)**: Great for custom, fine-grained GPU kernels and existing NumPy workflows.
+- **CuPy**: Ideal for users familiar with NumPy who want GPU acceleration with minimal changes.
+- **TensorFlow**: Best for deep learning and other machine learning tasks that can benefit from a high-level framework.
+
+Make sure you have the necessary NVIDIA drivers and CUDA toolkit installed for GPU support. For specific setup instructions, refer to the documentation of the respective library.

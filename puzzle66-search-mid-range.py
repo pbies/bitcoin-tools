@@ -18,3 +18,6 @@ for i in tqdm([x for i in range(mid) for x in {middle-i:0,middle+i:0}]):
 	if a=='13zb1hQbWVsc2S7ZTZnP2G4undNNpdh5so':
 		print('private key: 0x'+b+'\a')
 		exit()
+
+import sys
+print('\a',end='',file=sys.stderr)

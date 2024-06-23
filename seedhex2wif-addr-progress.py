@@ -30,3 +30,6 @@ with open("output.txt","w") as o:
 		o.write(hdwallet.p2wpkh_in_p2sh_address()+'\n')
 		o.write(hdwallet.p2wsh_address()+'\n')
 		o.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
+
+import sys
+print('\a',end='',file=sys.stderr)

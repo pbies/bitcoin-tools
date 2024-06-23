@@ -52,3 +52,6 @@ lines = infile.readlines()
 lines = [x.strip() for x in lines]
 
 process_map(go, lines, max_workers=10, chunksize=10000)
+
+import sys
+print('\a',end='',file=sys.stderr)

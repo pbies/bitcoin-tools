@@ -13,3 +13,6 @@ for l in tqdm(ref,total=cnt):
 	o.write(l[0:64]+'\n')
 	o.write(l[64:]+'\n')
 	o.flush()
+
+import sys
+print('\a',end='',file=sys.stderr)

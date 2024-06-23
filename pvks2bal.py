@@ -54,3 +54,6 @@ lines = [x.strip() for x in lines]
 
 for line in tqdm(lines,total=len(lines)):
 	go(line)
+
+import sys
+print('\a',end='',file=sys.stderr)

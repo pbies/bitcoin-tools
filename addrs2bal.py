@@ -1,27 +1,44 @@
 #!/usr/bin/env python3
 
-from web3 import Web3
-from tqdm.contrib.concurrent import process_map
+# sudo apt install python3-pip
+# pip3 install hdwallet
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
-w3 = Web3(Web3.HTTPProvider(alchemy_url))
+#from hdwallet import HDWallet
+#from hdwallet.symbols import BTC
+#from tqdm.contrib.concurrent import process_map
+from urllib.request import urlopen
+from tqdm import tqdm
+import json
+#import sys
+#import time
 
-# print(w3.is_connected())
+#hdwallet = HDWallet(symbol=BTC)
 
-outfile = open("output2.txt","a")
+def check_bal(address):
+	try:
+		htmlfile = urlopen("https://mempool.space/api/address/%s" % address, timeout = 20)
+	except:
+		return None
+	else: 
+		res = json.loads(htmlfile.read())
+		funded=res['chain_stats']['funded_txo_sum']
+		spent=res['chain_stats']['spent_txo_sum']
+		bal=funded-spent
+		return bal
 
-cnt=sum(1 for line in open("output.txt", 'r'))
+def go(k):
+	b=str(check_bal(k))
+	outfile.write(k+':'+b+'\n')
+	outfile.flush()
 
-def worker(key):
-	bal=w3.eth.get_balance(key,"latest")
-	b='{0:.18f}'.format(bal/1e18)
-	if bal>0:
-		outfile.write(key+" = "+str(b)+" ETH\n")
-		outfile.flush()
+infile = open('input.txt','r')
+outfile = open('output.txt','w')
 
-f=open("output.txt","r")
-lines=f.readlines()
+lines = infile.readlines()
 lines = [x.strip() for x in lines]
-lines = [w3.to_checksum_address(x) for x in lines]
 
-process_map(worker, lines, max_workers=4, chunksize=1000)
+for line in tqdm(lines,total=len(lines)):
+	go(line)
+
+import sys
+print('\a',end='',file=sys.stderr)
