@@ -29,11 +29,10 @@ def check_bal(address):
 
 def go(k):
 	try:
-		hdwallet.from_private_key(private_key=k)
+		hdwallet.from_mnemonic(mnemonic=k)
 	except:
 		return
 	outfile.write(hdwallet.wif()+'\n')
-	#print('\n'+hdwallet.wif())
 	b1=str(check_bal(hdwallet.p2pkh_address()))
 	outfile.write(hdwallet.p2pkh_address()+' : '+b1+'\n')
 	b2=str(check_bal(hdwallet.p2sh_address()))
@@ -48,8 +47,8 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+' : '+b6+'\n\n')
 	outfile.flush()
 
-infile = open('pvks.txt','r')
-outfile = open('pvks-out.txt','w')
+infile = open('mnemos.txt','r')
+outfile = open('mnemos-out.txt','w')
 
 lines = infile.readlines()
 lines = [x.strip() for x in lines]

@@ -1,0 +1,1 @@
+awk -F'\t' 'NR>1 && $2>=100000000{print $1}' blockchair_bitcoin_addresses_and_balance_LATEST.tsv > blockchair_bitcoin_addresses_selected.txt

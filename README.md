@@ -7,10 +7,10 @@
 
 		Commit messages are draft, not production.
 
-		(C) 2019-2024 Piotr Biesiada
+		(C) 2019-2024 me
 
 		Other copyrights are for their respective owners.
 
-		ptrbsd (at) gmail
+		pikob1 (at) gmail
 
 		Bitcoin: bc1q3yctzptfa49cczu2x77qlu54pewss2qrv0fd3h

@@ -47,6 +47,9 @@ def bytes_to_hex2(bytestr):
 def count_lines(file): # in: filename out: 151
 	return sum(1 for line in open(file, 'r'))
 
+def count_lines2(file):
+	return len(open(file,'r').readlines())
+
 def hex_to_bytes(hex): # in: '8000... out: b'\x80...
 	return bytes.fromhex(hex)
 
