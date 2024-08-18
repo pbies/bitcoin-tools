@@ -5,4 +5,4 @@ do
 	pv "$i" | dos2unix -f > tmp.txt
 	mv tmp.txt "$i"
 done
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"

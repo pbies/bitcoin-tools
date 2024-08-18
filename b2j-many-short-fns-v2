@@ -3,4 +3,4 @@ for f in *.dat; do
 	a=$(./b2jshort.py "$f")
 	echo $a : $f >> hashes.txt
 done
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"

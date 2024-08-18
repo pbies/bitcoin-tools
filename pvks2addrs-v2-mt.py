@@ -14,9 +14,22 @@ import time
 
 hdwallet = HDWallet(symbol=BTC)
 
+def check_bal(address):
+	time.sleep(1)
+	try:
+		htmlfile = urlopen("https://mempool.space/api/address/%s" % address, timeout = 2)
+	except:
+		return None
+	else: 
+		res = json.loads(htmlfile.read())
+		funded=res['chain_stats']['funded_txo_sum']
+		spent=res['chain_stats']['spent_txo_sum']
+		bal=funded-spent
+		return bal
+
 def go(k):
 	try:
-		hdwallet.from_mnemonic(mnemonic=k)
+		hdwallet.from_private_key(private_key=k)
 	except:
 		return
 	outfile.write(hdwallet.wif()+'\n')
@@ -33,8 +46,7 @@ outfile = open('output.txt','w')
 
 lines = infile.read().splitlines()
 
-for line in tqdm(lines):
-	go(line)
+process_map(go, lines, max_workers=12, chunksize=1000)
 
 import sys
 print('\a',end='',file=sys.stderr)

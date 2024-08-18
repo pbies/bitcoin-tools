@@ -8,4 +8,4 @@ for f in *.dat; do
 	done
 	mv "$f" "$b.dat"
 done
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"

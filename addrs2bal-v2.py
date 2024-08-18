@@ -3,28 +3,21 @@
 # sudo apt install python3-pip
 # pip3 install hdwallet
 
-#from hdwallet import HDWallet
-#from hdwallet.symbols import BTC
-#from tqdm.contrib.concurrent import process_map
-from urllib.request import urlopen
 from tqdm import tqdm
+from urllib.request import urlopen
 import json
-#import sys
-#import time
-
-#hdwallet = HDWallet(symbol=BTC)
+import requests
+import time
 
 def check_bal(address):
 	try:
-		htmlfile = urlopen("https://mempool.space/api/address/%s" % address, timeout = 5)
+		time.sleep(2)
+		r=requests.get('https://blockchain.info/q/addressbalance/'+address)
+		if not r.status_code==200:
+			return
+		return str(int(r.text)/100000000)+' BTC'
 	except:
 		return None
-	else: 
-		res = json.loads(htmlfile.read())
-		funded=res['chain_stats']['funded_txo_sum']
-		spent=res['chain_stats']['spent_txo_sum']
-		bal=funded-spent
-		return bal
 
 def go(k):
 	b=str(check_bal(k))

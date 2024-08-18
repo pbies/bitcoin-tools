@@ -6,20 +6,17 @@
 from hdwallet import HDWallet
 from hdwallet.symbols import BTC
 from tqdm.contrib.concurrent import process_map
-from urllib.request import urlopen
-from tqdm import tqdm
-import json
+import base58
 import sys
-import time
 
 hdwallet = HDWallet(symbol=BTC)
 
 def go(k):
 	try:
-		hdwallet.from_mnemonic(mnemonic=k)
+		hdwallet.from_wif(wif=k)
 	except:
 		return
-	outfile.write(hdwallet.wif()+'\n')
+	outfile.write(k+'\n')
 	outfile.write(hdwallet.p2pkh_address()+'\n')
 	outfile.write(hdwallet.p2sh_address()+'\n')
 	outfile.write(hdwallet.p2wpkh_address()+'\n')
@@ -28,13 +25,12 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
-infile = open('input.txt','r')
-outfile = open('output.txt','w')
-
+print('Reading...')
+infile = open(sys.argv[1],'r')
 lines = infile.read().splitlines()
 
-for line in tqdm(lines):
-	go(line)
+print('Writing...')
+outfile = open(sys.argv[1]+'.result','w')
+process_map(go, lines, max_workers=12, chunksize=1000)
 
-import sys
-print('\a',end='',file=sys.stderr)
+print('All OK\a')

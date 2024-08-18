@@ -18,7 +18,19 @@ def go(k):
 	try:
 		hdwallet.from_mnemonic(mnemonic=k)
 	except:
-		return
+		try:
+			hdwallet.from_private_key(private_key=k)
+		except:
+			try:
+				hdwallet.from_seed(seed=k)
+			except:
+				try:
+					hdwallet.from_wif(wif=k)
+				except:
+					try:
+						hdwallet.from_xprivate_key(xprivate_key=k)
+					except:
+						return
 	outfile.write(hdwallet.wif()+'\n')
 	outfile.write(hdwallet.p2pkh_address()+'\n')
 	outfile.write(hdwallet.p2sh_address()+'\n')
@@ -31,9 +43,10 @@ def go(k):
 infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
-lines = infile.read().splitlines()
+lines = infile.readlines()
+lines = [x.strip() for x in lines]
 
-for line in tqdm(lines):
+for line in tqdm(lines,total=len(lines)):
 	go(line)
 
 import sys

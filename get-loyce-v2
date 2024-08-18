@@ -2,4 +2,4 @@
 # apt install aria2
 aria2c -x4 http://addresses.loyce.club/blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz
 pv blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz | gunzip > blockchair_bitcoin_addresses_and_balance_LATEST.tsv
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"
