@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Check if a file is provided as an argument
+if [ "$#" -ne 2 ]; then
+	echo "Usage: $0 filename parts"
+	exit 1
+fi
+
+# File to be split
+file=$1
+l=$2
+
+echo "Counting lines..."
+
+# Get the total number of lines
+total_lines=$(wc -l < "$file")
+if [ "$total_lines" -eq 0 ]; then
+	echo "The file is empty or doesn't exist."
+	exit 1
+fi
+
+# Calculate the approximate number of lines for each part
+lines_per_part=$(( (total_lines + l - 1) / l ))
+
+echo "Splitting file..."
+
+# Split the file into 4 parts with approximately equal lines
+split -l "$lines_per_part" --numeric-suffixes=1 "$file" "$file.part"
+
+echo "File has been split into $l parts:"
+ls -1 $file.part*

@@ -16,21 +16,9 @@ hdwallet = HDWallet(symbol=BTC)
 
 def go(k):
 	try:
-		hdwallet.from_mnemonic(mnemonic=k)
+		hdwallet.from_private_key(private_key=k)
 	except:
-		try:
-			hdwallet.from_private_key(private_key=k)
-		except:
-			try:
-				hdwallet.from_seed(seed=k)
-			except:
-				try:
-					hdwallet.from_wif(wif=k)
-				except:
-					try:
-						hdwallet.from_xprivate_key(xprivate_key=k)
-					except:
-						return
+		return
 	outfile.write(hdwallet.wif()+'\n')
 	outfile.write(hdwallet.p2pkh_address()+'\n')
 	outfile.write(hdwallet.p2sh_address()+'\n')
@@ -40,13 +28,22 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
-infile = open('input.txt','r')
-outfile = open('output.txt','w')
+infile = open('pvks.txt','r')
+outfile = open('pvks-output.txt','w')
+print('Reading 1...', flush=True)
+lines = infile.read().splitlines()
 
-lines = infile.readlines()
-lines = [x.strip() for x in lines]
+g=[]
 
-for line in tqdm(lines,total=len(lines)):
-	go(line)
+print('Reading 2...', flush=True)
+for i in tqdm(lines):
+	for j in range(-5,6):
+		t=hex(int(i,16)+j)[2:]
+		t='0'*(64-len(t))+t
+		g.append(t)
 
+print('Writing...', flush=True)
+process_map(go, g, max_workers=12, chunksize=1000)
+
+import sys
 print('\a',end='',file=sys.stderr)

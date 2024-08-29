@@ -24,3 +24,5 @@ for i in range(0,div):
 	out.flush()
 	out.close()
 	print('Part written: '+str(i+1))
+
+print('\a',end='',file=sys.stderr)

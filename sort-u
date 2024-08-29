@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-for file in *;
-do
-	echo "$file"
-	sort -u "$file" | pv > "$file.sorted"
-	mv "$file.sorted" "$file"
-done
->&2 echo -ne "\x7"
+pv -cN input "$1" | sort -u | pv -cN output > "$1.sorted~"
+mv "$1.sorted~" "$1"
+>&2 echo -ne "\a"

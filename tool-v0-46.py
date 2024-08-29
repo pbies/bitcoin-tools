@@ -403,7 +403,7 @@ while True:
 			b=int_to_hex(a)[2:]
 			c='0'*(64-len(b))+b
 			hdwallet = HDWallet(symbol=BTC)
-			hdwallet.from_private_key (private_key=c)
+			hdwallet.from_private_key(private_key=c)
 			d=hdwallet.dumps()
 			pp = pprint.PrettyPrinter(indent=4)
 			print('\n'+pp.pformat(d)+'\n')
