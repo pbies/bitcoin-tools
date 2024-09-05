@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 # pip3 install git+https://github.com/mcdallas/cryptotools.git@master#egg=cryptotools
-# pip3 install p_tqdm
-# pip3 install requests
+# pip3 install p_tqdm requests
 
 from cryptotools.BTC import PrivateKey, send
 from p_tqdm import p_map
+from tqdm.contrib.concurrent import process_map
 import hashlib
 import random
 import sys
@@ -79,4 +79,4 @@ while True:
 	r=list(range(ra, rb))
 	l=len(r)
 	print(f'\rfrom: {hex(ra)} to: {hex(rb)} range: {hex(l)}={l}',flush=True)
-	p_map(go, r, num_cpus=8)
+	process_map(go, r, max_workers=12, chunksize=1000)

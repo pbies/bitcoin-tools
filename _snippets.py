@@ -134,8 +134,8 @@ def str_to_hex(text): # in: 'ABC... out: 414243
 	#return ''.join(hex(chr(int(x,8))) for x in text)
 	return binascii.hexlify(text.encode()).decode()
 
-def wif_to_pvk(s): #in: '5HpH... [~51] out: 8000... [66]
-	return base58.b58decode_check(s).hex()
+def wif_to_pvk(s): #in: '5HpH... [~51] out: 00... [64]
+	return base58.b58decode_check(s)[0:].hex()[2:]
 
 def lines(f):
 	return sum(1 for line in open(f))
