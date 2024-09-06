@@ -36,4 +36,4 @@ echo [11/12] Convert hex to bloom filter
 ~/brainflayer/hex2blf "hash160.txt" bloom.blf
 
 echo [12/12] Finished!
->&2 echo -ne "\a"
+>&2 echo -ne "\x7"
