@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+grep -orhE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" . > ./output.txt

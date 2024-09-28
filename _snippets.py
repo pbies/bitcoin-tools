@@ -140,6 +140,12 @@ def wif_to_pvk(s): #in: '5HpH... [~51] out: 00... [64]
 def lines(f):
 	return sum(1 for line in open(f))
 
+def substring_after(s, delim):
+	return s.partition(delim)[2]
+
+def substring_before(s, delim):
+	return s.partition(delim)[0]
+
 print(b58c_to_bytes('1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY'))
 print(bytes_to_b58c(b'\x00\xc8%\xa1\xec\xf2\xa6\x83\x0cD\x01b\x0c:\x16\xf1\x99PW\xc2\xab'))
 print(bytes_to_str(b'abc123'))
