@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo -ne "\x7"
+>&2 echo -ne "\a"

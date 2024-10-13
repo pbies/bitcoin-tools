@@ -6,4 +6,4 @@ do
 	sort -u "$f.out" > "$f"
 	rm "$f.out"
 done
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"

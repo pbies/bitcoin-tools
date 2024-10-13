@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 pv "$1" | grep -oE "\"(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}\"" | sort -u | sed 's/\"//g' > "$2"
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"

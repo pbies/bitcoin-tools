@@ -6,4 +6,4 @@ do
 	time grep -a -Ff "in.txt.$i" "blockchair_ethereum_addresses_latest.tsv" >> "result.txt"
 done
 
->&2 echo -ne "\x7"
+>&2 echo -ne "\a"
