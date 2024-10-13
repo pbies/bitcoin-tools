@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+for f in ./*.txt
+do
+	pv "$f" | grep -Eo "[0-9a-f]{64}"
+done >> output.txt
