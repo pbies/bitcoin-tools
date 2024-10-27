@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import bsddb3.db as bdb
-import os
 import sys
-from pathlib import Path
 
 def extract_wallet_info(wallet_path):
 	wallet = bdb.DB()
@@ -23,19 +21,13 @@ def extract_wallet_info(wallet_path):
 
 	return wallet_info
 
-files = Path('.').glob('*.dat')
+wallet_path = sys.argv[1]
+wallet_info = extract_wallet_info(wallet_path)
 
-for f in files:
-	wallet_path = str(f)
-	o=open(wallet_path+'.out','w')
-	try:
-		wallet_info = extract_wallet_info(wallet_path)
-	except:
-		print('Error occured!')
-		continue
+for key, value in wallet_info:
+	print(f'Key: {key.hex()}')
+	print(f'Value: {value.hex()}')
+	print('---')
 
-	for key, value in wallet_info:
-		o.write(f'{key.hex()}:{value.hex()}\n')
-		o.flush()
-
-print('\a', end='', file=sys.stderr)
+import sys
+print('\a',end='',file=sys.stderr)

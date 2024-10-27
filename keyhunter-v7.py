@@ -28,8 +28,10 @@ with open(sys.argv[1], "rb") as f:
 				break
 			key_offset = pos + magiclen
 			key_data = b"\x80" + data[key_offset:key_offset + 32]
-			print(b58c(key_data).decode('utf-8')+' 0')
+			print(b58c(key_data).decode('utf-8'))
 			pos += 1
 
 		if len(data) == readlength:
 			f.seek(f.tell() - (32 + magiclen))
+
+print('\a', end='', file=sys.stderr)

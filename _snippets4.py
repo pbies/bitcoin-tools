@@ -36,3 +36,15 @@ def sha256(data):
 	digest = hashlib.new("sha256")
 	digest.update(data)
 	return digest.digest()
+
+def bytes_to_int(k):
+	return int.from_bytes(k,'big')
+
+def pvk_to_wif(key_bytes):
+	return base58.b58encode_check(b'\x80' + key_bytes)
+
+def pvk_to_wif2(key_hex):
+	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
+
+def int_to_bytes4(number, length):
+	return number.to_bytes(length,'big')

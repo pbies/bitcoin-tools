@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+for file in *.txt;
+do
+	echo "$file"
+	sort -u "$file" | pv > "$file.sorted"
+	mv "$file.sorted" "$file"
+done
+>&2 echo -ne "\a"

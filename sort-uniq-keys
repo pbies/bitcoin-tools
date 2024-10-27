@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+find . -name '*.keys' -print0 | while IFS= read -r -d '' file
+do
+	echo "$file"
+	sort -u "$file" > "tmp"
+	mv "tmp" "$file"
+done
