@@ -336,7 +336,7 @@ while True:
 			i.close()
 		case 'j':
 			pvk=os.urandom(32)
-			pvkhex=pvk.hex()[2:]
+			pvkhex=pvk.hex()
 			pvkhex='0'*(64-len(pvkhex))+pvkhex
 			print('\nPrivate key: '+pvkhex)
 			wif1=pvk_to_wif2(pvkhex).decode('ascii')
