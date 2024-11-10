@@ -155,7 +155,7 @@ def str_to_hex(text):
 	return binascii.hexlify(text.encode()).decode()
 
 def wif_to_pvk(s):
-	return base58.b58decode_check(s)[0:].hex()[2:]
+	return base58.b58decode_check(s)[0:].hex()[2:-2]
 
 def sha256binary(a,b):
 	i=open(a,'rb')
@@ -191,7 +191,7 @@ def hex_to_string(h):
 
 clear()
 while True:
-	print('Tool for cc v0.49 (C) 2023-2024 Aftermath @Tzeeck')
+	print('Tool for cc v0.51 (C) 2023-2024 Aftermath @Tzeeck')
 	print('Mostly all options are for BTC if not mentioned differently')
 	print('1. seed phrase = mnemonic to HDWallet')
 	print('2. mnemonic to WIF - BCH Bitcoin Cash')
@@ -291,9 +291,14 @@ while True:
 			pubkey_to_addrs(a)
 		case '8':
 			a=input('Enter private key in hex: ')
-			print('\nWIF: '+pvk_to_wif2(a).decode('ascii')+'\n')
+			a='0'*(64-len(a))+a
+			print('\nWIF uncomp: '+pvk_to_wif2(a).decode('ascii'))
+			hdwallet=HDWallet(symbol=BTC)
+			hdwallet.from_private_key(private_key=a)
+			print(f'WIF comp: {hdwallet.wif()}\n')
 		case '9':
 			a=input('Enter private key in hex: ')
+			a='0'*(64-len(a))+a
 			print('\nPublic key: '+pvk_to_pubkey(hex_to_bytes(a))+'\n')
 		case 'r':
 			a=input('Enter string: ')
@@ -343,8 +348,8 @@ while True:
 			hdwallet = HDWallet(symbol=BTC)
 			hdwallet.from_private_key(private_key=pvkhex)
 			wif2=hdwallet.wif()
-			print('WIF1       : '+wif1)
-			print('WIF2       : '+wif2)
+			print('WIF uncomp : '+wif1)
+			print('WIF comp   : '+wif2)
 			print('Public key : '+pvk_to_pubkey(pvk))
 			pubkey_to_addrs(pvk_to_pubkey(pvk))
 		case 'A':
@@ -397,13 +402,13 @@ while True:
 		case '6':
 			i=input('Enter integer: ')
 			h=hex(int(i))[2:]
-			while len(h)<64:
-				h='0'+h
+			h='0'*(64-len(h))+h
 			if len(h)<66:
 				h='80'+h
 			p=bytes.fromhex(h)
 			b=base58.b58encode_check(p)
-			print((b'\nWIF: '+b+b'\n').decode('utf-8'))
+			print('\nWIF uncomp: '+pvk_to_wif2(h).decode('ascii'))
+			print((b'WIF comp: '+b+b'\n').decode('utf-8'))
 		case '7':
 			a=input('Enter integer: ')
 			b=int_to_hex(a)[2:]
@@ -412,7 +417,8 @@ while True:
 			hdwallet.from_private_key(private_key=c)
 			d=hdwallet.dumps()
 			pp = pprint.PrettyPrinter(indent=4)
-			print('\n'+pp.pformat(d)+'\n')
+			print('\n'+pp.pformat(d))
+			print('\nWIF uncomp: '+pvk_to_wif2(c).decode('ascii')+'\n')
 		case '5':
 			j=input('Enter seed hex: ')
 			hdwallet = HDWallet(symbol=BTC)
@@ -429,7 +435,7 @@ while True:
 			d=hdwallet.dumps()
 			print()
 			pprint.pprint(d)
-			print()
+			print('\nWIF uncomp: '+pvk_to_wif2(j).decode('ascii')+'\n')
 		case 'k':
 			hdwallet = HDWallet(symbol=BTC)
 			r=hex(random.randint(0,2**512))[2:]

@@ -155,7 +155,7 @@ def str_to_hex(text):
 	return binascii.hexlify(text.encode()).decode()
 
 def wif_to_pvk(s):
-	return base58.b58decode_check(s)[0:].hex()[2:]
+	return base58.b58decode_check(s)[0:].hex()[2:-2]
 
 def sha256binary(a,b):
 	i=open(a,'rb')
@@ -191,7 +191,7 @@ def hex_to_string(h):
 
 clear()
 while True:
-	print('Tool for cc v0.49 (C) 2023-2024 Aftermath @Tzeeck')
+	print('Tool for cc v0.50 (C) 2023-2024 Aftermath @Tzeeck')
 	print('Mostly all options are for BTC if not mentioned differently')
 	print('1. seed phrase = mnemonic to HDWallet')
 	print('2. mnemonic to WIF - BCH Bitcoin Cash')
@@ -291,7 +291,10 @@ while True:
 			pubkey_to_addrs(a)
 		case '8':
 			a=input('Enter private key in hex: ')
-			print('\nWIF: '+pvk_to_wif2(a).decode('ascii')+'\n')
+			print('\nWIF uncomp: '+pvk_to_wif2(a).decode('ascii'))
+			hdwallet=HDWallet(symbol=BTC)
+			hdwallet.from_private_key(private_key=a)
+			print(f'WIF comp: {hdwallet.wif()}\n')
 		case '9':
 			a=input('Enter private key in hex: ')
 			print('\nPublic key: '+pvk_to_pubkey(hex_to_bytes(a))+'\n')
