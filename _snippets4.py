@@ -48,3 +48,12 @@ def pvk_to_wif2(key_hex):
 
 def int_to_bytes4(number, length):
 	return number.to_bytes(length,'big')
+
+def find_all_matches(pattern, string):
+	pat = re.compile(pattern)
+	pos = 0
+	out = []
+	while (match := pat.search(string, pos)) is not None:
+		pos = match.start() + 1
+		out.append(match[0])
+	return out
