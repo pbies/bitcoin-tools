@@ -23,6 +23,6 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
-process_map(go, infile, max_workers=20, chunksize=10000)
+process_map(go, infile, max_workers=16, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

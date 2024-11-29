@@ -58,6 +58,6 @@ lines = open('input.txt','r').read().splitlines()
 outfile = open('output.txt','w')
 
 print('Writing...')
-process_map(go, lines, max_workers=24, chunksize=10000)
+process_map(go, lines, max_workers=16, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

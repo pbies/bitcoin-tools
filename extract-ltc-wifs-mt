@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+pv -cN input input.txt | grep -e "^[6|7|T]" | sort -u --parallel 16 | pv -cN output > output.txt
+>&2 echo -ne "\a"

@@ -15,6 +15,9 @@ def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
 
 def go(k):
+	i=int(k, 16)
+	i=i+65536
+	k=hex(i)[2:]
 	try:
 		hdwallet.from_private_key(private_key=k)
 	except:
@@ -29,7 +32,7 @@ infile = open('input.txt','r')
 lines = infile.read().splitlines()
 
 print('Writing...', flush=True)
-outfile = open('output.txt','w')
+outfile = open('output2.txt','w')
 process_map(go, lines, max_workers=16, chunksize=1000)
 
 print('\a',end='',file=sys.stderr)

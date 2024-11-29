@@ -57,6 +57,6 @@ outfile = open('output.txt','w')
 
 lines = infile.read().splitlines()
 
-process_map(go, lines, max_workers=24, chunksize=10000)
+process_map(go, lines, max_workers=16, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

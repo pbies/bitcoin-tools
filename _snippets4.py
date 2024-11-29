@@ -57,3 +57,38 @@ def find_all_matches(pattern, string):
 		pos = match.start() + 1
 		out.append(match[0])
 	return out
+
+# pubkey compress to uncompress
+
+import binascii
+
+p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
+
+def decompress_pubkey(pk):
+    x = int.from_bytes(pk[1:33], byteorder='big')
+    y_sq = (pow(x, 3, p) + 7) % p
+    y = pow(y_sq, (p + 1) // 4, p)
+    if y % 2 != pk[0] % 2:
+        y = p - y
+    y = y.to_bytes(32, byteorder='big')
+    return b'\x04' + pk[1:33] + y
+
+with open('add.txt') as f:
+  for line in f:
+    line=line.strip()
+    print(binascii.hexlify(decompress_pubkey(binascii.unhexlify(line))).decode(),file=open("uncomp.txt", "a"))
+
+# pubkey uncompress to compress
+
+def cpub(x,y):
+ prefix = '02' if y % 2 == 0 else '03'
+ c = prefix+ hex(x)[2:].zfill(64)
+ return c
+with open('add.txt') as f:
+  for line in f:
+    line=line.strip()
+    x = int(line[2:66], 16)
+    y = int(line[66:], 16)
+    pub04=cpub(x,y)
+
+    print(pub04,file=open("comp.txt", "a"))

@@ -43,7 +43,7 @@ def go(x):
 	o.flush()
 
 print('Writing...')
-process_map(go, i, max_workers=20, chunksize=10000)
+process_map(go, i, max_workers=16, chunksize=1000)
 
 o.close()
 

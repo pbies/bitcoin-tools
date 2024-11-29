@@ -4,15 +4,15 @@
 # pip3 install hdwallet
 
 from hdwallet import HDWallet
-from hdwallet.symbols import BTC
+from hdwallet.symbols import LTC
 from tqdm.contrib.concurrent import process_map
 from tqdm import tqdm
 import sys, base58
 
-hdwallet = HDWallet(symbol=BTC)
+hdwallet = HDWallet(symbol=LTC)
 
 def pvk_to_wif2(key_hex):
-	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex))
+	return base58.b58encode_check(b'\xb0' + bytes.fromhex(key_hex))
 
 def go(k):
 	try:
@@ -29,7 +29,7 @@ infile = open('input.txt','r')
 lines = infile.read().splitlines()
 
 print('Writing...', flush=True)
-outfile = open('output.txt','w')
+outfile = open('ltc.txt','w')
 process_map(go, lines, max_workers=16, chunksize=1000)
 
 print('\a',end='',file=sys.stderr)
