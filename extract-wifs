@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-grep -oE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" input.txt > output.txt
+time grep -aoE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" input.txt > output.txt
+>&2 echo -ne "\a"

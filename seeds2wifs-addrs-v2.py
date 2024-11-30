@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 
-# sudo apt install python3-pip
-# pip3 install hdwallet
-
 from hdwallet import HDWallet
 from hdwallet.symbols import BTC
-from pprint import pprint
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
-import base58
-import pprint
-import random
+import base58, sys
+
+hdwallet = HDWallet(symbol=BTC)
 
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
-hdwallet = HDWallet(symbol=BTC)
-
 def go(k):
 	try:
-		hdwallet.from_mnemonic(k)
+		hdwallet.from_seed(k)
 	except:
 		return
 	pvk=hdwallet.private_key()
@@ -33,9 +27,9 @@ outfile = open('output.txt','w')
 
 print('Reading...')
 lines = infile.read().splitlines()
+lines = [x.strip() for x in lines]
 
 print('Writing...')
-process_map(go, lines, max_workers=12, chunksize=1000)
+process_map(go, lines, max_workers=4, chunksize=1000)
 
-import sys
 print('\a', end='', file=sys.stderr)

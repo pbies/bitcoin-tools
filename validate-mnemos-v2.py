@@ -9,16 +9,19 @@ import time
 
 hdwallet = HDWallet(symbol=BTC)
 
+infile = open('mnemos.txt','r')
+good = open('mnemos-good.txt','w')
+bad = open('mnemos-bad.txt','w')
+
 def go(k):
 	try:
 		hdwallet.from_mnemonic(mnemonic=k)
 	except:
+		bad.write(k+'\n')
+		bad.flush()
 		return
-	outfile.write(hdwallet.mnemonic()+'\n')
-	outfile.flush()
-
-infile = open('mnemos.txt','r')
-outfile = open('mnemos-out.txt','a')
+	good.write(hdwallet.mnemonic()+'\n')
+	good.flush()
 
 print('Reading...')
 lines = infile.read().splitlines()
@@ -27,4 +30,4 @@ lines = [x.strip() for x in lines]
 print('Writing...')
 process_map(go, lines, max_workers=6, chunksize=1000, ascii=False)
 
-print('\a',end='',file=sys.stderr)
+print('\a', end='', file=sys.stderr)

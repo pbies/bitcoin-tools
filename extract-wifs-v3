@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+time pv /mnt/d/Bitcoin/blocks/* | grep -aoE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" > ./wifs.txt
+>&2 echo -ne "\a"
