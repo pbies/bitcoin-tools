@@ -32,4 +32,4 @@ print('Writing...', flush=True)
 outfile = open('output.txt','w')
 process_map(go, lines, max_workers=16, chunksize=1000)
 
-print('\a',end='',file=sys.stderr)
+print('\a', end='', file=sys.stderr)

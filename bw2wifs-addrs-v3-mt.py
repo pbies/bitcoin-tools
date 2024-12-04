@@ -8,6 +8,7 @@ import sys
 
 hdwallet = HDWallet(symbol=BTC)
 
+print('Reading...', flush=True)
 infile = open('input.txt','rb').read().splitlines()
 outfile = open('output.txt','w')
 
@@ -28,6 +29,7 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
+print('Writing...', flush=True)
 process_map(go, infile, max_workers=16, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

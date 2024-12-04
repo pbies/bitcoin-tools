@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+time pv /mnt/d/Bitcoin/blocks/blk* | strings -an 12 > strings.txt
+>&2 echo -ne "\a"
