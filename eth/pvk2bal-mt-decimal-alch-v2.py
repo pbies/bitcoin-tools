@@ -17,7 +17,7 @@ import sys
 
 workers=4
 
-url = 'https://eth-mainnet.g.alchemy.com/v2/vyNyoamdEv_67zitim9G09wuPVUSKkLG'
+url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
 w3 = Web3(Web3.HTTPProvider(url))
 
 headers = {'content-type': 'application/json'}

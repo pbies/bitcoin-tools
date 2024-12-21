@@ -16,10 +16,13 @@ def pvk_to_wif2(key_hex):
 
 def go(k):
 	try:
-		hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=k)
+		b=base58.b58decode_check(k)
+		h=b.hex()
+		h='0'*(64-len(h))+h
+		hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=h)
 	except:
 		return
-	wif=pvk_to_wif2(k)
+	wif=pvk_to_wif2(h)
 	a=wif+'\n'+hdwallet.wif()+'\n'+hdwallet.address("P2PKH")+'\n'+hdwallet.address("P2SH")+'\n'+hdwallet.address("P2TR")+'\n'+hdwallet.address("P2WPKH")+'\n'+hdwallet.address("P2WPKH-In-P2SH")+'\n'+hdwallet.address("P2WSH")+'\n'+hdwallet.address("P2WSH-In-P2SH")+'\n\n'
 	outfile.write(a)
 	outfile.flush()

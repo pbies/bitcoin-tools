@@ -23,28 +23,25 @@ w3 = Web3(Web3.HTTPProvider(url))
 headers = {'content-type': 'application/json'}
 
 def go(l):
-	private_key = int(l,16)
-
-	cv     = Curve.get_curve('secp256k1')
-	pu_key = private_key * cv.generator # just multiplying the private key by generator point (EC multiplication)
-
-	concat_x_y = pu_key.x.to_bytes(32, byteorder='big') + pu_key.y.to_bytes(32, byteorder='big')
-	k=keccak.new(digest_bits=256)
-	k.update(concat_x_y)
-	eth_addr = '0x' + k.hexdigest()[-40:]
-
-	cksum=Web3.to_checksum_address(eth_addr)
+	cksum=l
 	payload = {
 		'jsonrpc': '2.0',
 		'method': 'eth_getBalance',
 		'params': [cksum,'latest'],
 		'id': 1
 	}
-	response = requests.post(url, data=json.dumps(payload), headers=headers).json()
+	try:
+		response = requests.post(url, data=json.dumps(payload), headers=headers).json()
+	except:
+		e=open('errors.txt','a')
+		e.write(l+' '+cksum+'\n')
+		e.flush()
+		e.close()
+		return
 	try:
 		bal=int(response['result'],16)
 		b='{0:.18f}'.format(bal/1e18)
-		o.write(l+' '+cksum+' '+b+'\n')
+		o.write(cksum+' '+b+'\n')
 	except:
 		pass
 	o.flush()

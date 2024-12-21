@@ -40,7 +40,14 @@ def go(l):
 		'params': [cksum,'latest'],
 		'id': 1
 	}
-	response = requests.post(url, data=json.dumps(payload), headers=headers).json()
+	try:
+		response = requests.post(url, data=json.dumps(payload), headers=headers).json()
+	except:
+		e=open('errors.txt','a')
+		e.write(l+' '+cksum+'\n')
+		e.flush()
+		e.close()
+		return
 	try:
 		bal=int(response['result'],16)
 		b='{0:.18f}'.format(bal/1e18)
