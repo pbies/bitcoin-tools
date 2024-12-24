@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
 from tqdm import tqdm
+import sys
 
 for j in sys.stdin:
 	j=j.rstrip()
