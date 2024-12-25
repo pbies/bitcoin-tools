@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Pool is slower than process_map
+# Pool is really faster than process_map
 
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
@@ -67,7 +67,6 @@ def go(k):
 			outfile.flush()
 
 infile = open('input.txt','r')
-outfile = open('output.txt','w')
 
 print('Reading...')
 lines = infile.read().splitlines()
@@ -78,6 +77,7 @@ max_=len(lines)
 
 print('Writing...')
 # process_map(go, lines, max_workers=24, chunksize=1000)
+outfile = open('output.txt','w')
 i=0
 with Pool(processes=th) as p, tqdm(total=max_) as pbar:
 	for result in p.imap(go, lines):

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# process_map is really slower than Pool
+
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.entropies import BIP39Entropy
