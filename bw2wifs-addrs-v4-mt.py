@@ -34,6 +34,6 @@ def go(k):
 	outfile.flush()
 
 print('Writing...', flush=True)
-process_map(go, infile, max_workers=16, chunksize=1000)
+process_map(go, infile, max_workers=24, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

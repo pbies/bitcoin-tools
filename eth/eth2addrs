@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+c=$(wc -l < input.txt)
+i=0
+while IFS="" read -r p || [ -n "$p" ]
+do
+    helpeth keyDetails -p "$p"
+    i=$(( i + 1 ))
+    >&2 echo -ne "\rDone: $i/$c"
+done < input.txt > output.txt
+>&2 echo -ne "\a"
