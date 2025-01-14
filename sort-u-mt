@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+time pv -cN input "$1" | dos2unix -f | sort -u -S 20% --parallel=16 | pv -cN output > "$1.sorted~"
+if [[ -s "$1.sorted~" ]]
+then
+	mv "$1.sorted~" "$1"
+	echo Done.
+else
+	echo Error!
+fi
+>&2 echo -ne "\a"

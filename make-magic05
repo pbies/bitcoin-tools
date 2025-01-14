@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# apt install aria2
+echo Downloading...
+aria2c -x4 http://alladdresses.loyce.club/all_Bitcoin_addresses_ever_used_sorted.txt.gz
+echo Unpacking...
+pv all_Bitcoin_addresses_ever_used_sorted.txt.gz | gunzip > all_Bitcoin_addresses_ever_used_sorted.txt
+echo Sorting...
+pv -B 1M -cN input all_Bitcoin_addresses_ever_used_sorted.txt | cut -f 1 | sort -u --parallel=16 | pv -cN output > all-addrs-ever.txt
+echo Done!
+>&2 echo -ne "\a"

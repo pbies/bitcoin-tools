@@ -15,7 +15,7 @@ def check_bal(address):
 		r=requests.get('https://blockchain.info/q/addressbalance/'+address)
 		if not r.status_code==200:
 			return
-		return str(int(r.text)/100000000)+' BTC'
+		return str(int(r.text)/1e8)+' BTC'
 	except:
 		return None
 
