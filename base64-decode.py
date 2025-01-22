@@ -3,10 +3,10 @@
 from tqdm import tqdm
 import base64, sys
 
-print('Reading...')
+print('Reading...', flush=True)
 i = open("input.txt","r").read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 o = open("output.txt","wb")
 
 for line in tqdm(i):

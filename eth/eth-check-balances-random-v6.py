@@ -7,7 +7,7 @@ from Crypto.Hash import keccak
 from tqdm import tqdm
 import os
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/gafwMFYujIM8fQ3gkJsfUoVGp6AyH6EC"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 
 outfile = open("eth-range.txt","a")

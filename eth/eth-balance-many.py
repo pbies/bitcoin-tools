@@ -3,7 +3,7 @@
 from tqdm import tqdm
 from web3 import Web3
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/gafwMFYujIM8fQ3gkJsfUoVGp6AyH6EC"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 
 i=open('input.txt')

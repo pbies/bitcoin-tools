@@ -8,7 +8,7 @@ import sys, hashlib, base58
 
 hdwallet = HDWallet(symbol=BTC)
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open("input.txt","rb").read().splitlines()
 
 o = open("output.txt","w")
@@ -36,7 +36,7 @@ def go(x):
 	o.write(output_lines)
 	o.flush()
 
-print('Writing...')
+print('Writing...', flush=True)
 
 process_map(go, i, max_workers=16, chunksize=1000)
 

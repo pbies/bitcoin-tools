@@ -8,7 +8,7 @@ from sha3 import keccak_256
 from tqdm import tqdm
 import random
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/gafwMFYujIM8fQ3gkJsfUoVGp6AyH6EC"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 
 infile  = open('input.txt','r')

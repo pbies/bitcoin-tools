@@ -4,7 +4,7 @@ import os
 import sys
 from tqdm import tqdm
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open('input.txt','r')
 size=os.stat('input.txt').st_size
 
@@ -24,7 +24,7 @@ o=open('output.txt','w')
 
 x=2**256-1
 
-print('Writing...')
+print('Writing...', flush=True)
 for j in tqdm(i):
 	a=int(j,16)
 	b=a^x

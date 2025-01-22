@@ -37,9 +37,9 @@ def private_key_to_taproot_address(private_key_hex):
 	taproot_address = encode_bech32m(tweaked_pubkey)
 	return taproot_address
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open('input.txt','r').read().splitlines()
-print('Writing...')
+print('Writing...', flush=True)
 o=open('output.txt','w')
 
 def go(pvk):

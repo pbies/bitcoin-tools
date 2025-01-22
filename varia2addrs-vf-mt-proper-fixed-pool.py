@@ -66,14 +66,14 @@ def go(k):
 
 infile = open('input.txt','r')
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 lines = [x.strip() for x in lines]
 
 th=24
 max_=len(lines)
 
-print('Writing...')
+print('Writing...', flush=True)
 outfile = open('output.txt','w')
 i=0
 with Pool(processes=th) as p, tqdm(total=max_) as pbar:

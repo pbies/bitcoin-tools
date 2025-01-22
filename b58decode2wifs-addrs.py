@@ -13,7 +13,7 @@ import sys
 
 hdwallet = HDWallet(symbol=BTC)
 
-print('Reading...')
+print('Reading...', flush=True)
 i = open('input.txt','r').read().splitlines()
 o = open("output.txt","w")
 
@@ -42,7 +42,7 @@ def go(x):
 	o.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	o.flush()
 
-print('Writing...')
+print('Writing...', flush=True)
 process_map(go, i, max_workers=16, chunksize=1000)
 
 o.close()

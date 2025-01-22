@@ -33,14 +33,14 @@ def go(k):
 infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 
 max_ = len(lines)
 th = 20
 i = 0
 
-print('Writing...')
+print('Writing...', flush=True)
 if __name__ == "__main__":
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
 		for result in p.imap(go, lines):

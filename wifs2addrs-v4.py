@@ -28,14 +28,14 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 infile = open(sys.argv[1],'r')
 lines = infile.readlines()
 lines = [x.strip() for x in lines]
 
-print('Writing...')
+print('Writing...', flush=True)
 outfile = open(sys.argv[1]+'.result','w')
-process_map(go, lines, max_workers=4, chunksize=10000)
+process_map(go, lines, max_workers=10, chunksize=10000)
 
 print('All OK')
 print('\a',end='',file=sys.stderr)

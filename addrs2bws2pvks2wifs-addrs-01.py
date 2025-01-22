@@ -12,7 +12,7 @@ o = open("output.txt","w")
 
 hdwallet = HDWallet(symbol=BTC)
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open("input.txt","rb").read().splitlines()
 
 def shahex(x):
@@ -21,7 +21,7 @@ def shahex(x):
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
-print('Writing...')
+print('Writing...', flush=True)
 
 for line in tqdm(i, total=cnt):
 	try:

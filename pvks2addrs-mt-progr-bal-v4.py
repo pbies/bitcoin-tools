@@ -34,11 +34,11 @@ def go(l):
 	o.flush()
 
 def main():
-	print('Reading...')
+	print('Reading...', flush=True)
 	lines=i.readlines()
 	lines = [x.strip() for x in lines]
 
-	print('Writing...')
+	print('Writing...', flush=True)
 	process_map(go, lines, max_workers=workers, chunksize=1000)
 
 	i.close()

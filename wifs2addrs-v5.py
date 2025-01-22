@@ -25,11 +25,11 @@ def go(k):
 	outfile.write(hdwallet.p2wsh_in_p2sh_address()+'\n\n')
 	outfile.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 infile = open(sys.argv[1],'r')
 lines = infile.read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 outfile = open(sys.argv[1]+'.result','w')
 process_map(go, lines, max_workers=12, chunksize=1000)
 

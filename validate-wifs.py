@@ -23,10 +23,10 @@ def go(k):
 	good.write(k+'\n')
 	good.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 for line in tqdm(lines):
 	go(line)
 

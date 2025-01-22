@@ -61,9 +61,9 @@ def derive_taproot_address_from_mnemonic(mnemonic, passphrase=""):
 
 	return taproot_address
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open('input.txt','r').read().splitlines()
-print('Writing...')
+print('Writing...', flush=True)
 o=open('output.txt','w')
 
 def go(m):

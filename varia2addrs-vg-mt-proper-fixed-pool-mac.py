@@ -70,14 +70,14 @@ infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
 if __name__=='__main__':
-	print('Reading...')
+	print('Reading...', flush=True)
 	lines = infile.read().splitlines()
 	lines = [x.strip() for x in lines]
 
 	th=16
 	max_=len(lines)
 
-	print('Writing...')
+	print('Writing...', flush=True)
 	i=0
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
 		for result in p.imap(go, lines):

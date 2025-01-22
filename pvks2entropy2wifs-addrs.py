@@ -53,11 +53,11 @@ def go(k):
 		outfile.write(r)
 		outfile.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = open('input.txt','r').read().splitlines()
 outfile = open('output.txt','w')
 
-print('Writing...')
+print('Writing...', flush=True)
 process_map(go, lines, max_workers=16, chunksize=1000)
 
 print('\a', end='', file=sys.stderr)

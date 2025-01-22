@@ -31,10 +31,10 @@ def go(k):
 infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 process_map(go, lines, max_workers=12, chunksize=1000)
 
 import sys

@@ -32,13 +32,13 @@ def go(k):
 infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 
 th=16
 max_=len(lines)
 
-print('Writing...')
+print('Writing...', flush=True)
 
 if __name__=='__main__':
 	i=0

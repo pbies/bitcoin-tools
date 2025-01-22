@@ -67,11 +67,11 @@ def go(k):
 
 infile = open('input.txt','r')
 
-print('Reading...')
+print('Reading...', flush=True)
 lines = infile.read().splitlines()
 lines = [x.strip() for x in lines]
 
-print('Writing...')
+print('Writing...', flush=True)
 outfile = open('output.txt','w')
 process_map(go, lines, max_workers=24, chunksize=1000)
 

@@ -12,7 +12,7 @@ o = open("output.txt","w")
 
 hdwallet = HDWallet(symbol=BTC)
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open("input.txt","rb").read().splitlines()
 
 def shahex(x):
@@ -44,7 +44,7 @@ def go(x):
 	o.write(output_lines)
 	o.flush()
 
-print('Writing...')
+print('Writing...', flush=True)
 
 process_map(go, i, max_workers=24, chunksize=10000)
 
