@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+echo "$@" | BC_LINE_LENGTH=0 bc -l

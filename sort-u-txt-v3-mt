@@ -2,7 +2,7 @@
 for file in *.txt;
 do
 	echo "$file"
-	pv -cN input "$file" | dos2unix -f | sort -u -S 20% | pv -cN output > "$file.sorted~"
+	pv -cN input "$file" | dos2unix -f | sort -u -S 20% --parallel=16 | pv -cN output > "$file.sorted~"
 	mv "$file.sorted~" "$file"
 done
 >&2 echo -ne "\a"

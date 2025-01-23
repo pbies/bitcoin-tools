@@ -6,9 +6,9 @@ import sys
 def rev(a):
 	return "".join(reversed([a[i:i+2] for i in range(0, len(a), 2)]))
 
-print('Reading...', flush=True)
+print('Reading...')
 i=open('input.txt','r').read().splitlines()
-print('Writing...', flush=True)
+print('Writing...')
 o=open('output.txt','w')
 
 for line in tqdm(i):

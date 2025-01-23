@@ -4,7 +4,6 @@
 # pip3 install hdwallet tqdm web3 bip32utils
 
 from hdwallet import HDWallet
-from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.hds import BIP32HD
 from hdwallet.mnemonics import BIP39Mnemonic
