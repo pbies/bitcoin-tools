@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for file in *.dat;
+do
+	echo "$file"
+	time repair-wallet-v1.py "$file"
+	bell
+done

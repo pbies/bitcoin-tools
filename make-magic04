@@ -5,6 +5,6 @@ aria2c -x4 http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz
 echo Unpacking...
 pv Bitcoin_addresses_LATEST.txt.gz | gunzip > Bitcoin_addresses_LATEST.txt
 echo Sorting...
-pv -B 1M -cN input Bitcoin_addresses_LATEST.txt | cut -f 1 | sort -u -S 20% --parallel=16 | pv -cN output > addrs-with-bal.txt
+pv -B 1M -cN input Bitcoin_addresses_LATEST.txt | cut -f 1 | sort -u --parallel=16 | pv -cN output > addrs-with-bal.txt
 echo Done!
 >&2 echo -ne "\a"

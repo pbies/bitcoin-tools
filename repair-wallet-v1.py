@@ -6,7 +6,7 @@ import os
 import sys
 
 if len(sys.argv) != 2:
-	print(f"Usage: python {sys.argv[0]} <wallet_file_path>")
+	print(f"Usage: python3 {sys.argv[0]} <wallet_file_path>")
 	sys.exit(1)
 
 wallet_file_path = sys.argv[1]

@@ -11,7 +11,7 @@ import hashlib
 import hdwallets
 import mnemonic
 
-# pip3 install ecdsa==0.14
+# pip3 install ecdsa==0.14 bip32 bech32 hdwallets
 
 DEFAULT_BECH32_HRP = "cro"
 path   = "m/44'/0'/0'/0/0"
