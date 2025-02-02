@@ -13,7 +13,7 @@ def find_all_matches(pattern, string):
 		out.append(match[0])
 	return out
 
-files = Path('.').glob('*.out')
+files = Path('.').glob('*.dat')
 #o = open('output.txt','w')
 
 for f in files:
