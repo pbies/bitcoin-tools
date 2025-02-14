@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-pv -cN input "$1" | dos2unix -f | sort -u -S 20% | pv -cN output > "$1.sorted~"
+pv -cN input "$1" | dos2unix -f | sort -u | pv -cN output > "$1.sorted~"
 if [[ -s "$1.sorted~" ]]
 then
 	mv "$1.sorted~" "$1"

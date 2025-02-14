@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 FILESIZE=$(stat -c%s "$1")
-time pv -cN input "$1" | dos2unix -f | LC_ALL=C sort -u -S 20% --parallel=16 | pv -cN output -s $FILESIZE > "$1.sorted~"
+TH=$(echo $(nproc --all)/2 | bc)
+time pv -cN input "$1" | dos2unix -f | LC_ALL=C sort -u --parallel=$TH | pv -cN output -s $FILESIZE > "$1.sorted~"
 if [[ -s "$1.sorted~" ]]
 then
 	mv "$1.sorted~" "$1"

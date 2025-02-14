@@ -18,7 +18,7 @@ echo [05/12] Get rid of first line
 tail -n +2 int1.txt > int2.txt
 
 echo [06/12] Get only addresses, sort and write to file
-pv int2.txt | cut -f 1 | sort > gte1mBTC.txt
+pv int2.txt | cut -f 1 | sort -u > gte1mBTC.txt
 
 echo [07/12] Search for incompatible addresses
 line=$(grep -m 1 -bne $'^bc1p' "gte1mBTC.txt" | cut -d ":" -f 2)

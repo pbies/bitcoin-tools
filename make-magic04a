@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# apt install aria2
+echo Downloading...
+aria2c -x4 http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz
+echo Unpacking...
+pv Bitcoin_addresses_LATEST.txt.gz | gunzip > addrs-with-bal.txt
+echo Done!
+>&2 echo -ne "\a"
