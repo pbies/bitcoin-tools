@@ -161,7 +161,7 @@ def str_to_hex(text):
 	return binascii.hexlify(text.encode()).decode()
 
 def wif_to_pvk(s):
-	return base58.b58decode_check(s)[0:].hex()[2:-2]
+	return base58.b58decode_check(s)[0:].hex()[2:]
 
 def sha256binary(a,b):
 	i=open(a,'rb')
@@ -310,8 +310,14 @@ while True:
 			a=input('Enter string: ')
 			print('\nHex: '+str_to_hex(a)+'\n')
 		case 'e':
-			a=input('Enter WIF: ')
-			print('\nPrivate key: '+wif_to_pvk(a)+'\n')
+			w=input('Enter WIF: ')
+			p=wif_to_pvk(w)
+			l=len(p)
+			if l==66:
+				p=p[:-2]
+			elif l==68:
+				p=p[:-4]
+			print('\nPrivate key: '+p+'\n')
 		case 'w':
 			a=input('Enter input filename [input.bin]: ')
 			b=input('Enter output filename [output.bin]: ')

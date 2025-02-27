@@ -6,6 +6,6 @@ done
 j=1
 for f in *.dat; do
 	echo "Processing file [$j/$i] $f..."
-	./keyhunter-v6.py "$f" >> "keys.txt"
+	./keyhunter-v7.py "$f" >> "keys.txt"
 	j=$(( j + 1 ))
 done
