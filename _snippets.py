@@ -167,3 +167,12 @@ print(reverse_string('abc def xyz'))
 print(str_to_bytes('ABC'))
 print(str_to_hex('ABC'))
 print(wif_to_pvk('5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ipCnYRNeQuRFKarWVVs'))
+
+def find_all_matches(pattern, string):
+	pat = re.compile(pattern)
+	pos = 0
+	out = []
+	while (match := pat.search(string, pos)) is not None:
+		pos = match.start() + 1
+		out.append(match[0])
+	return out

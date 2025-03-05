@@ -31,6 +31,8 @@ def extract_keys(wallet_path):
 		print(f"Error: {e}")
 		return None
 
+o=open('output.txt','w')
+
 if __name__ == "__main__":
 	for infile in os.listdir('.'):
 		if os.path.isfile(infile) and infile[-4:]=='.dat':
@@ -38,7 +40,8 @@ if __name__ == "__main__":
 
 			if result:
 				print(f"File: {infile}")
-				print(f"mkey: {result['mkey'].hex() if result['mkey'] else 'Not found'}")
-				print(f"ckeys: {[ckey.hex() for ckey in result['ckeys']]}\n")
+				o.write(f"{result['mkey'].hex()[2:]+'\n' if result['mkey'] else ''}")
+				for ckey in result['ckeys']:
+					o.write(f"{ckey.hex()[2:]+'\n'}")
 			else:
 				print(f"Failed to extract keys from '{infile}' file.")

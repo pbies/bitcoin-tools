@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	a=$(./b2jshort.py "$f")
+	b=${a:12:64}
+	while [ -f "$b - $f.dat" ]
+	do
+		b="${b} - ${f}_"
+	done
+	mv "$f" "$b - $f.dat"
+done
+>&2 echo -ne "\a"
