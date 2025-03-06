@@ -32,6 +32,7 @@ cnt = 10000
 
 def go(x):
 	global tmp, i
+	x=x.rstrip(b'\n')
 	sha1=hashlib.sha256(x).hexdigest()
 	shatmp=hashlib.sha256(x).digest()
 	sha2=hashlib.sha256(shatmp).hexdigest()
@@ -55,14 +56,14 @@ def go(x):
 		pbar.update(r)
 		pbar.refresh()
 
-outfile = open('output.txt','w')
+outfile = open('output.txt','a')
 
 size = os.path.getsize('input.txt')
-th=24
+th=4
 
 if __name__=='__main__':
 	pbar=tqdm(total=size)
-	with Pool(processes=th) as p, tqdm(total=size) as pbar:
+	with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 		for result in p.imap(go, infile):
 			pass
 

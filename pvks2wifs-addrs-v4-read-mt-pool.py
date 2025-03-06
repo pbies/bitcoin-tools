@@ -23,7 +23,7 @@ def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
 def go(k):
-	k=k.decode()
+	k=k.decode().strip()
 	try:
 		hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=k)
 	except:
