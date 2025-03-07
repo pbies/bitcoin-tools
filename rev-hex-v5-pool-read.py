@@ -28,7 +28,10 @@ def go(line):
 		return
 	h2=h2[::-1]
 	h2=h2.hex()
-	outfile.write(f'{line}\n{h1}\n{h2}\n')
+	tmp1=line[0::2]
+	tmp2=line[1::2]
+	h3="".join(i+j for j,i in zip(tmp1,tmp2))
+	outfile.write(f'{line}\n{h3}\n{h1}\n{h2}\n')
 	outfile.flush()
 
 with Pool(processes=th) as p, tqdm(total=size) as pbar:
