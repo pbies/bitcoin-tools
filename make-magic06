@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# apt install aria2
+echo Checking file size...
+h=$(curl -sI http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz)
+cl=$(echo "$h"|grep Content-Length)
+l=$(echo "$cl"|grep -oE '[0-9]+')
+f=$(stat -c%s Bitcoin_addresses_LATEST.txt.gz)
+if [ $f -eq $l ]; then echo Duplicate! ; kill -INT $$ ; fi
+echo Removing old file...
+rm -f ./Bitcoin_addresses_LATEST.txt.gz
+echo Downloading...
+aria2c -x4 http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz
+echo Unpacking...
+pv Bitcoin_addresses_LATEST.txt.gz | gunzip > addrs-with-bal.txt
+echo Done!
+>&2 echo -ne "\a"

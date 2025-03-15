@@ -14,7 +14,7 @@ infile = open('input.txt','rb')
 size = os.path.getsize('input.txt')
 tmp = 0
 cnt = 100000
-th=24
+th=16
 i=0
 
 outfile = open('output.txt','w')
@@ -33,7 +33,7 @@ def go(k):
 	outfile.write(a)
 	outfile.flush()
 
-with Pool(processes=th) as p, tqdm(total=size) as pbar:
+with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 	for result in p.imap(go, infile):
 		pos=infile.tell()
 		r=pos-tmp

@@ -2,20 +2,31 @@
 
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
-from hdwallet.hds import BIP32HD
-from hdwallet.hds import BIP84HD
+from hdwallet.hds import BIP32HD, BIP84HD
 from hdwallet.mnemonics import BIP39Mnemonic
 from multiprocessing import Pool
 from tqdm import tqdm
-import base58
+from tqdm.contrib.concurrent import process_map
+import sys, base58, os
+
+infile = open('input.txt','rb')
+
+size = os.path.getsize('input.txt')
+tmp = 0
+cnt = 100000
+th=16
+i=0
+
+outfile = open('output.txt','w')
 
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
 def go(k):
+	k=k.decode().strip()
 	try:
-		hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_mnemonic(mnemonic=BIP39Mnemonic(mnemonic=k))
-		hdwallet2 = HDWallet(cryptocurrency=BTC, hd=BIP84HD).from_mnemonic(mnemonic=BIP39Mnemonic(mnemonic=k))
+		hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=k)
+		hdwallet2 = HDWallet(cryptocurrency=BTC, hd=BIP84HD).from_private_key(private_key=k)
 	except:
 		return
 	pvk1=hdwallet1.private_key()
@@ -27,26 +38,13 @@ def go(k):
 	outfile.write(w)
 	outfile.flush()
 
-infile = open('input.txt','r')
-outfile = open('output.txt','w')
+with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
+	for result in p.imap(go, infile):
+		pos=infile.tell()
+		r=pos-tmp
+		if r>cnt:
+			tmp=pos
+			pbar.update(r)
+			pbar.refresh()
 
-print('Reading...', flush=True)
-lines = infile.read().splitlines()
-
-th=24
-max_=len(lines)
-cnt = 100
-
-print('Writing...', flush=True)
-
-if __name__=='__main__':
-	i=0
-	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-		for result in p.imap(go, lines):
-			if i%cnt==0:
-				pbar.update(cnt)
-				pbar.refresh()
-			i=i+1
-
-import sys
 print('\a', end='', file=sys.stderr)

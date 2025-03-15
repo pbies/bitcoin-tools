@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# apt install aria2
+echo Checking file size...
+h=$(curl -sI http://alladdresses.loyce.club/all_Bitcoin_addresses_ever_used_sorted.txt.gz)
+cl=$(echo "$h"|grep Content-Length)
+l=$(echo "$cl"|grep -oE '[0-9]+')
+f=$(stat -c%s all_Bitcoin_addresses_ever_used_sorted.txt.gz)
+if [ $f -eq $l ]; then echo Duplicate! ; kill -INT $$ ; fi
+echo Removing old file...
+rm -f ./all_Bitcoin_addresses_ever_used_sorted.txt.gz
+echo Downloading...
+aria2c -x4 http://alladdresses.loyce.club/all_Bitcoin_addresses_ever_used_sorted.txt.gz
+echo Unpacking...
+pv all_Bitcoin_addresses_ever_used_sorted.txt.gz | gunzip > addrs-all-ever-used.txt
+echo Done!
+>&2 echo -ne "\a"

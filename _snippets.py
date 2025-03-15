@@ -176,3 +176,17 @@ def find_all_matches(pattern, string):
 		pos = match.start() + 1
 		out.append(match[0])
 	return out
+
+def hash160(pubkey: bytes) -> bytes:
+	sha256_pubkey = hashlib.sha256(pubkey).digest()
+	print("pubkey (hash):", sha256_pubkey.hex())
+	ripemd160 = hashlib.new('ripemd160', sha256_pubkey).digest()
+	return ripemd160
+
+def get_addr(pubkey_hex: str) -> str:
+	pubkey_bytes = bytes.fromhex(pubkey_hex)
+	hash160_bytes = hash160(pubkey_bytes)
+	versioned_payload = b'\x00' + hash160_bytes
+	checksum = hashlib.sha256(hashlib.sha256(versioned_payload).digest()).digest()[:4]
+	address_bytes = versioned_payload + checksum
+	return base58.b58encode(address_bytes).decode()

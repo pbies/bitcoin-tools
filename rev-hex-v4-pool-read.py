@@ -31,7 +31,7 @@ def go(line):
 	outfile.write(f'{line}\n{h1}\n{h2}\n')
 	outfile.flush()
 
-with Pool(processes=th) as p, tqdm(total=size) as pbar:
+with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 	for result in p.imap(go, infile):
 		pos=infile.tell()
 		r=pos-tmp
