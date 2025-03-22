@@ -179,7 +179,7 @@ def find_all_matches(pattern, string):
 
 def hash160(pubkey: bytes) -> bytes:
 	sha256_pubkey = hashlib.sha256(pubkey).digest()
-	print("pubkey (hash):", sha256_pubkey.hex())
+	#print("pubkey (hash):", sha256_pubkey.hex())
 	ripemd160 = hashlib.new('ripemd160', sha256_pubkey).digest()
 	return ripemd160
 
@@ -190,3 +190,11 @@ def get_addr(pubkey_hex: str) -> str:
 	checksum = hashlib.sha256(hashlib.sha256(versioned_payload).digest()).digest()[:4]
 	address_bytes = versioned_payload + checksum
 	return base58.b58encode(address_bytes).decode()
+
+def entropy_to_pvk(e):
+	entropy_int = int(e, 16)
+	if entropy_int >= order or entropy_int < 1:
+		return None
+	private_key = SigningKey.from_secret_exponent(entropy_int, curve=SECP256k1)
+	private_key_bytes = private_key.to_string()
+	return private_key_bytes.hex()

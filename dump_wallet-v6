@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-sudo apt-get install db-util
+# sudo apt-get install db-util
 
 db_dump "$1" > "$1"_dump

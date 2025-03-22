@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	echo "$f..."
+	a=$(./b2jshort.py "$f")
+	echo $a : $f >> hashes.txt
+done
+>&2 echo -ne "\a"
