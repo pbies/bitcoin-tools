@@ -22,17 +22,18 @@ cnt = 100000
 def go(x):
 	global tmp, i
 	x=x.decode()
-	# try:
-	hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_entropy(entropy=BIP39Entropy(x))
-	# except:
-		# return
+	try:
+		hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_entropy(entropy=BIP39Entropy(x))
+	except:
+		#print(f'Error with: {x}')
+		return
 	pvk1=hdwallet1.private_key()
 	wif1=pvk_to_wif2(pvk1)
 	w=f'{wif1}\n{hdwallet1.wif()}\n{hdwallet1.address("P2PKH")}\n{hdwallet1.address("P2SH")}\n{hdwallet1.address("P2TR")}\n{hdwallet1.address("P2WPKH")}\n{hdwallet1.address("P2WPKH-In-P2SH")}\n{hdwallet1.address("P2WSH")}\n{hdwallet1.address("P2WSH-In-P2SH")}\n\n'
 	outfile.write(w)
 	outfile.flush()
 
-outfile = open('output.txt','a')
+outfile = open('output.txt','w')
 
 size = os.path.getsize('input.txt')
 th=16
