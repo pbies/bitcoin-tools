@@ -15,6 +15,7 @@ def go(k):
 	if l<32:
 		bad.write(k+'\n')
 		bad.flush()
+		return
 	if l==32:
 		good.write(f'{k}\n')
 		good.flush()

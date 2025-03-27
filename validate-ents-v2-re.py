@@ -15,6 +15,7 @@ def go(k):
 	if l<32 or not re.search('^[0-9A-Fa-f]+$', k):
 		bad.write(k+'\n')
 		bad.flush()
+		return
 	if l==32:
 		good.write(f'{k}\n')
 		good.flush()
@@ -23,7 +24,7 @@ def go(k):
 		good.flush()
 
 print('Reading...', flush=True)
-lines = infile.read().splitlines()
+lines = set(infile.read().splitlines())
 
 print('Writing...', flush=True)
 for line in tqdm(lines):
