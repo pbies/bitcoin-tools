@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+mkdir damaged encrypted plain
+plain=0
+damaged=0
+encrypted=0
+all=0
+cnt=$(ls -1q *.dat | wc -l)
+for f in *.dat; do
+	echo -en "\rDoing $all/$cnt... plain=$plain damaged=$damaged encrypted=$encrypted"
+	a=$(./b2jshort.py "$f" 2>&1)
+	#echo $a
+	g=$(echo $a | grep -o "this wallet is not encrypted")
+	h=$(echo $a | grep -oE "^ERROR")
+	if [[ $g == 'this wallet is not encrypted' ]]; then
+		mv "$f" plain
+		plain=$((plain+1))
+	elif [[ ${a:0:1} == '$' ]]; then
+		mv "$f" encrypted
+		encrypted=$((encrypted+1))
+	elif [[ $h == 'ERROR' ]]; then
+		mv "$f" damaged
+		damaged=$((damaged+1))
+	fi
+	all=$((all+1))
+	echo -en "\rDoing $all/$cnt... plain=$plain damaged=$damaged encrypted=$encrypted"
+done
+echo -e "\rDone $all/$cnt. plain=$plain damaged=$damaged encrypted=$encrypted              "
+>&2 echo -ne "\a"

@@ -127,7 +127,7 @@ def open_wallet(walletfile):
         if r is not None:
                 logging.error("Couldn't open wallet.dat/main. Try quitting Bitcoin and running this again.")
                 logging.error("See our doc/README.bitcoin for how to setup and use this script correctly.")
-                sys.exit(1)
+                sys.exit(2)
 
         return db
 

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+i=0
+c=$(ls -1q *.dat | wc -l)
+for f in *.dat; do
+	a=$(./b2jshort.py "$f")
+	b=${a:12:64}
+	#n="$f"
+	while [ -f "$b.dat" ]
+	do
+		b="${b}_"
+	done
+	mv "$f" "$b.dat"
+	i=$((i+1))
+	echo -ne "$i/$c\r"
+done
+echo
+>&2 echo -ne "\a"
