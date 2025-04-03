@@ -28,7 +28,7 @@ def pvk_to_wif2(key_hex):
 infile = open('input.txt','rb')
 i=infile.tell()
 tmp = 0
-cnt = 10000
+cnt = 100000
 
 def go(x):
 	global tmp, i
@@ -49,22 +49,21 @@ def go(x):
 	w+=f'{wif2}\n{hdwallet2.wif()}\n{hdwallet2.address("P2PKH")}\n{hdwallet2.address("P2SH")}\n{hdwallet2.address("P2TR")}\n{hdwallet2.address("P2WPKH")}\n{hdwallet2.address("P2WPKH-In-P2SH")}\n{hdwallet2.address("P2WSH")}\n{hdwallet2.address("P2WSH-In-P2SH")}\n\n'
 	outfile.write(w)
 	outfile.flush()
-	i=infile.tell()
-	r=i-tmp
-	if r>cnt:
-		tmp=i
-		pbar.update(r)
-		pbar.refresh()
 
-outfile = open('output.txt','a')
+outfile = open('output.txt','w')
 
 size = os.path.getsize('input.txt')
-th=4
+th=24
 
 if __name__=='__main__':
 	pbar=tqdm(total=size)
 	with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 		for result in p.imap(go, infile):
-			pass
+			i=infile.tell()
+			r=i-tmp
+			if r>cnt:
+				tmp=i
+				pbar.update(r)
+				pbar.refresh()
 
 	print('\a', end='', file=sys.stderr)

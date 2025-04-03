@@ -7,11 +7,11 @@ o=open('output.txt','w')
 
 count=1000000
 
-def go(x):
+def go():
 	o.write(f'{os.urandom(32).hex()}\n')
 	o.flush
 
 for i in tqdm(range(0,count)):
-	go(None)
+	go()
 
 print('\a', end='', file=sys.stderr)

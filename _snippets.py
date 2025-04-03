@@ -198,3 +198,11 @@ def entropy_to_pvk(e):
 	private_key = SigningKey.from_secret_exponent(entropy_int, curve=SECP256k1)
 	private_key_bytes = private_key.to_string()
 	return private_key_bytes.hex()
+
+def log(t):
+	d = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	print(f'{d} {t}', flush=True, end='')
+	l=open('log.txt','a')
+	l.write(f'{d} {str(t)}')
+	l.flush()
+	l.close()
