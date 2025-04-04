@@ -48,13 +48,15 @@ def main():
 
 			rng = range(rnd, rnd+r)
 
+			s=f"{hex(rnd)[2:]}:{hex(rnd+r)[2:]}"
+
 			with Pool(processes=th) as p:
-				for result in p.imap(go, rng):
+				for result in p.imap_unordered(go, rng, chunksize=1024):
 					keys_checked += 1
 					if keys_checked % cnt == 0:
 						elapsed = time.time() - start_time
 						rate = keys_checked / elapsed
-						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:.2f} keys/sec | Range: {hex(rnd)[2:]}:{hex(rnd+r)[2:]}", end="", flush=True)
+						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:.2f} keys/sec | Range: {s}", end="", flush=True)
 
 	except KeyboardInterrupt:
 		print("\n\nScanning stopped by user.")

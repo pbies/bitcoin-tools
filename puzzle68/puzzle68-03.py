@@ -28,7 +28,7 @@ def log(message):
 def check_key(pvk):
 	h = ice.privatekey_to_h160(0, True, pvk)
 	if h == TARGET_HASH:
-		message = f"Found pvk: {hex(pvk)[2:]}  |  WIF: {ice.btc_pvk_to_wif(pvk, True)}\a\n"
+		message = f"Found pvk: {hex(pvk)[2:]}  |  WIF: {ice.btc_pvk_to_wif(pvk, False)}\a\n"
 		print()
 		log(message)
 		print('\a', end='', file=sys.stderr)
