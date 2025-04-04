@@ -54,7 +54,7 @@ def main():
 					if keys_checked % cnt == 0:
 						elapsed = time.time() - start_time
 						rate = keys_checked / elapsed
-						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:.2f} keys/sec | Range: {hex(rnd)[2:]}-{hex(rnd+r)[2:]}", end="", flush=True)
+						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:.2f} keys/sec | Range: {hex(rnd)[2:]}:{hex(rnd+r)[2:]}", end="", flush=True)
 
 	except KeyboardInterrupt:
 		print("\n\nScanning stopped by user.")
