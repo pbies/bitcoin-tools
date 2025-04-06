@@ -4,6 +4,7 @@ from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.hds import BIP32HD
 from multiprocessing import Pool
+from tqdm import tqdm
 import base58
 import hashlib
 import os
@@ -16,7 +17,7 @@ def pvk_to_wif2(key_hex):
 infile = open('input.txt','rb')
 i=infile.tell()
 tmp = 0
-cnt = 100000
+cnt = 10000
 
 def go(x):
 	global tmp, i
@@ -49,13 +50,12 @@ if __name__=='__main__':
 	os.system('cls||clear')
 	keys_checked = 0
 	start_time = time.time()
-	with Pool(processes=th) as pool:
+	with Pool(processes=th) as pool, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 		for result in pool.imap_unordered(go, infile, chunksize=CHUNK_SIZE):
-			keys_checked += 1
-			if keys_checked % PROGRESS_COUNT == 0:
-				elapsed = time.time() - start_time
-				rate = keys_checked / elapsed if elapsed > 0 else 0
-				print(f"\rConverted: {keys_checked:,} | Rate: {rate:.2f} keys/sec", end="", flush=True)
-	print('\nDone!')
-
-	print('\a', end='', file=sys.stderr)
+			i=infile.tell()
+			r=i-tmp
+			if r>cnt:
+				tmp=i
+				pbar.update(r)
+				pbar.refresh()
+	print('\nDone!\a')

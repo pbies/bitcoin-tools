@@ -48,13 +48,14 @@ def main():
 				start_range = random.randint(RANGE_START, RANGE_END - RANGE_SIZE)
 				end_range = start_range + RANGE_SIZE
 				current_range_str = f"{hex(start_range)[2:]}:{hex(end_range)[2:]}"
-				
+				ela = str(datetime.timedelta(seconds=round(time.time()-start_time)))
+
 				for _ in pool.imap_unordered(check_key, range(start_range, end_range), chunksize=CHUNK_SIZE):
 					keys_checked += 1
 					if keys_checked % PROGRESS_COUNT == 0:
 						elapsed = time.time() - start_time
 						rate = keys_checked / elapsed if elapsed > 0 else 0
-						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:,.0f} keys/sec | Range: {current_range_str}", end="", flush=True)
+						print(f"\rKeys checked: {keys_checked:,} | Rate: {rate:,.0f} keys/sec | Range: {current_range_str} | Elapsed: {ela}", end="", flush=True)
 	except KeyboardInterrupt:
 		print("\n\nScanning stopped by user.")
 		print(f"Total keys checked: {keys_checked:,}")
