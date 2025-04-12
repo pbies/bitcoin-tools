@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import sys
 
 def find_all_matches(pattern, string):
 	pat = re.compile(pattern)

@@ -199,10 +199,10 @@ def entropy_to_pvk(e):
 	private_key_bytes = private_key.to_string()
 	return private_key_bytes.hex()
 
-def log(t):
-	d = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-	print(f'{d} {t}', flush=True, end='')
-	l=open('log.txt','a')
-	l.write(f'{d} {str(t)}')
-	l.flush()
-	l.close()
+def log(message):
+	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	formatted = f"{timestamp} {message}"
+	print(formatted, flush=True, end='')
+	with open(LOG_FILE, 'a') as logfile:
+		logfile.write(formatted)
+		logfile.flush()
