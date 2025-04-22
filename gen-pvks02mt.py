@@ -16,7 +16,7 @@ def go(x):
 
 c=0
 with Pool(processes=th) as p, tqdm(total=count) as pbar:
-	for result in p.imap(go, range(0,count)):
+	for result in p.imap_unordered(go, range(0,count), chunksize=1000):
 		if c%cnt==0:
 			pbar.update(cnt)
 			pbar.refresh()

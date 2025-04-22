@@ -98,7 +98,7 @@ def main():
 
 		# Równoległe przetwarzanie kluczy z paskiem postępu
 		print('Writing...', flush=True)
-		for _ in tqdm(pool.imap_unordered(process_func, lines), total=len(lines), desc="Przetwarzanie kluczy"):
+		for _ in tqdm(pool.imap_unordered(process_func, lines), total=len(lines), desc="Przetwarzanie kluczy", chunksize=1000):
 			pass
 
 		# Zamykamy pulę procesów i czekamy na zakończenie

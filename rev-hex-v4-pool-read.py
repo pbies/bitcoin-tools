@@ -32,7 +32,7 @@ def go(line):
 	outfile.flush()
 
 with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
-	for result in p.imap(go, infile):
+	for result in p.imap_unordered(go, infile, chunksize=1000):
 		pos=infile.tell()
 		r=pos-tmp
 		if r>cnt:

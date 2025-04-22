@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	size = os.path.getsize(infile_path)
 	c=0
 	with open(infile_path, 'rb') as infile, open(outfile_path, 'w') as outfile, Pool(processes=num_processes) as pool, tqdm(total=size, unit='B', unit_scale=True) as pbar:
-		for results in pool.imap_unordered(process_batch, infile):
+		for results in pool.imap_unordered(process_batch, infile, chunksize=1000):
 			tmp=infile.tell()
 			pbar.update(tmp-c)
 			c=tmp

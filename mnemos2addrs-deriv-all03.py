@@ -50,7 +50,7 @@ max_=len(mnemos)
 
 c=0
 with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-	for result in p.imap(go, mnemos):
+	for result in p.imap_unordered(go, mnemos, chunksize=1000):
 		if c%cnt==0:
 			pbar.update(cnt)
 			pbar.refresh()

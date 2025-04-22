@@ -20,7 +20,7 @@ i=0
 for th in range(2,cpu+1,2):
 	print(f'{th} threads:')
 	with Pool(processes=th) as p, tqdm(total=x) as pbar:
-		for result in p.imap(go, range(0,x)):
+		for result in p.imap_unordered(go, range(0,x), chunksize=1000):
 			if i%1000==0:
 				pbar.update(1000)
 				pbar.refresh()

@@ -43,7 +43,7 @@ i = 0
 print('Writing...', flush=True)
 if __name__ == "__main__":
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-		for result in p.imap(go, lines):
+		for result in p.imap_unordered(go, lines, chunksize=1000):
 			if i%100==0:
 				pbar.update(100)
 				pbar.refresh()

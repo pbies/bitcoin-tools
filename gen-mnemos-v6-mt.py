@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
 	i=0
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-		for result in p.imap(go, count):
+		for result in p.imap_unordered(go, count, chunksize=1000):
 			if i%progress==0:
 				pbar.update(progress)
 				pbar.refresh()

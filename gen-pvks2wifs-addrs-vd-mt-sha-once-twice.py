@@ -52,7 +52,7 @@ outfile = open('output.txt','w')
 
 if __name__=='__main__':
 	with Pool(processes=th) as p, tqdm(total=l) as pbar:
-		for result in p.imap(go, r):
+		for result in p.imap_unordered(go, r, chunksize=1000):
 			pass
 
 	print('\a', end='', file=sys.stderr)

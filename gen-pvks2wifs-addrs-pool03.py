@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 	c=0
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-		for result in p.imap(go, r):
+		for result in p.imap_unordered(go, r, chunksize=1000):
 			if c%1000==0:
 				pbar.update(1000)
 				pbar.refresh()

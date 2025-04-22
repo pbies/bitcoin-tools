@@ -12,10 +12,10 @@ def find_all_matches(pattern, string):
 		out.append(match[0])
 	return out
 
-f=open('input.txt','r').read()
+f=open('input.txt', 'r').read()
 a=[]
-a.extend(find_all_matches('[0-9a-fA-F]{64}',f))
-o=open('output.txt','w')
+a.extend(find_all_matches('[0-9a-fA-F]{64}', f))
+o=open('output.txt', 'w')
 
 for i in a:
 	o.write(f'{i}\n')
