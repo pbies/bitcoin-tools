@@ -234,5 +234,11 @@ def growing_range(mid,x): # x = range +-
 	return rng
 
 def int_to_hex(n, hexdigits):
+	return hex(n)[2:].zfill(hexdigits)
+
+def int_to_pvk(x):
+	return hex(x)[2:].zfill(64)
+
+def int_to_hex2(n, hexdigits):
 	h=hex(n)[2:]
 	return '0'*(hexdigits-len(h))+h
