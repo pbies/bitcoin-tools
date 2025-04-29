@@ -148,7 +148,7 @@ def substring_before(s, delim):
 
 print(b58c_to_bytes('1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY'))
 print(bytes_to_b58c(b'\x00\xc8%\xa1\xec\xf2\xa6\x83\x0cD\x01b\x0c:\x16\xf1\x99PW\xc2\xab'))
-print(bytes_to_str(b'abc123'))
+print(bytes_to_string(b'abc123'))
 print(bytes_to_int(b'\x80\x00'))
 print(bytes_to_int2(b'\x80\x00'))
 print(bytes_to_hex(b'\x80\x00'))

@@ -75,8 +75,8 @@ def decompress_pubkey(pk):
 
 with open('add.txt') as f:
 	for line in f:
-	line=line.strip()
-	print(binascii.hexlify(decompress_pubkey(binascii.unhexlify(line))).decode(),file=open("uncomp.txt", "a"))
+		line=line.strip()
+		print(binascii.hexlify(decompress_pubkey(binascii.unhexlify(line))).decode(),file=open("uncomp.txt", "a"))
 
 # pubkey uncompress to compress
 
@@ -86,12 +86,12 @@ def cpub(x,y):
 	return c
 with open('add.txt') as f:
 	for line in f:
-	line=line.strip()
-	x = int(line[2:66], 16)
-	y = int(line[66:], 16)
-	pub04=cpub(x,y)
+		line=line.strip()
+		x = int(line[2:66], 16)
+		y = int(line[66:], 16)
+		pub04=cpub(x,y)
 
-	print(pub04,file=open("comp.txt", "a"))
+		print(pub04,file=open("comp.txt", "a"))
 
 def sha256(data):
 	return hashlib.sha256(data).digest()
@@ -106,3 +106,23 @@ def pvk_to_pubkey(h):
 	sk = ecdsa.SigningKey.from_string(bytes.fromhex(h), curve=ecdsa.SECP256k1)
 	vk = sk.verifying_key
 	return (b'\04' + sk.verifying_key.to_string()).hex()
+
+def wif_to_private_key(wif):
+	decoded = base58.b58decode_check(wif)
+	return decoded[1:] # Remove 0x80 prefix
+
+def private_key_to_address(private_key_bytes):
+	sk = ecdsa.SigningKey.from_string(private_key_bytes, curve=ecdsa.SECP256k1)
+	vk = sk.get_verifying_key()
+	pub_key = b'\x04' + vk.to_string()
+
+	sha256_1 = hashlib.sha256(pub_key).digest()
+	ripemd160 = hashlib.new('ripemd160')
+	ripemd160.update(sha256_1)
+	hashed_pubkey = ripemd160.digest()
+
+	mainnet_pubkey = b'\x00' + hashed_pubkey
+	checksum = hashlib.sha256(hashlib.sha256(mainnet_pubkey).digest()).digest()[:4]
+	binary_address = mainnet_pubkey + checksum
+	address = base58.b58encode(binary_address)
+	return address.decode()

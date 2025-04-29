@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cryptos import *
-from cryptotools import PublicKey
+from Crypto import PublicKey
 from cryptotools.BTC import PrivateKey, send
 from tqdm import tqdm
 import base58
