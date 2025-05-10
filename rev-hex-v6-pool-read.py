@@ -33,13 +33,13 @@ def go(line):
 	h3=f'{tmp1}{tmp2}'
 	h4=f'{tmp2}{tmp1}'
 	outfile.write(f'{line}\n{h1}\n{h2}\n{h3}\n{h4}\n')
-	outfile.flush()
 
 with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 	for result in p.imap_unordered(go, infile, chunksize=1000):
 		pos=infile.tell()
 		r=pos-tmp
 		if r>cnt:
+			outfile.flush()
 			tmp=pos
 			pbar.update(r)
 			pbar.refresh()
