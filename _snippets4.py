@@ -126,3 +126,12 @@ def private_key_to_address(private_key_bytes):
 	binary_address = mainnet_pubkey + checksum
 	address = base58.b58encode(binary_address)
 	return address.decode()
+
+def generate_random_private_key1() -> str:
+	return hex(random.getrandbits(256))[2:].zfill(64)
+
+def generate_random_private_key2() -> str:
+	return os.urandom(32).hex().zfill(64)
+
+def generate_random_private_key3() -> str:
+	return hex(random.randint(1,0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140))[2:].zfill(64)
