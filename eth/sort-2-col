@@ -1,0 +1,2 @@
+time pv -cN input input.txt | dos2unix -f | LC_ALL=C sort -nr -k2 -t',' --parallel=16 | pv -cN output > output.txt
+bell

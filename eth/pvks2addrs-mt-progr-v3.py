@@ -7,10 +7,10 @@ import hashlib
 from web3 import Web3
 from tqdm.contrib.concurrent import process_map
 
-workers=10
+workers=16
 
 def go(l):
-	private_key = int(l,16)
+	private_key = int(l, 16)
 
 	cv     = Curve.get_curve('secp256k1')
 	pu_key = private_key * cv.generator # just multiplying the private key by generator point (EC multiplication)
@@ -24,10 +24,10 @@ def go(l):
 	o.write(l+' : '+cksum+'\n')
 	o.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open('input.txt','r').read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 o=open('output.txt','w')
 process_map(go, i, max_workers=workers, chunksize=10000)
 

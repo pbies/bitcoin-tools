@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+# pip3 install requests web3
+
+import requests
+from web3 import Web3
+from tqdm import tqdm
+
+def conv(address):
+	return Web3.to_checksum_address(address)
+
+with open('output.txt','w') as o:
+	for i in tqdm(open('input.txt','r').read().splitlines()):
+		o.write(conv(i)+'\n')
+	o.flush()

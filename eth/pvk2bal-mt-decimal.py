@@ -17,7 +17,7 @@ import sys
 
 workers=4
 
-url = 'https://mainnet.infura.io/v3/YOUR_API_KEY'
+url = 'https://mainnet.infura.io/v3/4246036b6cac41be88a43a5955ff5866'
 w3 = Web3(Web3.HTTPProvider(url))
 
 headers = {'content-type': 'application/json'}
@@ -49,10 +49,10 @@ def go(l):
 		pass
 	o.flush()
 
-print('Reading...')
+print('Reading...', flush=True)
 i=open('input.txt','r').read().splitlines()
 
-print('Writing...')
+print('Writing...', flush=True)
 o=open('output.txt','w')
 process_map(go, i, max_workers=workers, chunksize=100)
 #for x in tqdm(i):

@@ -11,7 +11,7 @@ i = open('input.txt','r').read().splitlines()
 
 o = open('output.txt','a')
 
-alchemy_url = 'https://worldchain-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
+alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
