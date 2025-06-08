@@ -7,7 +7,7 @@
 
 	Commit messages are draft, not production.
 
-	(C) 2019-2024 me
+	(C) 2019-2025 me
 
 	Other copyrights are for their respective owners.
 
