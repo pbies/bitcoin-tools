@@ -2,17 +2,17 @@
 
 # nvidia/cuda:12.4.0-devel-ubuntu22.04
 
-sudo apt update
-sudo apt -y dist-upgrade
+sudo apt-get update
+sudo apt-get -y dist-upgrade
 sudo apt-get -y install autoconf bash-completion cmake curl g++ gcc htop links make man mc p7zip-full pv rar unrar unzip vim wget zip
-sudo apt -y autoremove
+sudo apt-get -y autoremove
 
-sudo apt -y install make cmake autoconf g++
-sudo apt -y install libssl-dev libpcre3-dev libcurl4-openssl-dev
+sudo apt-get -y install make cmake autoconf g++
+sudo apt-get -y install libssl-dev libpcre3-dev libcurl4-openssl-dev
 sudo apt-get -y install opencl-headers
 sudo apt-get -y install ocl-icd-libopencl1
 sudo ln -s /usr/lib/x86_64-linux-gnu/libOpenCL.so.1 /usr/lib/libOpenCL.so
-sudo apt -y install libcurl4-openssl-dev
-sudo apt -y install python3 python3-pip
+sudo apt-get -y install libcurl4-openssl-dev
+sudo apt-get -y install python3 python3-pip
 pip3 install git+https://github.com/mcdallas/cryptotools.git@master#egg=cryptotools
-pip3 install p_tqdm
+pip3 install p_tqdm hdwallet psutil tqdm
