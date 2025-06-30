@@ -4,13 +4,13 @@ import sys
 from tqdm import tqdm
 
 print('Reading...', flush=True)
-i=open(sys.argv[1],'r').read().splitlines()
-o=open(sys.argv[1]+'.out','w')
+i=open(sys.argv[1],'rb').read().splitlines()
+o=open(sys.argv[1]+'.out','wb')
 
 print('Writing...', flush=True)
 for x in tqdm(i):
 	y=x.strip()
-	o.write(y+'\n')
+	o.write(y+b'\n')
 	o.flush()
 
 print('\a', end='', file=sys.stderr)

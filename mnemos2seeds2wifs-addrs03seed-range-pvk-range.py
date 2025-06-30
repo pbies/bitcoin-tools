@@ -10,7 +10,7 @@ from mnemonic import Mnemonic
 from multiprocessing import Pool
 from tqdm import tqdm
 import base58
-import os
+import os, sys
 
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
@@ -51,7 +51,7 @@ os.system('cls||clear')
 print('Reading...', flush=True)
 lines = infile.read().splitlines()
 
-th=28
+th=10
 max_=len(lines)
 cnt = 100
 
@@ -66,5 +66,4 @@ if __name__=='__main__':
 				pbar.refresh()
 			i=i+1
 
-import sys
-print('\a', end='', file=sys.stderr)
+	print('\a', end='', file=sys.stderr)
