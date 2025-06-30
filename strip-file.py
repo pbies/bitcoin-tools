@@ -13,6 +13,6 @@ for x in tqdm(i):
 	o.write(y+b'\n')
 	o.flush()
 
-os.rename(sys.argv[1]+'.out', sys.argv[1], 'rb')
+os.rename(sys.argv[1]+'.out', sys.argv[1])
 
 print('\a', end='', file=sys.stderr)
