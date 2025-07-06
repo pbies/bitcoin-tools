@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 FILESIZE=$(stat -c%s "$1")
 TH=$(echo $(nproc --all)/2 | bc)
+echo -n "File size = "
+printf "%'d" $FILESIZE
+echo " bytes ; Using $TH threads"
 time pv -cN input "$1" | dos2unix -f | LC_ALL=C sort -u --parallel=$TH | pv -cN output -s $FILESIZE > "$1.sorted~"
 if [[ -s "$1.sorted~" ]]
 then
