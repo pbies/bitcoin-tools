@@ -7,6 +7,7 @@ import base58
 import sys
 import psutil
 import time
+import math
 
 cpu=psutil.cpu_count()
 x=50000
@@ -16,6 +17,8 @@ def go(k):
 	for i in range(0,20000):
 		j=j+1
 	return j
+
+st = time.time()
 
 times=[]
 i=0
@@ -32,6 +35,8 @@ for th in range(2,cpu+1,2):
 	print(f'time: {took:.3f} s')
 	times.append([th,took])
 
+et = time.time()
+
 low_time=1000
 low_th=0
 
@@ -40,4 +45,7 @@ for th, ti in times:
 		low_time=ti
 		low_th=th
 
+diff = et-st
+
 print(f'Fastest: {low_th} threads = {low_time:.3f} s\a')
+print(f'Time: {math.floor(diff/60)}m{diff%60:.3f}s')

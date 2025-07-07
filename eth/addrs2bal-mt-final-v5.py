@@ -19,7 +19,7 @@ w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
 def go(i):
-	address = w3.to_checksum_address(i)
+	address = w3.to_checksum_address(i[0:42])
 	try:
 		bal=w3.eth.get_balance(address,'latest')
 	except:
@@ -40,7 +40,7 @@ if __name__=='__main__':
 	th=4
 	max_=len(i)
 	with Pool(processes=th) as p, tqdm(total=max_) as pbar:
-		for result in p.imap_unordered(go, i, chunksize=1000):
+		for result in p.imap_unordered(go, i, chunksize=10):
 			if c%cnt==0:
 				pbar.update(cnt)
 				pbar.refresh()
