@@ -11,31 +11,35 @@ import mnemonic
 import os, sys
 from multiprocessing import Pool
 
-i = open('input.txt','r').read().splitlines()
-o = open('output.txt','w')
-
-alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/vyNyoamdEv_67zitim9G09wuPVUSKkLG'
+alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
 def go(i):
 	address = w3.to_checksum_address(i[0:42])
-	pvk=i[43:]
+	#pvk=i[43:]
 	try:
 		bal=w3.eth.get_balance(address,'latest')
 	except:
 		try:
 			bal=w3.eth.get_balance(address,'latest')
 		except:
-			open('errors.txt','a').write(f'{address} {pvk}\n').close()
+			t=open('errors.txt','a')
+			t.write(f'{address} {pvk}\n')
+			t.flush()
+			t.close()
 	b='{0:.18f}'.format(bal/1e18)
-	o.write(f'{address} {pvk} {str(b)} ETH\n')
+	o.write(f'{i} {str(b)} ETH\n')
 	o.flush()
-	if bal>=1000000000000000:
-		print('\n\a'+address+' = '+str(b)+' ETH = '+i, flush=True)
+	if bal>=int(1e15):
+		print(f'\n\a{i} {str(b)} ETH', flush=True)
 
 if __name__=='__main__':
 	os.system('cls||clear')
+	print('Reading...', flush=True)
+	i = open('input.txt','r').read().splitlines()
+	print('Writing...', flush=True)
+	o = open('output.txt','w')
 	c=0
 	cnt=10
 	th=4
