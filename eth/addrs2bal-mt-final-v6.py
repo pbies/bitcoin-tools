@@ -25,7 +25,7 @@ def go(i):
 			bal=w3.eth.get_balance(address,'latest')
 		except:
 			t=open('errors.txt','a')
-			t.write(f'{address} {pvk}\n')
+			t.write(f'{i}\n')
 			t.flush()
 			t.close()
 	b='{0:.18f}'.format(bal/1e18)
