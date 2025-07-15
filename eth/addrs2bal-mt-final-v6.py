@@ -28,6 +28,7 @@ def go(i):
 			t.write(f'{i}\n')
 			t.flush()
 			t.close()
+			return
 	b='{0:.18f}'.format(bal/1e18)
 	o.write(f'{i} {str(b)} ETH\n')
 	o.flush()
