@@ -26,7 +26,7 @@ def go(k):
 			hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_seed(seed=BIP39Seed(s1))
 			hdwallet2 = HDWallet(cryptocurrency=BTC, hd=BIP84HD).from_seed(seed=BIP39Seed(s2))
 		except:
-			return
+			continue
 		pvk1=hdwallet1.private_key()
 		pvk2=hdwallet2.private_key()
 		t1=int(pvk1, 16)
