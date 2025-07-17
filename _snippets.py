@@ -124,6 +124,14 @@ def pvk_to_pubkey(h): # in: b'\x00\x00\x00\x00... [32] out: 043021...
 	vk = sk.verifying_key
 	return (b'\04' + sk.verifying_key.to_string()).hex()
 
+def pvk_to_pubkey2(hex_key):
+	try:
+		sk = ecdsa.SigningKey.from_string(bytes.fromhex(hex_key), curve=ecdsa.SECP256k1)
+		return (b'\x04' + sk.verifying_key.to_string()).hex()
+	except Exception as e:
+		log(f'Error generating public key: {e}')
+		return None
+
 def reverse_string(s): # in: 'abc1... out: 1cba...
 	return s[::-1]
 
@@ -177,11 +185,10 @@ def find_all_matches(pattern, string):
 		out.append(match[0])
 	return out
 
-def hash160(pubkey: bytes) -> bytes:
-	sha256_pubkey = hashlib.sha256(pubkey).digest()
-	#print("pubkey (hash):", sha256_pubkey.hex())
-	ripemd160 = hashlib.new('ripemd160', sha256_pubkey).digest()
-	return ripemd160
+def ripemd160(data):
+	h = hashlib.new('ripemd160')
+	h.update(data)
+	return h.digest()
 
 def get_addr(pubkey_hex: str) -> str:
 	pubkey_bytes = bytes.fromhex(pubkey_hex)
@@ -201,8 +208,10 @@ def entropy_to_pvk(e):
 
 def log(message):
 	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-	formatted = f"{timestamp} {message}"
-	print(formatted, flush=True, end='')
-	with open(LOG_FILE, 'a') as logfile:
-		logfile.write(formatted)
-		logfile.flush()
+	with open('log.txt', 'a') as log_file:
+		log_file.write(f'{timestamp} {message}\n')
+	print(f'{timestamp} {message}', flush=True)
+
+import secrets
+def generate_random_private_key() -> str:
+	return secrets.token_hex(32)

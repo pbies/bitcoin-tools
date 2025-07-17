@@ -18,9 +18,7 @@ infile = open('input.txt','rb').read().splitlines()
 OFFSETS = [-65536, -65535, -31337, -1000, -100, -64, 0, 1, 64, 100, 1000, 31337, 65535, 65536]
 
 def go(x):
-	results=[]
-	x=x[:-1].decode()
-	h=int(x, 16)
+	h=int(x.decode(), 16)
 	for z in OFFSETS:
 		y=hex(h+z)[2:].zfill(32)
 		try:
@@ -34,9 +32,10 @@ def go(x):
 
 outfile = open('output.txt','w')
 
-th=15
+th=30
 
 if __name__=='__main__':
+	os.system('cls||clear')
 	with Pool(processes=th) as p, tqdm(total=len(infile)) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=5000):
 			pbar.update()
