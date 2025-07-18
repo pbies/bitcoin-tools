@@ -185,10 +185,21 @@ def find_all_matches(pattern, string):
 		out.append(match[0])
 	return out
 
-def ripemd160(data):
+def ripemd160_bytes(data):
 	h = hashlib.new('ripemd160')
 	h.update(data)
 	return h.digest()
+
+def ripemd160_hex(data):
+	h = hashlib.new('ripemd160')
+	h.update(data)
+	return h.hexdigest()
+
+def sha256_bytes(data):
+	return hashlib.sha256(data.encode('utf-8')).digest()
+
+def sha256_hex(data):
+	return hashlib.sha256(data.encode('utf-8')).hexdigest()
 
 def get_addr(pubkey_hex: str) -> str:
 	pubkey_bytes = bytes.fromhex(pubkey_hex)

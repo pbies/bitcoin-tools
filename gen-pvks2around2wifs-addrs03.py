@@ -46,7 +46,6 @@ for i in i_range:
 
 if __name__=='__main__':
 	os.system('cls||clear')
-	pbar=tqdm(total=total)
 	with Pool(processes=th) as p, tqdm(total=total, unit='it', unit_scale=True) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):
 			pbar.update(1)

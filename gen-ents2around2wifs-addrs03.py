@@ -2,8 +2,9 @@
 
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
+from hdwallet.derivations.bip84 import BIP84Derivation
 from hdwallet.entropies import BIP39Entropy
-from hdwallet.hds import BIP32HD
+from hdwallet.hds import BIP84HD
 from multiprocessing import Pool
 from tqdm import tqdm
 import base58
@@ -18,11 +19,14 @@ tmp = 0
 cnt = 100
 OFFSETS = [-65536, -65535, -31337, -1000, -100, -64, 0, 1, 64, 100, 1000, 31337, 65535, 65536]
 
+bip84_derivation: BIP84Derivation = BIP84Derivation()
+
 def go(x):
-	for z in OFFSETS:
-		y=hex(x+z)[2:].zfill(32)
+	y=hex(x)[2:].zfill(32)
+	for p in range(0,101):
+		bip84_derivation.from_address(address=p)
 		try:
-			hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_entropy(entropy=BIP39Entropy(y))
+			hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP84HD).from_entropy(entropy=BIP39Entropy(y)).from_derivation(bip84_derivation)
 		except:
 			continue
 		pvk1=hdwallet1.private_key()
@@ -35,19 +39,27 @@ outfile = open('output.txt','w')
 
 th=15
 
-i_range = list(range(2, 65537))
-j_range = list(range(2, 129))
-total = len(i_range) * len(j_range)
-
-infile=[]
-for i in i_range:
-	for j in j_range:
-		infile.append((i**j)%(1<<128))
-
 if __name__=='__main__':
 	os.system('cls||clear')
-	with Pool(processes=th) as p, tqdm(total=total, unit='it', unit_scale=True) as pbar:
-		for result in p.imap_unordered(go, infile, chunksize=1000):
+
+	print('Getting ready...', flush=True)
+
+	i_range = list(range(2, 65537))
+	j_range = list(range(2, 129))
+	total = len(i_range) * len(j_range)
+
+	infile=[]
+	for i in tqdm(i_range):
+		for j in j_range:
+			for z in OFFSETS:
+				infile.append((i**j)%(1<<128)+z)
+
+	infile=list(set(infile))
+
+	print('Writing...', flush=True)
+
+	with Pool(processes=th) as p, tqdm(total=total) as pbar:
+		for result in p.imap_unordered(go, infile, chunksize=10):
 			pbar.update(1)
 			pbar.refresh()
 
