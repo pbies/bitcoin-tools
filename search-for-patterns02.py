@@ -55,7 +55,8 @@ while True:
 		pbar.refresh()
 		#print(f'Found: {r} ; Progress: {c}', end='\r')
 
-outfile.write(z)
+for i in z:
+	outfile.write(i)
 outfile.flush()
 
 print(f'Found: {r} ; Progress: {c}')
