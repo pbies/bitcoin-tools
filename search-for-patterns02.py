@@ -54,10 +54,9 @@ while True:
 		pbar.update(q)
 		pbar.refresh()
 		#print(f'Found: {r} ; Progress: {c}', end='\r')
-		for i in z:
-			outfile.write(i)
-			outfile.flush()
-		z=set()
+
+outfile.write(z)
+outfile.flush()
 
 print(f'Found: {r} ; Progress: {c}')
 
