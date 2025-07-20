@@ -59,6 +59,6 @@ for i in z:
 	outfile.write(i)
 outfile.flush()
 
-print(f'Found: {r} ; Progress: {c}')
+print(f'Found: {r} ; Unique: {len(z)}')
 
 print('\a', end='', file=sys.stderr)
