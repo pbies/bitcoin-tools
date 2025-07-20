@@ -36,10 +36,10 @@ if __name__=='__main__':
 	print('Writing...', flush=True)
 	with Pool(processes=th) as p, tqdm(total=len(infile)) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):
-				#pbar.update(r)
 				outfile = open('output.txt','a')
 				outfile.write(result)
 				outfile.close()
+				pbar.update(1)
 				pbar.refresh()
 
 	print('\a', end='', file=sys.stderr)
