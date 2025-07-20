@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# to nie zadziała, nie można derivować od pvk
-
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.derivations.custom import CustomDerivation
@@ -16,9 +14,6 @@ import sys
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
-OFFSETS = [0, 1, 64, 100, 1000, 31337, 65535, 65536]
-OFFSETS.extend(list(range(1940,2026)))
-
 def go(args):
 	pvk_hex, lock = args
 	result_lines = []
@@ -26,29 +21,17 @@ def go(args):
 	if len(pvk_hex) != 64:
 		return None  # Expecting 128 hex digits (64 bytes)
 
-	# try:
 	hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(pvk_hex)
 
-	for index in OFFSETS:  # 0..100 derivations
-		# try:
-		custom_derivation = CustomDerivation(f"m/84'/0'/0'/0/{index}")
-		child_wallet = hdwallet.from_derivation(custom_derivation)
+	wif = pvk_to_wif2(hdwallet.private_key())
 
-		wif = pvk_to_wif2(child_wallet.private_key())
+	line = f"{pvk_hex}\n{wif}\n{hdwallet.wif()}\n"
+	line += f"{hdwallet.address('P2PKH')}\n{hdwallet.address('P2SH')}\n"
+	line += f"{hdwallet.address('P2TR')}\n{hdwallet.address('P2WPKH')}\n"
+	line += f"{hdwallet.address('P2WPKH-In-P2SH')}\n{hdwallet.address('P2WSH')}\n"
+	line += f"{hdwallet.address('P2WSH-In-P2SH')}\n\n"
 
-		line = f"{pvk_hex}:{index}\n{wif}\n{child_wallet.wif()}\n"
-		line += f"{child_wallet.address('P2PKH')}\n{child_wallet.address('P2SH')}\n"
-		line += f"{child_wallet.address('P2TR')}\n{child_wallet.address('P2WPKH')}\n"
-		line += f"{child_wallet.address('P2WPKH-In-P2SH')}\n{child_wallet.address('P2WSH')}\n"
-		line += f"{child_wallet.address('P2WSH-In-P2SH')}\n\n"
-
-		result_lines.append(line)
-
-			# except Exception:
-				# continue
-
-	# except Exception:
-		# return None
+	result_lines.append(line)
 
 	if result_lines:
 		with lock:
