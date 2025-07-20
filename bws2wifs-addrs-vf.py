@@ -33,13 +33,18 @@ if __name__=='__main__':
 	if os.path.exists('output.txt'):
 		os.remove('output.txt')
 
+	c=0
+	cnt=1000
+
 	print('Writing...', flush=True)
 	with Pool(processes=th) as p, tqdm(total=len(infile)) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):
-				outfile = open('output.txt','a')
-				outfile.write(result)
-				outfile.close()
-				pbar.update(1)
+			outfile = open('output.txt','a')
+			outfile.write(result)
+			outfile.close()
+			if c%cnt == 0:
+				pbar.update(cnt)
 				pbar.refresh()
+			c+=1
 
 	print('\a', end='', file=sys.stderr)
