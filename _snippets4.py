@@ -135,3 +135,71 @@ def generate_random_private_key2() -> str:
 
 def generate_random_private_key3() -> str:
 	return hex(random.randint(1,0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140))[2:].zfill(64)
+
+def generate_random_private_key4() -> str:
+	return secrets.token_hex(32)
+
+def sha256(data):
+	return hashlib.sha256(data).digest()
+
+def ripemd160(data):
+	h = hashlib.new('ripemd160')
+	h.update(data)
+	return h.digest()
+
+def log(message):
+	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	with open('log.txt', 'a') as log_file:
+		log_file.write(f'{timestamp} {message}\n')
+	print(f'{timestamp} {message}', flush=True)
+
+# btree start
+
+class Node:
+	def __init__(self, data):
+		self.left = None
+		self.right = None
+		self.data = data
+
+	def insert(self, data):
+		if self.data:
+			if data < self.data:
+				if self.left is None:
+					self.left = Node(data)
+				else:
+					self.left.insert(data)
+			elif data > self.data:
+					if self.right is None:
+						self.right = Node(data)
+					else:
+						self.right.insert(data)
+		else:
+			self.data = data
+
+def buildTree(addrs, start, end):
+	if (start > end):
+		return None
+
+	mid = int(start + (end - start) / 2)
+	node = Node(addrs[mid])
+
+	node.left = buildTree(addrs, start, mid - 1)
+	node.right = buildTree(addrs, mid + 1, end)
+
+	return node
+
+def search(root, key):
+	if root is None or root.data == key:
+		return root
+
+	if root.data < key:
+		return search(root.right, key)
+
+	return search(root.left, key)
+
+tree = buildTree(pubkeys, 0, len(pubkeys) - 1)
+
+if pubkey and search(tree, pubkey):
+	pass
+
+# btree stop
