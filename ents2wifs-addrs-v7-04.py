@@ -21,34 +21,34 @@ def go(args):
 	if len(ent_hex) != 32:
 		return None  # Expecting 128 hex digits (64 bytes)
 
-	# try:
-	hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_entropy(entropy=BIP39Entropy(ent_hex))
+	try:
+		hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_entropy(entropy=BIP39Entropy(ent_hex))
 
-	for index in range(0, 101):  # 0..100 derivations
-		# try:
-		custom_derivation = CustomDerivation(f"m/84'/0'/0'/0/{index}")
-		child_wallet = hdwallet.from_derivation(custom_derivation)
+		for index in range(0, 101):  # 0..100 derivations
+			try:
+				custom_derivation = CustomDerivation(f"m/84'/0'/0'/0/{index}")
+				child_wallet = hdwallet.from_derivation(custom_derivation)
 
-		wif = pvk_to_wif2(child_wallet.private_key())
+				wif = pvk_to_wif2(child_wallet.private_key())
 
-		line = f"{ent_hex}:{index}\n{wif}\n{child_wallet.wif()}\n"
-		line += f"{child_wallet.address('P2PKH')}\n{child_wallet.address('P2SH')}\n"
-		line += f"{child_wallet.address('P2TR')}\n{child_wallet.address('P2WPKH')}\n"
-		line += f"{child_wallet.address('P2WPKH-In-P2SH')}\n{child_wallet.address('P2WSH')}\n"
-		line += f"{child_wallet.address('P2WSH-In-P2SH')}\n\n"
+				line = f"{ent_hex}:{index}\n{wif}\n{child_wallet.wif()}\n"
+				line += f"{child_wallet.address('P2PKH')}\n{child_wallet.address('P2SH')}\n"
+				line += f"{child_wallet.address('P2TR')}\n{child_wallet.address('P2WPKH')}\n"
+				line += f"{child_wallet.address('P2WPKH-In-P2SH')}\n{child_wallet.address('P2WSH')}\n"
+				line += f"{child_wallet.address('P2WSH-In-P2SH')}\n\n"
 
-		result_lines.append(line)
+				result_lines.append(line)
 
-			# except Exception:
-				# continue
+			except Exception:
+				continue
 
-	# except Exception:
-		# return None
+		if result_lines:
+			with lock:
+				with open("output.txt", "a") as outfile:
+					outfile.writelines(result_lines)
 
-	if result_lines:
-		with lock:
-			with open("output.txt", "a") as outfile:
-				outfile.writelines(result_lines)
+	except Exception:
+		pass
 
 if __name__ == '__main__':
 	os.system('cls||clear')

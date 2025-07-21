@@ -5,7 +5,8 @@ h=$(curl -sI http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz)
 cl=$(echo "$h"|grep Content-Length)
 l=$(echo "$cl"|grep -oE '[0-9]+')
 f=$(stat -c%s Bitcoin_addresses_LATEST.txt.gz)
-if [ $f -eq $l ]; then echo Duplicate! ; kill -INT $$ ; fi
+if [[ $l -eq "0" ]]; then echo Empty! ; kill -INT $$ ; fi
+if [[ $f -eq $l ]]; then echo Duplicate! ; kill -INT $$ ; fi
 echo Removing old file...
 rm -f ./Bitcoin_addresses_LATEST.txt.gz
 echo Downloading...
