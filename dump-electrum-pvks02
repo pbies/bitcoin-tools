@@ -2,5 +2,5 @@
 
 for file in *;
 do
-	electrum -w "./$file" listaddresses --offline | electrum getprivatekeys - --password qq -w "./$file" --offline 2> /dev/null | jq -r ".[]"
+	electrum -w "./$file" listaddresses --offline | electrum getprivatekeys - --password 12345 -w "./$file" --offline 2> /dev/null | jq -r ".[]"
 done

@@ -59,6 +59,8 @@ def go(args):
 		log(f'Error with {ent_hex} - {e}')
 
 if __name__ == '__main__':
+	th=28
+
 	os.system('cls||clear')
 	print('Loading entropies...', flush=True)
 
@@ -79,7 +81,7 @@ if __name__ == '__main__':
 		lock = manager.Lock()
 		args_list = [(ent, lock) for ent in raw]
 
-		with Pool(processes=28) as pool:
-			list(tqdm(pool.imap_unordered(go, args_list, chunksize=50), total=len(args_list)))
+		with Pool(processes=th) as pool:
+			list(tqdm(pool.imap_unordered(go, args_list, chunksize=th*4), total=len(args_list)))
 
 	print('\aDone.', file=sys.stderr)

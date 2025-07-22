@@ -50,7 +50,8 @@ def go(args):
 				with open("output.txt", "a") as outfile:
 					outfile.writelines(result_lines)
 
-	except Exception:
+	except Exception as e:
+		print(f'Error occured: {e}')
 		pass
 
 if __name__ == '__main__':
