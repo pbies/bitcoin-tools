@@ -10,9 +10,16 @@ from tqdm import tqdm
 import base58
 import os
 import sys
+import datetime
 
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
+
+def log(message):
+	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	with open('log.txt', 'a') as log_file:
+		log_file.write(f'{timestamp} {message}\n')
+	print(f'{timestamp} {message}', flush=True)
 
 def go(args):
 	ent_hex, lock = args
@@ -42,7 +49,8 @@ def go(args):
 
 							result_lines.append(line)
 
-						except Exception:
+						except Exception as e:
+							log(f'Error with {ent_hex}:{a}/{b}/{c}/{index} - {e}')
 							continue
 
 		if result_lines:
