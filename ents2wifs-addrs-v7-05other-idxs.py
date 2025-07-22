@@ -34,7 +34,7 @@ def go(args):
 
 							wif = pvk_to_wif2(child_wallet.private_key())
 
-							line = f"{ent_hex}:{index}\n{wif}\n{child_wallet.wif()}\n"
+							line = f"{ent_hex}:{a}/{b}/{c}/{index}\n{wif}\n{child_wallet.wif()}\n"
 							line += f"{child_wallet.address('P2PKH')}\n{child_wallet.address('P2SH')}\n"
 							line += f"{child_wallet.address('P2TR')}\n{child_wallet.address('P2WPKH')}\n"
 							line += f"{child_wallet.address('P2WPKH-In-P2SH')}\n{child_wallet.address('P2WSH')}\n"

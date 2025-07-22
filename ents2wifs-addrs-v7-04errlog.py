@@ -10,6 +10,7 @@ from tqdm import tqdm
 import base58
 import os
 import sys
+import datetime
 
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
@@ -45,8 +46,8 @@ def go(args):
 
 				result_lines.append(line)
 
-			except Exception:
-				log(f'Error with {ent_hex}:{index}')
+			except Exception as e:
+				log(f'Error with {ent_hex}:{index} - {e}')
 				continue
 
 		if result_lines:
@@ -54,8 +55,8 @@ def go(args):
 				with open("output.txt", "a") as outfile:
 					outfile.writelines(result_lines)
 
-	except Exception:
-		log(f'Error with {ent_hex}')
+	except Exception as e:
+		log(f'Error with {ent_hex} - {e}')
 
 if __name__ == '__main__':
 	os.system('cls||clear')
