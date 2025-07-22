@@ -27,7 +27,7 @@ def go(args):
 		for a in [0, 1, 2]:
 			for b in [0, 1, 2]:
 				for c in [0, 1, 2]:
-					for index in range(0, 5):
+					for index in range(0, 6):
 						try:
 							custom_derivation = CustomDerivation(f"m/84'/{a}'/{b}'/{c}/{index}")
 							child_wallet = hdwallet.from_derivation(custom_derivation)
