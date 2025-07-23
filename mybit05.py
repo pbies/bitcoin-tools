@@ -15,7 +15,7 @@ print("Importing bsddb3...", end="")
 try:
 	import bsddb3
 except:
-	print("error: no bsddb3; run: pip install bsddb3")
+	print("error: no bsddb3; run: pip install bsddb3", file=sys.stderr)
 	sys.exit(1)
 print("ok")
 

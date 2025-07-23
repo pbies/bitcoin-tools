@@ -28,7 +28,7 @@ def extract_keys(wallet_path):
 		return {"mkey": mkey, "ckeys": ckeys}
 
 	except Exception as e:
-		print(f"Error: {e}")
+		print(f"Error: {e}", file=sys.stderr)
 		return None
 
 if __name__ == "__main__":

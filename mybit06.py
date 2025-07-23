@@ -16,7 +16,7 @@ try:
 	import bsddb3
 	from bsddb3 import *
 except:
-	print("error: no bsddb3; run: pip install bsddb3")
+	print("error: no bsddb3; run: pip install bsddb3", file=sys.stderr)
 	sys.exit(1)
 print("ok")
 print("bsddb3 version "+bsddb3.__version__)

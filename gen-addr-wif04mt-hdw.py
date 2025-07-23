@@ -29,7 +29,7 @@ def go(x):
 	try:
 		hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=h)
 	except Exception as e:
-		print(f'Error: {e} @ {h}')
+		print(f'Error: {e} @ {h}', file=sys.stderr)
 		exit()
 
 	pvk=hdwallet.private_key()

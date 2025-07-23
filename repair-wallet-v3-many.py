@@ -32,7 +32,7 @@ for infile in os.listdir('.'):
 			wallet_db.close()
 
 		except Exception as e:
-			print(f"Error: {e}")
+			print(f"Error: {e}", file=sys.stderr)
 			continue
 
 		wallet_db2 = db.DB()

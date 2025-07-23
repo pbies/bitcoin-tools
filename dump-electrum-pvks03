@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+for file in *;
+do
+    electrum -w "./$file" listaddresses --offline | electrum getprivatekeys - --password qq -w "./$file" --offline 2> /dev/null | jq -r ".[]"
+done
+
+$ ./run_electrum --signet -D /home/user/wallets/signet1 -v daemon -d
+> starting daemon (PID 9601)
+
+$ ./run_electrum --signet -D /home/user/wallets/signet1 -v load_wallet --password "test"
+> /home/user/wallets/signet1/signet/wallets/default_wallet
+
+$ ./run_electrum --signet -D /home/user/wallets/signet1 listaddresses
+> [
+    "tb1q7fm5zjq6d95xetq2u3ppw9ak2pnzkpjsvdyng0",
+    "tb1qpzgusq7fpgd33q3lsxkjz7hcqe93et0d7em5dt",

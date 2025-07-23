@@ -36,7 +36,7 @@ for g in ['main','key','defaultkey','name','tx','pool','version','cscript','best
 		wallet_db.close()
 
 	except Exception as e:
-		print(f"Error: {e}")
+		print(f"Error: {e}", file=sys.stderr)
 		continue
 
 	wallet_db2 = db.DB()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from tqdm import tqdm
+import sys
 
 def conv(x,y):
 	prefix = '02' if y % 2 == 0 else '03'
@@ -20,7 +21,6 @@ for line in lines:
 		outfile.write(z+'\n')
 		outfile.flush()
 	except:
-		print(f'Error: {line}')
+		print(f'Error: {line}', file=sys.stderr)
 
-import sys
 print('\a', end='', file=sys.stderr)

@@ -21,7 +21,7 @@ try:
 	import bsddb3
 	from bsddb3.db import *
 except:
-	print("error: no bsddb3; run: pip install bsddb3")
+	print("error: no bsddb3; run: pip install bsddb3", file=sys.stderr)
 	sys.exit(1)
 print("ok")
 print("bsddb3 version "+bsddb3.__version__)
@@ -42,7 +42,7 @@ if opt=="-w":
 	try:
 		r = db.open(sys.argv[2],"main",DB_BTREE, flags)
 	except:
-		print("error: bad wallet")
+		print("error: bad wallet", file=sys.stderr)
 		sys.exit(1)
 	print("ok")
 	rec = db.first()

@@ -3,8 +3,7 @@
 # sudo apt install python3-pip
 # pip3 install hdwallet tqdm web3 bip32utils
 
-# 132x43 terminal size is recommended
-
+from hdwallet import HDWallet
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.hds import BIP32HD
@@ -162,7 +161,7 @@ def str_to_hex(text):
 	return binascii.hexlify(text.encode()).decode()
 
 def wif_to_pvk(s):
-	return base58.b58decode_check(s)[0:].hex()[2:]
+	return base58.b58decode_check(s)[0:].hex()[2:-2]
 
 def sha256binary(a,b):
 	i=open(a,'rb')
@@ -198,7 +197,7 @@ def hex_to_string(h):
 
 clear()
 while True:
-	print('Tool for cc v0.56 (C) 2023-2025 Aftermath @Tzeeck')
+	print('Tool for cc v0.54 (C) 2023-2024 Aftermath @Tzeeck')
 	print('Mostly all options are for BTC if not mentioned differently')
 	print('1. seed phrase = mnemonic to HDWallet')
 	print('5. seed hex to HDWallet')
@@ -311,14 +310,8 @@ while True:
 			a=input('Enter string: ')
 			print('\nHex: '+str_to_hex(a)+'\n')
 		case 'e':
-			w=input('Enter WIF: ')
-			p=wif_to_pvk(w)
-			l=len(p)
-			if l==66:
-				p=p[:-2]
-			elif l==68:
-				p=p[:-4]
-			print('\nPrivate key: '+p+'\n')
+			a=input('Enter WIF: ')
+			print('\nPrivate key: '+wif_to_pvk(a)+'\n')
 		case 'w':
 			a=input('Enter input filename [input.bin]: ')
 			b=input('Enter output filename [output.bin]: ')
@@ -434,9 +427,8 @@ while True:
 			print('\nWIF uncomp: '+pvk_to_wif2(c).decode('ascii')+'\n')
 		case '5':
 			j=input('Enter seed hex: ')
-			j=j.zfill(128)
 			hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD)
-			hdwallet.from_seed(seed=BIP39Seed(j))
+			hdwallet.from_seed(seed=j)
 			d=hdwallet.dump()
 			print()
 			pprint.pprint(d)

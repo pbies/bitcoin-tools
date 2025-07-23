@@ -24,6 +24,7 @@ import random
 import re
 import requests
 import struct
+import sys
 import unittest
 
 alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/"
@@ -456,7 +457,7 @@ while True:
 			try:
 				acc = w3.eth.account.from_mnemonic(j)
 			except:
-				print('Error: bad mnemonic')
+				print('Error: bad mnemonic', file=sys.stderr)
 				pass
 			address = w3.to_checksum_address(acc.address)
 			h=acc._private_key.hex()
