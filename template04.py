@@ -11,7 +11,7 @@ def main():
 
 	print('Program stopped: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 	stop_time=time.time()
-	print(f'Execution took: {stop_time-start_time:.3f}')
+	print(f'Execution took: {stop_time-start_time:.3f} seconds')
 	print('\a', end='', file=sys.stderr)
 
 if __name__=='__main__':
