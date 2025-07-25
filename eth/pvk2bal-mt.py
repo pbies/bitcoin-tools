@@ -17,7 +17,7 @@ import sys
 
 workers=4
 
-url = 'https://mainnet.infura.io/v3/4246036b6cac41be88a43a5955ff5866'
+url = 'https://mainnet.infura.io/v3/YOUR_API_KEY'
 w3 = Web3(Web3.HTTPProvider(url))
 
 headers = {'content-type': 'application/json'}

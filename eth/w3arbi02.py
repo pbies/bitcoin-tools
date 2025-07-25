@@ -5,7 +5,7 @@ from web3 import Web3
 from decimal import Decimal
 
 # Konfiguracja Web3
-INFURA_URL = "https://mainnet.infura.io/v3/4246036b6cac41be88a43a5955ff5866"  # Replace with your Infura Project ID
+INFURA_URL = "https://mainnet.infura.io/v3/YOUR_API_KEY"  # Replace with your Infura Project ID
 web3 = Web3(Web3.HTTPProvider(INFURA_URL))
 
 if not web3.is_connected():
