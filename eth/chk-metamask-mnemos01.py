@@ -9,7 +9,7 @@ from tqdm import tqdm
 import os, sys, time, datetime
 
 # RPC provider (use your own endpoint)
-w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/YOUR_API_KEY"))
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/"))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
 os.system('cls||clear')
@@ -44,10 +44,14 @@ for mnemonic in tqdm(mnemonics):
 		try:
 			balance = w3.eth.get_balance(address)
 		except:
-			time.sleep(1)
-			balance = w3.eth.get_balance(address)
+			try:
+				time.sleep(2)
+				balance = w3.eth.get_balance(address)
+			except:
+				time.sleep(5)
+				balance = w3.eth.get_balance(address)
 		eth_balance = w3.from_wei(balance, 'ether')
 		with open('output.txt','a') as o:
 			o.write(f"Address {i}: {address} | Balance: {eth_balance} ETH\n")
 
-print('\aDone.', end='', file=sys.stderr)
+print('\aDone.', file=sys.stderr)

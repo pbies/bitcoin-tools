@@ -28,4 +28,4 @@ def go(x):
 with Pool(processes=th) as pool:
 	list(tqdm(pool.imap_unordered(go, i, chunksize=th*4), total=os.path.getsize('input.txt'), unit='B', unit_scale=True))
 
-print('\aDone.', end='', file=sys.stderr)
+print('\aDone.', file=sys.stderr)

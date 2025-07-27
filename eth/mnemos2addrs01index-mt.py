@@ -10,7 +10,7 @@ from multiprocessing import Pool, Lock, Manager
 import os, sys, time, datetime
 
 # RPC provider (use your own endpoint)
-w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/YOUR_API_KEY"))
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/"))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
 os.system('cls||clear')
@@ -51,4 +51,4 @@ print('Writing...', flush=True)
 with Pool(processes=th) as pool:
 	list(tqdm(pool.imap_unordered(go, mnemonics, chunksize=th*4), total=len(mnemonics)))
 
-print('\aDone.', end='', file=sys.stderr)
+print('\aDone.', file=sys.stderr)
