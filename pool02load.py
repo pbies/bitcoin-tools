@@ -7,7 +7,7 @@ import os, sys, time, datetime
 
 os.system('cls||clear')
 
-i = open('input.txt','rb')
+i = open('input.txt','rb').read().splitlines()
 
 def log(message):
 	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -29,6 +29,6 @@ def go(x):
 		log('Error with: {y}')
 
 with Pool(processes=th) as pool:
-	list(tqdm(pool.imap_unordered(go, i, chunksize=th*4), total=os.path.getsize('input.txt'), unit='B', unit_scale=True))
+	list(tqdm(pool.imap_unordered(go, i, chunksize=th*4), total=len(i)))
 
 print('\aDone.', file=sys.stderr)
