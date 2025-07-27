@@ -9,7 +9,7 @@ from tqdm import tqdm
 import os, sys, time, datetime
 
 # RPC provider (use your own endpoint)
-w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/4246036b6cac41be88a43a5955ff5866"))
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/YOUR_API_KEY"))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
 os.system('cls||clear')
