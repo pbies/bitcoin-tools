@@ -1,0 +1,5 @@
+sudo apt-get install python3-pyqt6 libsecp256k1-dev python3-cryptography
+wget https://download.electrum.org/4.6.0/Electrum-4.6.0.tar.gz
+sudo apt-get install python3-setuptools python3-pip
+sudo apt-get install autoconf automake libtool
+python3 -m pip install --user Electrum-4.6.0.tar.gz
