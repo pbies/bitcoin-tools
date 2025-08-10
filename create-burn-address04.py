@@ -13,18 +13,18 @@ from hashlib import sha256
 
 base58_characters = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-bitcoin_address_prefix = "1XRecovery"  # should start with 1..., Version prefix (hex) for Bitcoin Address is 0x00
+bitcoin_address_prefix = "1Piotr"  # should start with 1..., Version prefix (hex) for Bitcoin Address is 0x00
 
 if __name__ == "__main__":
 	for char in bitcoin_address_prefix:
-	if char not in base58_characters:
-	sys.exit("Character '%s' is not a valid base58 character." % char)
+		if char not in base58_characters:
+			sys.exit("Character '%s' is not a valid base58 character." % char)
 
 	address_length = len(bitcoin_address_prefix)
 	if address_length < 34:
-	bitcoin_address_prefix = bitcoin_address_prefix + ((34 - address_length) * "X")
+		bitcoin_address_prefix = bitcoin_address_prefix + ((34 - address_length) * "X")
 	else:
-	bitcoin_address_prefix = bitcoin_address_prefix[:34]
+		bitcoin_address_prefix = bitcoin_address_prefix[:34]
 
 	# bitcoin address will have 34 characters from now on
 

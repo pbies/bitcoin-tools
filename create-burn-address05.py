@@ -38,7 +38,7 @@ def hh256(s):
 	return binascii.hexlify(sha256(s).digest())
 
 def b58ec(s):
-	unencoded = str(bytearray.fromhex(unicode(s)))
+	unencoded = str(bytearray.fromhex(s.decode()))
 	encoded = b58encode(unencoded)
 	return encoded
 
@@ -54,10 +54,10 @@ def burn(s):
 	return b58ec(coded)
 
 def usage():
-	print "usage: burn-btc TEMPLATE"
-	print
-	print "	 TEMPLATE - 34 letters & numbers (no zeros)"
-	print "							the first two are coin specific"
+	print("usage: burn-btc TEMPLATE")
+	print()
+	print("	 TEMPLATE - 34 letters & numbers (no zeros)")
+	print("							the first two are coin specific")
 	raise SystemExit
 
 if __name__ == "__main__":
@@ -75,4 +75,4 @@ if __name__ == "__main__":
 			template = template + ((34 - tlen) * "X")
 		else:
 			template = template[:34]
-	print burn(template)
+	print(burn(template))
