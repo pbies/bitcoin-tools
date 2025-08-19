@@ -84,7 +84,6 @@ if __name__ == "__main__":
 	for p, q in zip(a, b):
 		print(f'{hex(p)}\n{hex(q)}')
 		r=range(p, q)
-		pbar=tqdm(total=len(r))
 		with Pool(processes=th) as p, tqdm(total=len(r)) as pbar:
 			for result in p.imap_unordered(go, r, chunksize=1000):
 				i=i+1

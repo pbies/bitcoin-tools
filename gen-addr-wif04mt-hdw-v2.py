@@ -47,7 +47,6 @@ if __name__ == "__main__":
 	os.system('cls||clear')
 	th=24
 	r=range(start, end)
-	pbar=tqdm(total=len(r))
 	i=0
 	cnt=1000
 	with Pool(processes=th) as p, tqdm(total=len(r)) as pbar:

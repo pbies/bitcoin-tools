@@ -10,18 +10,14 @@ import hashlib
 import os
 import sys
 
-
 def int_to_bytes4(number, length): # in: int, int
 	# length = zero-fill bytes
 	return number.to_bytes(length,'big')
 
-
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
-
 o=open('output.txt','w')
-
 
 def go(x):
 	h=hex(x)[2:].zfill(64)
@@ -38,12 +34,10 @@ def go(x):
 	o.write(w)
 	o.flush()
 
-
 if __name__ == "__main__":
 	os.system('cls||clear')
 	th=24
 	r=range(1, int(1e7)+1)
-	pbar=tqdm(total=len(r))
 	i=0
 	cnt=1000
 	with Pool(processes=th) as p, tqdm(total=len(r)) as pbar:

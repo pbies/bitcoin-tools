@@ -13,6 +13,11 @@ import sys
 def pvk_to_wif2(key_hex):
 	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
 
+infile = open('input.txt','rb')
+i=infile.tell()
+tmp = 0
+cnt = 100000
+
 def go(x):
 	x=x.rstrip(b'\n')
 	sha=hashlib.sha256(x).hexdigest()
@@ -22,30 +27,20 @@ def go(x):
 		return
 	wif1=pvk_to_wif2(sha)
 	w=f'{wif1}\n{hdwallet1.wif()}\n{hdwallet1.address("P2PKH")}\n{hdwallet1.address("P2SH")}\n{hdwallet1.address("P2TR")}\n{hdwallet1.address("P2WPKH")}\n{hdwallet1.address("P2WPKH-In-P2SH")}\n{hdwallet1.address("P2WSH")}\n{hdwallet1.address("P2WSH-In-P2SH")}\n\n'
-	return w
+	with open('output.txt','a') as outfile:
+		outfile.write(w)
 
-th=24
+size = os.path.getsize('input.txt')
+th=28
 
 if __name__=='__main__':
-	os.system('cls' if os.name == 'nt' else 'clear')
-	print('Reading...', flush=True)
-	infile = open('input.txt','rb').read().splitlines()
-
-	if os.path.exists('output.txt'):
-		os.remove('output.txt')
-
-	c=0
-	cnt=1000
-
-	print('Writing...', flush=True)
-	with Pool(processes=th) as p, tqdm(total=len(infile)) as pbar:
+	with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):
-			outfile = open('output.txt','a')
-			outfile.write(result)
-			outfile.close()
-			if c%cnt == 0:
-				pbar.update(cnt)
+			i=infile.tell()
+			r=i-tmp
+			if r>cnt:
+				tmp=i
+				pbar.update(r)
 				pbar.refresh()
-			c+=1
 
 	print('\a', end='', file=sys.stderr)
