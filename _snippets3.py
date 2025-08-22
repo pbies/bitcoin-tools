@@ -1,244 +1,195 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-from cryptos import *
-from Crypto import PublicKey
-from cryptotools.BTC import PrivateKey, send
-from tqdm import tqdm
+# Uwaga: zgodnie z preferencją — taby zamiast spacji.
+
 import base58
-import binascii
-import bitcoin
-import ecdsa
 import hashlib
-import os
-import sys
+import ecdsa
 
-def sha256(data):
-	digest = hashlib.new("sha256")
-	digest.update(data)
-	return digest.digest()
-
-def ripemd160(x):
-	d = hashlib.new("ripemd160")
-	d.update(x)
-	return d.digest()
-
-def b58(data):
-	B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-	if data[0] == 0:
-		return "1" + b58(data[1:])
-	x = sum([v * (256 ** i) for i, v in enumerate(data[::-1])])
-	ret = ""
-	while x > 0:
-		ret = B58[x % 58] + ret
-		x = x // 58
-	return ret
-
-ACURVE = 0
+# --- Stałe secp256k1 ---
+P = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
+N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
 Gx = 55066263022277343669578718895168534326250603453777594175500187360389116729240
 Gy = 32670510020758816978083085130507043184471273380659243275938904335757337482424
 GPOINT = (Gx, Gy)
-PCURVE = 2 ** 256 - 2 ** 32 - 2 ** 9 - 2 ** 8 - 2 ** 7 - 2 ** 6 - 2 ** 4 - 1
 
-class Point:
-	def __init__(self,
-		x=0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798,
-		y=0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8,
-		p=2**256 - 2**32 - 2**9 - 2**8 - 2**7 - 2**6 - 2**4 - 1):
-		self.x = x
-		self.y = y
-		self.p = p
 
-	def __add__(self, other):
-		return self.__radd__(other)
+# --- Hashe i pomocnicze ---
+def sha256(data: bytes) -> bytes:
+	return hashlib.sha256(data).digest()
 
-	def __mul__(self, other):
-		return self.__rmul__(other)
+def ripemd160(data: bytes) -> bytes:
+	return hashlib.new("ripemd160", data).digest()
 
-	def __rmul__(self, other):
-		n = self
-		q = None
+def hash160(data: bytes) -> bytes:
+	return ripemd160(sha256(data))
 
-		for i in range(256):
-			if other & (1 << i):
-				q = q + n
-			n = n + n
+def b58check_encode(versioned_payload: bytes) -> str:
+	check = sha256(sha256(versioned_payload))[:4]
+	return base58.b58encode(versioned_payload + check).decode("ascii")
 
-		return q
+def int_to_bytes3(value: int, length: int | None = None) -> bytes:
+	if value == 0 and not length:
+		return b"\x00"
+	if not length:
+		length = (value.bit_length() + 7) // 8
+	return value.to_bytes(length, "big")
 
-	def __radd__(self, other):
-		if other is None:
-			return self
-		x1 = other.x
-		y1 = other.y
-		x2 = self.x
-		y2 = self.y
-		p = self.p
-
-		if self == other:
-			l = pow(2 * y2 % p, p-2, p) * (3 * x2 * x2) % p
-		else:
-			l = pow(x1 - x2, p-2, p) * (y1 - y2) % p
-
-		newX = (l ** 2 - x2 - x1) % p
-		newY = (l * x2 - l * newX - y2) % p
-
-		return Point(newX, newY)
-
-	def toBytes(self):
-		x = self.x.to_bytes(32, "big")
-		y = self.y.to_bytes(32, "big")
-		return b"\x04" + x + y
-
-def getPublicKey(privkey):
-	SPEC256k1 = Point()
-	pk = int.from_bytes(privkey, "big")
-	hash160 = ripemd160(sha256((SPEC256k1 * pk).toBytes()))
-	address = b"\x00" + hash160
-	address = b58(address + sha256(sha256(address))[:4])
-	return address
-
-def getWif(privkey):
-	wif = b"\x80" + privkey
-	wif = b58(wif + sha256(sha256(wif))[:4])
-	return wif
-
-def decompress_pubkey(pk):
-	x = int.from_bytes(pk[1:33], byteorder='big')
-	y_sq = (pow(x, 3, p) + 7) % p
-	y = pow(y_sq, (p + 1) // 4, p)
-	if y % 2 != pk[0] % 2:
-		y = p - y
-	y = y.to_bytes(32, byteorder='big')
-	return b'\x04' + pk[1:33] + y
-
-def int_to_bytes3(value, length = None):
-	if not length and value == 0:
-		result = [0]
-	else:
-		result = []
-		for i in range(0, length or 1+int(math.log(value, 2**8))):
-			result.append(value >> (i * 8) & 0xff)
-		result.reverse()
-	return bytearray(result)
-
-def pvk_bin_to_addr(pvk):
-	SPEC256k1 = Point()
-	pk = int.from_bytes(pvk, "big")
-	hash160 = ripemd160(sha256((SPEC256k1 * pk).toBytes()))
-	address = b"\x00" + hash160
-	return base58.b58encode(address+sha256(sha256(address))[:4]).decode()
-
-def compressedToUncompressed(compressed_key):
-	p = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f
-	y_parity = int(compressed_key[:2]) - 2
-	x = int(compressed_key[2:], 16)
-	a = (pow(x, 3, p) + 7) % p
-	y = pow(a, (p+1)//4, p)
-	if y % 2 != y_parity:
-		y = -y % p
-	uncompressed_key = '04{:x}{:x}'.format(x, y)
-	return uncompressed_key
-
-p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
-
-def hex_public_to_public_addresses(hex_publics):
-	uncompressed = hex_publics[0]
-	public_key_hashC_uncompressed = "00" + sha_ripe_digest(uncompressed)
-	checksum = sha256_get_checksum(public_key_hashC_uncompressed)
-	PublicKeyChecksumC = public_key_hashC_uncompressed + checksum
-	public_address_uncompressed = "1" + b58encode(PublicKeyChecksumC, 33)
-	print("Public address uncompressed:\t", public_address_uncompressed)
-
-	compressed = hex_publics[1]
-	PublicKeyVersionHashD = "00" + sha_ripe_digest(compressed)
-	compressed_checksum = sha256_get_checksum(PublicKeyVersionHashD)
-	PublicKeyChecksumC = PublicKeyVersionHashD + compressed_checksum
-	public_address_compressed = "1" + b58encode(PublicKeyChecksumC, 33)
-	print("Public address compressed:\t", public_address_compressed)
-	return public_address_uncompressed, public_address_compressed
-
-def modinv(a: int, n: int = PCURVE):
-	lm, hm = 1, 0
-	resto = a % n
-	high = n
-	while resto > 1:
-		ratio = high // resto
-		nm = hm - lm * ratio
-		new = high - resto * ratio
-		lm, resto, hm, high = nm, new, lm, resto
-	return lm % n
-
-def ECadd(a, b):
-	LamAdd = ((b[1] - a[1]) * modinv(b[0] - a[0], PCURVE)) % PCURVE
-	x = (LamAdd * LamAdd - a[0] - b[0]) % PCURVE
-	y = (LamAdd * (a[0] - x) - a[1]) % PCURVE
-	return x, y
-
-def ECdouble(a):
-	Lam = ((3 * a[0] * a[0] + ACURVE) * modinv((2 * a[1]), PCURVE)) % PCURVE
-	x = (Lam * Lam - 2 * a[0]) % PCURVE
-	y = (Lam * (a[0] - x) - a[1]) % PCURVE
-	return x, y
-
-def EccMultiply(gen_point: tuple, scalar_hex: int):
-	if scalar_hex == 0 or scalar_hex >= N:
-		raise Exception("Invalid Scalar/Private Key")
-	ScalarBin = str(bin(scalar_hex))[2:]
-	Q = gen_point
-	for i in range(1, len(ScalarBin)):
-		Q = ECdouble(Q)
-		if ScalarBin[i] == "1":
-			Q = ECadd(Q, gen_point)
-	return Q
-
-def private_to_hex_publics(hex_private_key: hex):
-	public_key = EccMultiply(GPOINT, hex_private_key)
-	public_uncompressed = f"04{hex(public_key[0])[2:].upper()}{hex(public_key[1])[2:].upper()}"
-
-	if public_key[1] % 2 == 1:
-		public_compressed = ("03" + str(hex(public_key[0])[2:]).zfill(64).upper())
-	else:
-		public_compressed = ("02" + str(hex(public_key[0])[2:]).zfill(64).upper())
-	return public_uncompressed, public_compressed
-
-def decode(cls, key: bytes) -> 'PublicKey':
-	if key.startswith(b'\x04'):
-		assert len(key) == 65, 'An uncompressed public key must be 65 bytes long'
-		x, y = bytes_to_int(key[1:33]), bytes_to_int(key[33:])
-	else:
-		assert len(key) == 33, 'A compressed public key must be 33 bytes long'
-		x = bytes_to_int(key[1:])
-		root = modsqrt(CURVE.f(x), P)
-		if key.startswith(b'\x03'):
-			y = root if root % 2 == 1 else -root % P
-		elif key.startswith(b'\x02'):
-			y = root if root % 2 == 0 else -root % P
-		else:
-			assert False, 'Wrong key format'
-
-	return cls(Point(x, y))
-
-def encode(self, compressed=False) -> bytes:
-	if compressed:
-		if self.y & 1:
-			return b'\x03' + int_to_bytes(self.x).rjust(32, b'\x00')
-		else:
-			return b'\x02' + int_to_bytes(self.x).rjust(32, b'\x00')
-	return b'\x04' + int_to_bytes(self.x).rjust(32, b'\x00') + int_to_bytes(self.y).rjust(32, b'\x00')
-
-def growing_range(mid,x): # x = range +-
-	start=mid-x
-	end=mid+x
-	rng = [0] * (x*2-1)
-	rng[::2], rng[1::2] = range(mid, end), range(mid-1, start, -1)
-	return rng
-
-def int_to_hex(n, hexdigits):
+def int_to_hex(n: int, hexdigits: int) -> str:
 	return hex(n)[2:].zfill(hexdigits)
 
-def int_to_pvk(x):
+def int_to_hex2(n: int, hexdigits: int) -> str:
+	h = hex(n)[2:]
+	return '0' * (hexdigits - len(h)) + h
+
+def int_to_pvk(x: int) -> str:
 	return hex(x)[2:].zfill(64)
 
-def int_to_hex2(n, hexdigits):
-	h=hex(n)[2:]
-	return '0'*(hexdigits-len(h))+h
+def growing_range(mid: int, x: int):
+	start = mid - x
+	end = mid + x
+	rng = [0] * (x * 2 - 1)
+	rng[::2], rng[1::2] = range(mid, end), range(mid - 1, start, -1)
+	return rng
+
+
+# --- Klucze i adresy (Bitcoin, mainnet P2PKH, prefix 0x00) ---
+def privkey_to_pubkey(privkey: bytes, *, compressed: bool = True) -> bytes:
+	"""
+	Zwraca klucz publiczny (33 bajty skompresowany lub 65 bajtów nieskompresowany).
+	"""
+	if not isinstance(privkey, (bytes, bytearray)) or len(privkey) != 32:
+		raise ValueError("privkey musi mieć dokładnie 32 bajty")
+	sk = ecdsa.SigningKey.from_string(privkey, curve=ecdsa.SECP256k1)
+	vk = sk.get_verifying_key()
+	if compressed:
+		prefix = b"\x03" if (vk.pubkey.point.y() & 1) else b"\x02"
+		return prefix + int_to_bytes3(vk.pubkey.point.x(), 32)
+	return b"\x04" + int_to_bytes3(vk.pubkey.point.x(), 32) + int_to_bytes3(vk.pubkey.point.y(), 32)
+
+def decompress_pubkey(pk: bytes) -> bytes:
+	"""
+	Wejście: skompresowany klucz publiczny (33 bajty, prefix 0x02/0x03)
+	Wyjście: nieskompresowany (65 bajtów, prefix 0x04)
+	"""
+	if not isinstance(pk, (bytes, bytearray)) or len(pk) != 33 or pk[0] not in (2, 3):
+		raise ValueError("Oczekiwano skompresowanego klucza publicznego (33 bajty)")
+	x = int.from_bytes(pk[1:], "big")
+	alpha = (pow(x, 3, P) + 7) % P
+	y = pow(alpha, (P + 1) // 4, P)  # sqrt mod P (dla secp256k1)
+	if (y & 1) != (pk[0] & 1):
+		y = (-y) % P
+	return b"\x04" + int_to_bytes3(x, 32) + int_to_bytes3(y, 32)
+
+def compressedToUncompressed(hex_compressed: str) -> str:
+	"""
+	Wejście HEX (skompresowany), wyjście HEX (nieskompresowany).
+	"""
+	pk = bytes.fromhex(hex_compressed)
+	return decompress_pubkey(pk).hex()
+
+def pubkey_to_p2pkh_address(pubkey: bytes) -> str:
+	h160 = hash160(pubkey)
+	return b58check_encode(b"\x00" + h160)
+
+def pvk_bin_to_addr(pvk: bytes, *, compressed: bool = True) -> str:
+	pub = privkey_to_pubkey(pvk, compressed=compressed)
+	return pubkey_to_p2pkh_address(pub)
+
+def getPublicKey(privkey: bytes) -> str:
+	"""
+	Zachowuję nazwę z oryginału, ale zwracam adres P2PKH (mainnet).
+	"""
+	return pvk_bin_to_addr(privkey, compressed=True)
+
+def getWif(privkey: bytes, *, compressed: bool = True) -> str:
+	"""
+	WIF (mainnet). Jeśli compressed=True, doklejany jest bajt 0x01 przed sumą kontrolną.
+	"""
+	if len(privkey) != 32:
+		raise ValueError("privkey musi mieć 32 bajty")
+	payload = b"\x80" + privkey + (b"\x01" if compressed else b"")
+	return b58check_encode(payload)
+
+def hex_public_to_public_addresses(hex_publics: list[str]) -> tuple[str, str]:
+	"""
+	Wejście: [uncompressed_hex, compressed_hex]
+	Zwraca: (addr_uncompressed, addr_compressed)
+	"""
+	uncompressed_hex, compressed_hex = hex_publics
+	addr_uncompressed = pubkey_to_p2pkh_address(bytes.fromhex(uncompressed_hex))
+	addr_compressed = pubkey_to_p2pkh_address(bytes.fromhex(compressed_hex))
+	return addr_uncompressed, addr_compressed
+
+def private_to_hex_publics(hex_private_key: str) -> tuple[str, str]:
+	"""
+	HEX priv -> (uncompressed_pub_hex, compressed_pub_hex)
+	"""
+	priv = bytes.fromhex(hex_private_key)
+	pub_unc = privkey_to_pubkey(priv, compressed=False).hex().upper()
+	pub_cmp = privkey_to_pubkey(priv, compressed=True).hex().upper()
+	return pub_unc, pub_cmp
+
+
+# --- (Opcjonalnie) proste operacje EC punktowe — zostawione dla zgodności nazw ---
+def modinv(a: int, n: int = P) -> int:
+	return pow(a, -1, n)
+
+def ECadd(a: tuple[int, int], b: tuple[int, int]) -> tuple[int, int]:
+	L = ((b[1] - a[1]) * modinv(b[0] - a[0], P)) % P
+	x = (L * L - a[0] - b[0]) % P
+	y = (L * (a[0] - x) - a[1]) % P
+	return x, y
+
+def ECdouble(a: tuple[int, int]) -> tuple[int, int]:
+	L = ((3 * a[0] * a[0]) * modinv(2 * a[1], P)) % P
+	x = (L * L - 2 * a[0]) % P
+	y = (L * (a[0] - x) - a[1]) % P
+	return x, y
+
+def EccMultiply(gen_point: tuple[int, int], scalar: int) -> tuple[int, int]:
+	if scalar <= 0 or scalar >= N:
+		raise ValueError("Invalid scalar/private key")
+	Q = None
+	Np = gen_point
+	while scalar:
+		if scalar & 1:
+			Q = Np if Q is None else ECadd(Q, Np)
+		Np = ECdouble(Np)
+		scalar >>= 1
+	return Q
+
+
+# --- Demo / sanity-check ---
+if __name__ == "__main__":
+	# Testowy klucz (tylko do demonstracji!):
+	priv_hex = "11" * 32
+	priv = bytes.fromhex(priv_hex)
+
+	# Pubkey
+	pub_cmp = privkey_to_pubkey(priv, compressed=True)
+	pub_unc = privkey_to_pubkey(priv, compressed=False)
+	print("pub (compressed):", pub_cmp.hex())
+	print("pub (uncompressed):", pub_unc.hex())
+
+	# Adresy
+	print("addr (P2PKH, compressed):", pubkey_to_p2pkh_address(pub_cmp))
+	print("addr (P2PKH, uncompressed):", pubkey_to_p2pkh_address(pub_unc))
+
+	# WIF
+	print("WIF (compressed):", getWif(priv, compressed=True))
+	print("WIF (uncompressed):", getWif(priv, compressed=False))
+
+	# Dekompresja klucza skompresowanego
+	print("decompress:", decompress_pubkey(pub_cmp).hex())
+
+	# Funkcja kompatybilna z Twoją nazwą:
+	print("getPublicKey (adres):", getPublicKey(priv))
+
+	# EC multiply (sprawdzenie zgodności z ecdsa)
+	Q = EccMultiply(GPOINT, int(priv_hex, 16))
+	x_e, y_e = Q
+	assert x_e.to_bytes(32, "big") == pub_unc[1:33]
+	assert y_e.to_bytes(32, "big") == pub_unc[33:]
+	print("EC multiply sanity: OK")

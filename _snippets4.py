@@ -1,55 +1,53 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-def hex_to_b58c(h):
-	return base58.b58encode_check(bytes.fromhex(h)).decode()
+# Uwaga: taby zamiast spacji wcięć.
 
-def int_to_b58c_wif(b):
-	return base58.b58encode_check(b'\x80'+b.to_bytes(32,'big')).decode()
+import base58
+import hashlib
+import os
+import random
+import secrets
+import datetime
+import math
+import re
+import ecdsa
 
-def int_to_bytes3(value, length = None):
-	if not length and value == 0:
-		result = [0]
-	else:
-		result = []
-		for i in range(0, length or 1+int(math.log(value, 2**8))):
-			result.append(value >> (i * 8) & 0xff)
-		result.reverse()
-	return bytearray(result)
 
-def getWif(privkey):
-	wif = b"\x80" + privkey
-	wif = b58(wif + sha256(sha256(wif))[:4])
-	return wif
+# === Konwersje / utils ===
 
-def b58(data):
-	B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-	if data[0] == 0:
-		return "1" + b58(data[1:])
-	x = sum([v * (256 ** i) for i, v in enumerate(data[::-1])])
-	ret = ""
-	while x > 0:
-		ret = B58[x % 58] + ret
-		x = x // 58
-	return ret
+def hex_to_b58c(h: str) -> str:
+	"""HEX → Base58Check (bezpośrednie zakodowanie payloadu)."""
+	return base58.b58encode_check(bytes.fromhex(h)).decode("ascii")
 
-def sha256(data):
-	digest = hashlib.new("sha256")
-	digest.update(data)
-	return digest.digest()
 
-def bytes_to_int(k):
-	return int.from_bytes(k,'big')
+def int_to_b58c_wif(n: int, *, compressed: bool = True) -> str:
+	"""Int → 32B priv → WIF (mainnet)."""
+	if not (1 <= n < 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141):
+		raise ValueError("wartość poza zakresem secp256k1")
+	key = n.to_bytes(32, "big")
+	return pvk_to_wif(key, compressed=compressed)
 
-def pvk_to_wif(key_bytes):
-	return base58.b58encode_check(b'\x80' + key_bytes)
 
-def pvk_to_wif2(key_hex):
-	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
+def int_to_bytes3(value: int, length: int | None = None) -> bytes:
+	"""Int → bytes (big endian). Dla 0 zwraca b'\\x00' gdy length nie podano."""
+	if value == 0 and not length:
+		return b"\x00"
+	if not length:
+		length = (value.bit_length() + 7) // 8 or 1
+	return value.to_bytes(length, "big")
 
-def int_to_bytes4(number, length):
-	return number.to_bytes(length,'big')
 
-def find_all_matches(pattern, string):
+def int_to_bytes4(number: int, length: int) -> bytes:
+	"""Alias do number.to_bytes(length, 'big') — dla kompatybilności nazw."""
+	return number.to_bytes(length, "big")
+
+
+def bytes_to_int(k: bytes) -> int:
+	return int.from_bytes(k, "big")
+
+
+def find_all_matches(pattern: str, string: str) -> list[str]:
 	pat = re.compile(pattern)
 	pos = 0
 	out = []
@@ -58,102 +56,152 @@ def find_all_matches(pattern, string):
 		out.append(match[0])
 	return out
 
-# pubkey compress to uncompress
 
-import binascii
+# === Hashowanie ===
 
-p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
-
-def decompress_pubkey(pk):
-	x = int.from_bytes(pk[1:33], byteorder='big')
-	y_sq = (pow(x, 3, p) + 7) % p
-	y = pow(y_sq, (p + 1) // 4, p)
-	if y % 2 != pk[0] % 2:
-		y = p - y
-	y = y.to_bytes(32, byteorder='big')
-	return b'\x04' + pk[1:33] + y
-
-with open('add.txt') as f:
-	for line in f:
-		line=line.strip()
-		print(binascii.hexlify(decompress_pubkey(binascii.unhexlify(line))).decode(),file=open("uncomp.txt", "a"))
-
-# pubkey uncompress to compress
-
-def cpub(x,y):
-	prefix = '02' if y % 2 == 0 else '03'
-	c = prefix+ hex(x)[2:].zfill(64)
-	return c
-with open('add.txt') as f:
-	for line in f:
-		line=line.strip()
-		x = int(line[2:66], 16)
-		y = int(line[66:], 16)
-		pub04=cpub(x,y)
-
-		print(pub04,file=open("comp.txt", "a"))
-
-def sha256(data):
+def sha256(data: bytes) -> bytes:
 	return hashlib.sha256(data).digest()
 
-def ripemd160(x):
-	return hashlib.new("ripemd160").update(x).digest()
 
-def generate_random_private_key() -> str:
-	return hex(random.getrandbits(256))[2:].zfill(64)
-
-def pvk_to_pubkey(h):
-	sk = ecdsa.SigningKey.from_string(bytes.fromhex(h), curve=ecdsa.SECP256k1)
-	vk = sk.verifying_key
-	return (b'\04' + sk.verifying_key.to_string()).hex()
-
-def wif_to_private_key(wif):
-	decoded = base58.b58decode_check(wif)
-	return decoded[1:] # Remove 0x80 prefix
-
-def private_key_to_address(private_key_bytes):
-	sk = ecdsa.SigningKey.from_string(private_key_bytes, curve=ecdsa.SECP256k1)
-	vk = sk.get_verifying_key()
-	pub_key = b'\x04' + vk.to_string()
-
-	sha256_1 = hashlib.sha256(pub_key).digest()
-	ripemd160 = hashlib.new('ripemd160')
-	ripemd160.update(sha256_1)
-	hashed_pubkey = ripemd160.digest()
-
-	mainnet_pubkey = b'\x00' + hashed_pubkey
-	checksum = hashlib.sha256(hashlib.sha256(mainnet_pubkey).digest()).digest()[:4]
-	binary_address = mainnet_pubkey + checksum
-	address = base58.b58encode(binary_address)
-	return address.decode()
-
-def generate_random_private_key1() -> str:
-	return hex(random.getrandbits(256))[2:].zfill(64)
-
-def generate_random_private_key2() -> str:
-	return os.urandom(32).hex().zfill(64)
-
-def generate_random_private_key3() -> str:
-	return hex(random.randint(1,0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140))[2:].zfill(64)
-
-def generate_random_private_key4() -> str:
-	return secrets.token_hex(32)
-
-def sha256(data):
-	return hashlib.sha256(data).digest()
-
-def ripemd160(data):
-	h = hashlib.new('ripemd160')
+def ripemd160(data: bytes) -> bytes:
+	h = hashlib.new("ripemd160")
 	h.update(data)
 	return h.digest()
 
-def log(message):
-	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-	with open('log.txt', 'a') as log_file:
-		log_file.write(f'{timestamp} {message}\n')
-	print(f'{timestamp} {message}', flush=True)
 
-# btree start
+def hash160(data: bytes) -> bytes:
+	return ripemd160(sha256(data))
+
+
+# === Klucze / adresy (Bitcoin mainnet, P2PKH) ===
+
+def pvk_to_wif(key_bytes: bytes, *, compressed: bool = True) -> str:
+	"""
+	32B private key → WIF (mainnet).
+	Jeśli compressed=True, dokleja 0x01 przed checksumą (klucz dla pubkey compressed).
+	"""
+	if len(key_bytes) != 32:
+		raise ValueError("klucz prywatny musi mieć 32 bajty")
+	payload = b"\x80" + key_bytes + (b"\x01" if compressed else b"")
+	return base58.b58encode_check(payload).decode("ascii")
+
+
+def pvk_to_wif2(key_hex: str, *, compressed: bool = True) -> str:
+	return pvk_to_wif(bytes.fromhex(key_hex), compressed=compressed)
+
+
+def wif_to_private_key(wif: str) -> bytes:
+	"""
+	WIF → surowy 32B klucz.
+	Obsługa obu wariantów (z i bez 0x01). Zwraca wyłącznie 32 bajty.
+	"""
+	decoded = base58.b58decode_check(wif)
+	if len(decoded) == 34 and decoded[0] == 0x80 and decoded[-1] == 0x01:
+		return decoded[1:-1]
+	if len(decoded) == 33 and decoded[0] == 0x80:
+		return decoded[1:]
+	raise ValueError("niepoprawny WIF")
+
+
+def pvk_to_pubkey(priv_hex: str) -> str:
+	"""HEX 32B priv → uncompressed public key (0x04 || X || Y) jako HEX."""
+	sk = ecdsa.SigningKey.from_string(bytes.fromhex(priv_hex), curve=ecdsa.SECP256k1)
+	return (b"\x04" + sk.verifying_key.to_string()).hex()
+
+
+def privkey_to_pubkey(privkey: bytes, *, compressed: bool = True) -> bytes:
+	"""Zwraca pubkey (33B skompresowany lub 65B nieskompresowany)."""
+	if len(privkey) != 32:
+		raise ValueError("privkey musi mieć 32 bajty")
+	sk = ecdsa.SigningKey.from_string(privkey, curve=ecdsa.SECP256k1)
+	vk = sk.get_verifying_key()
+	if compressed:
+		prefix = b"\x03" if (vk.pubkey.point.y() & 1) else b"\x02"
+		return prefix + int_to_bytes3(vk.pubkey.point.x(), 32)
+	return b"\x04" + int_to_bytes3(vk.pubkey.point.x(), 32) + int_to_bytes3(vk.pubkey.point.y(), 32)
+
+
+# — Kompresja / dekompresja pubkey —
+
+_P = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F  # secp256k1 prime
+
+
+def decompress_pubkey(pk: bytes) -> bytes:
+	"""
+	Wejście: 33B skompresowany (02/03 || X).
+	Wyjście: 65B nieskompresowany (04 || X || Y).
+	"""
+	if not (isinstance(pk, (bytes, bytearray)) and len(pk) == 33 and pk[0] in (2, 3)):
+		raise ValueError("Oczekiwano skompresowanego klucza publicznego (33 bajty)")
+	x = int.from_bytes(pk[1:], "big")
+	alpha = (pow(x, 3, _P) + 7) % _P
+	y = pow(alpha, (_P + 1) // 4, _P)  # sqrt mod p
+	if (y & 1) != (pk[0] & 1):
+		y = (-y) % _P
+	return b"\x04" + x.to_bytes(32, "big") + y.to_bytes(32, "big")
+
+
+def compress_pubkey_from_uncompressed_hex(uncompressed_hex: str) -> str:
+	"""
+	Wejście: HEX nieskompresowany (04 || X || Y).
+	Wyjście: HEX skompresowany (02/03 || X).
+	"""
+	raw = bytes.fromhex(uncompressed_hex)
+	if not (len(raw) == 65 and raw[0] == 0x04):
+		raise ValueError("Oczekiwano nieskompresowanego klucza (65 bajtów, prefix 0x04)")
+	x = int.from_bytes(raw[1:33], "big")
+	y = int.from_bytes(raw[33:], "big")
+	prefix = 0x02 if (y % 2 == 0) else 0x03
+	return bytes([prefix]) + x.to_bytes(32, "big")
+	
+
+def pubkey_to_p2pkh_address(pubkey_bytes: bytes) -> str:
+	"""Dowolny pubkey (compressed lub uncompressed) → adres P2PKH (mainnet)."""
+	h160 = hash160(pubkey_bytes)
+	return base58.b58encode_check(b"\x00" + h160).decode("ascii")
+
+
+def private_key_to_address(private_key_bytes: bytes, *, compressed: bool = True) -> str:
+	"""P2PKH z privkey (z wyborem formatu pubkey)."""
+	pub = privkey_to_pubkey(private_key_bytes, compressed=compressed)
+	return pubkey_to_p2pkh_address(pub)
+
+
+# === RNG / narzędzia różne ===
+
+def generate_random_private_key() -> str:
+	"""Silny RNG (secrets)."""
+	return secrets.token_hex(32)
+
+
+def generate_random_private_key1() -> str:
+	"""random.getrandbits — nie kryptograficzny (zostawione dla zgodności nazw)."""
+	return hex(random.getrandbits(256))[2:].zfill(64)
+
+
+def generate_random_private_key2() -> str:
+	"""os.urandom — kryptograficzny."""
+	return os.urandom(32).hex()
+
+
+def generate_random_private_key3() -> str:
+	"""Los w zakresie [1..N-1] — niekryptograficzny (random)."""
+	return hex(random.randint(1, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364140))[2:].zfill(64)
+
+
+def generate_random_private_key4() -> str:
+	"""alias do secrets.token_hex(32)."""
+	return secrets.token_hex(32)
+
+
+def log(message: str):
+	ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	with open("log.txt", "a", encoding="utf-8") as f:
+		f.write(f"{ts} {message}\n")
+	print(f"{ts} {message}", flush=True)
+
+
+# === Opcjonalne: BST (bez efektów ubocznych) ===
 
 class Node:
 	def __init__(self, data):
@@ -162,44 +210,53 @@ class Node:
 		self.data = data
 
 	def insert(self, data):
-		if self.data:
-			if data < self.data:
-				if self.left is None:
-					self.left = Node(data)
-				else:
-					self.left.insert(data)
-			elif data > self.data:
-					if self.right is None:
-						self.right = Node(data)
-					else:
-						self.right.insert(data)
-		else:
-			self.data = data
+		if data < self.data:
+			if self.left is None:
+				self.left = Node(data)
+			else:
+				self.left.insert(data)
+		elif data > self.data:
+			if self.right is None:
+				self.right = Node(data)
+			else:
+				self.right.insert(data)
 
-def buildTree(addrs, start, end):
-	if (start > end):
+def buildTree(sorted_values: list, start: int, end: int):
+	if start > end:
 		return None
-
-	mid = int(start + (end - start) / 2)
-	node = Node(addrs[mid])
-
-	node.left = buildTree(addrs, start, mid - 1)
-	node.right = buildTree(addrs, mid + 1, end)
-
+	mid = start + (end - start) // 2
+	node = Node(sorted_values[mid])
+	node.left = buildTree(sorted_values, start, mid - 1)
+	node.right = buildTree(sorted_values, mid + 1, end)
 	return node
 
-def search(root, key):
+def search(root: Node | None, key):
 	if root is None or root.data == key:
 		return root
-
-	if root.data < key:
+	if key > root.data:
 		return search(root.right, key)
-
 	return search(root.left, key)
 
-tree = buildTree(pubkeys, 0, len(pubkeys) - 1)
 
-if pubkey and search(tree, pubkey):
-	pass
+# === Tryb demo / sanity-check (nic nie zapisuje do plików automatycznie) ===
 
-# btree stop
+if __name__ == "__main__":
+	# Prosty self-test na przykładowym kluczu:
+	priv = bytes.fromhex("11" * 32)
+
+	wif_c = pvk_to_wif(priv, compressed=True)
+	wif_u = pvk_to_wif(priv, compressed=False)
+	print("WIF (compressed):", wif_c)
+	print("WIF (uncompressed):", wif_u)
+	assert wif_to_private_key(wif_c) == priv
+	assert wif_to_private_key(wif_u) == priv
+
+	pub_c = privkey_to_pubkey(priv, compressed=True)
+	pub_u = privkey_to_pubkey(priv, compressed=False)
+	print("addr (P2PKH, compressed):", pubkey_to_p2pkh_address(pub_c))
+	print("addr (P2PKH, uncompressed):", pubkey_to_p2pkh_address(pub_u))
+
+	unc_from_c = decompress_pubkey(pub_c)
+	assert unc_from_c == pub_u
+
+	print("sanity: OK")
