@@ -7,7 +7,7 @@ from tqdm import tqdm
 import time
 
 # === Settings ===
-alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
+alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/'
 web3 = Web3(Web3.HTTPProvider(alchemy_url))
 
 ERC20_ABI = [

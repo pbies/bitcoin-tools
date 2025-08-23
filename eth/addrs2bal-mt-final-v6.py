@@ -11,7 +11,7 @@ import mnemonic
 import os, sys
 from multiprocessing import Pool
 
-alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
+alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/'
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 

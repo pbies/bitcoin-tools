@@ -11,7 +11,7 @@ import sys
 
 th=4
 
-url = 'https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY'
+url = 'https://eth-mainnet.g.alchemy.com/v2/'
 w3 = Web3(Web3.HTTPProvider(url))
 
 headers = {'content-type': 'application/json'}
