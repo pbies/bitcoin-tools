@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import csv, os, re, subprocess, threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from tqdm import tqdm
+
+# ======= Konfiguracja =======
+INPUT_CSV	= os.environ.get("XMR_INPUT", "input.txt")
+OUT_CSV		= os.environ.get("XMR_OUT", "output.csv")
+THREADS		= int(os.environ.get("XMR_THREADS", "4"))
+WALLET_DIR	= os.environ.get("XMR_WALLET_DIR", "/mnt/c/1/xmr_watch_wallets")
+WAL_PASS	= os.environ.get("XMR_WAL_PASS", "")
+DAEMON_ADDR	= os.environ.get("XMR_DAEMON_ADDR", "127.0.0.1:18081")
+CLI_BIN		= os.environ.get("XMR_CLI_BIN", "./monero-wallet-cli")
+
+# ======= Synchronizacja zapisu =======
+lock = threading.Lock()
+Path(WALLET_DIR).mkdir(parents=True, exist_ok=True)
+
+def _run(args, stdin=""):
+	cp = subprocess.run(args, input=stdin, text=True,
+	                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	return cp.returncode, cp.stdout
+
+def _addr_from_spend(cli_bin:str, spend_hex:str) -> str:
+	rc, out = _run([cli_bin, "--generate-from-spend-key", "/tmp/_probe",
+	                "--log-file","/dev/null","--password","",
+	                "--command","address"], stdin=spend_hex.strip()+"\n")
+	if rc != 0:
+		return ""
+	for line in out.splitlines():
+		line = line.strip()
+		if len(line) >= 95 and line[0] in "4895":
+			return line.split()[0]
+	return ""
+
+def ensure_wallet_exists(name, address, viewkey, spendkey,
+                         restore_height, cli_bin, wallet_dir):
+	from pathlib import Path
+	wallet_path = Path(wallet_dir) / name
+	if wallet_path.exists() or wallet_path.with_suffix(".keys").exists():
+		return
+
+	# TYLKO watch-only (zero promptów)
+	args = [cli_bin, "--generate-from-view-key", str(wallet_path),
+	        "--password", "", "--offline", "--log-file", "/dev/null"]
+	stdin_data = f"{address.strip()}\n{(viewkey or '').strip()}\n"
+
+	if restore_height is not None:
+		args += ["--restore-height", str(restore_height)]
+
+	rc, out = run_cli(args, stdin_data, timeout=30)
+	if rc != 0:
+		raise RuntimeError(f"[{name}] create failed:\n{out}")
+
+def run_cli(args:list, stdin_data:str="", timeout:int=200):
+	"""
+	Uruchamia monero-wallet-cli z timeoutem.
+	Zwraca (rc, stdout). Przy timeout podnosi TimeoutError (łap to wyżej).
+	"""
+	cp = subprocess.run(
+		args,
+		input=stdin_data,
+		text=True,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.STDOUT,
+		timeout=timeout
+	)
+	return cp.returncode, cp.stdout
+
+	# Monero przy pierwszym starcie może spytać o język – wymusimy angielski przy dalszych wywołaniach.
+
+def parse_balance(output: str):
+	# usuń CR i sekwencje ANSI (na niektórych buildach są)
+	text = output.replace("\r", "\n")
+	text = re.sub(r"\x1b\[[0-9;]*m", "", text)
+
+	# 1) klasyk: "Balance: X, unlocked balance: Y"
+	m = re.search(
+		r"Balance[^0-9]*([0-9]+(?:\.[0-9]+)?)\s*(?:XMR)?[^0-9]+unlocked\s+balance[^0-9]*([0-9]+(?:\.[0-9]+)?)",
+		text, re.IGNORECASE
+	)
+	if m:
+		return (m.group(1), m.group(2))
+
+	# 2) warianty z łamaniem linii / inną interpunkcją
+	mb = re.search(r"Balance[^0-9]*([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
+	mu = re.search(r"unlocked\s+balance[^0-9]*([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
+	if mb and mu:
+		return (mb.group(1), mu.group(1))
+
+	# 3) minimalny fallback: gdy nie ma słowa 'unlocked', przyjmij oba takie same
+	if mb:
+		val = mb.group(1)
+		return (val, val)
+
+	# 4) ostatecznie zgłoś błąd wyżej
+	raise ValueError("Nie udało się sparsować wyniku 'balance'")
+
+def refresh_and_get_balance(name:str, cli_bin:str, wallet_dir:str,
+                            daemon_addr:str, do_refresh:bool=True):
+	wallet_path = Path(wallet_dir) / name
+	args = [
+		cli_bin, "--wallet-file", str(wallet_path),
+		"--password", "", "--log-file", "/dev/null",
+	]
+	if do_refresh:
+		args += ["--daemon-address", daemon_addr, "--trusted-daemon", "--command", "refresh"]
+	args += ["--command", "balance detail", "--command", "exit"]
+
+	timeout = 180 if do_refresh else 30
+	rc, out = run_cli(args, timeout=timeout)
+	if rc != 0:
+		raise RuntimeError(f"[{name}] balance failed:\n{out}")
+
+	try:
+		return parse_balance(out)
+	except Exception as e:
+		# zapisz surowy output do debugowania, ale nie wywalaj całego procesu
+		debug_file = Path(wallet_dir) / f"balance_raw_{name}.txt"
+		try:
+			debug_file.write_text(out, encoding="utf-8", errors="ignore")
+		except Exception:
+			pass
+		# ponownie rzuć z krótką wiadomością (w CSV pojawi się 'ERROR' + ścieżka)
+		raise ValueError(f"Nie udało się sparsować wyniku 'balance'. Zobacz: {debug_file}")
+
+def process_row(idx:int, row:dict):
+	"""
+	Przetwarza pojedynczy wpis z CSV.
+	Zakłada kolumny: address, view_key, spend_key (opcjonalnie), restore_height (opcjonalnie).
+	Zwraca listę dla CSV wynikowego.
+	"""
+	address = (row.get("address") or "").strip()
+	viewkey = (row.get("view_key") or row.get("private_view_key") or "").strip()
+	spendkey = (row.get("spend_key") or row.get("private_spend_key") or "").strip()
+	rh_str = (row.get("restore_height") or "").strip()
+	restore_height = int(rh_str) if rh_str.isdigit() else None
+
+	if not address:
+		return ["(empty)", "ERROR", "Brak address"]
+	if not viewkey:
+		return [address, "ERROR", "Brak view_key (watch-only wymaga view key)"]
+
+	name = f"xmr_{idx:06d}"
+	try:
+		ensure_wallet_exists(name, address, viewkey, spendkey, restore_height, CLI_BIN, WALLET_DIR)
+		DO_REFRESH = os.environ.get("XMR_NO_REFRESH", "") == ""
+		bal, unlk = refresh_and_get_balance(name, CLI_BIN, WALLET_DIR, DAEMON_ADDR, do_refresh=DO_REFRESH)
+		out = [address, bal, unlk]
+	except Exception as e:
+		out = [address, "ERROR", str(e)]
+
+	# bezpieczny zapis do wspólnego CSV
+	with lock:
+		with open(OUT_CSV, "a", newline="", encoding="utf-8") as f:
+			csv.writer(f).writerow(out)
+	return out
+
+def main():
+	# Napisz nagłówek wyniku
+	with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
+		cw = csv.writer(f)
+		cw.writerow(["address", "balance_xmr", "unlocked_xmr"])
+
+	# Wczytaj wejście
+	with open(INPUT_CSV, newline="", encoding="utf-8") as f:
+		cr = csv.DictReader(f)
+		rows = list(cr)
+
+	# Wielowątkowe przetwarzanie
+	with ThreadPoolExecutor(max_workers=THREADS) as ex:
+		futs = {ex.submit(process_row, i, r): i for i, r in enumerate(rows, 1)}
+		for _ in tqdm(as_completed(futs), total=len(futs), desc="Scanning"):
+			pass
+
+if __name__ == "__main__":
+	main()

@@ -1,0 +1,9 @@
+./monero-wallet-rpc \
+  --rpc-bind-port 18083 \
+  --rpc-bind-ip 127.0.0.1 \
+  --disable-rpc-login \
+  --wallet-dir ./xmr_watch_wallets \
+  --daemon-address http://127.0.0.1:18081 \
+  --disable-rpc-ban
+
+# XMR_RPC_USER=monero XMR_RPC_PASS=rpcPassword XMR_WALLET_DIR=./xmr_watch_wallets XMR_INPUT=inputs.csv XMR_OUT=balances.csv XMR_THREADS=4 ./04.py
