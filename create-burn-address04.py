@@ -13,7 +13,7 @@ from hashlib import sha256
 
 base58_characters = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-bitcoin_address_prefix = "1Piotr"  # should start with 1..., Version prefix (hex) for Bitcoin Address is 0x00
+bitcoin_address_prefix = "1YourName"  # should start with 1..., Version prefix (hex) for Bitcoin Address is 0x00
 
 if __name__ == "__main__":
 	for char in bitcoin_address_prefix:

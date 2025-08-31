@@ -134,4 +134,4 @@ def version_info() -> dict:
         "libsecp256k1.path": _libsecp256k1._name if _libsecp256k1 else None,
     }
 
-ice.create_burn_address('PiotrBiesiada', 'X')
+ice.create_burn_address('YourName', 'X')

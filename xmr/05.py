@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # monero_addr_from_spend_fixed.py
-# Piotr-friendly: opcjonalna konwersja big->little endian, redukcja mod L, walidacja adresu
+# opcjonalna konwersja big->little endian, redukcja mod L, walidacja adresu
 
 from tqdm import tqdm
 import argparse, binascii, sys
