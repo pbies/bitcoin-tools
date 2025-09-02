@@ -194,13 +194,6 @@ def generate_random_private_key4() -> str:
 	return secrets.token_hex(32)
 
 
-def log(message: str):
-	ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-	with open("log.txt", "a", encoding="utf-8") as f:
-		f.write(f"{ts} {message}\n")
-	print(f"{ts} {message}", flush=True)
-
-
 # === Opcjonalne: BST (bez efektów ubocznych) ===
 
 class Node:
