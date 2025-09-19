@@ -15,13 +15,8 @@ def pvk_to_wif2(key_hex):
 
 def go(x):
 	x=x.rstrip(b'\n')
-	sha=hashlib.sha256(x).hexdigest()
-	try:
-		hdwallet1 = HDWallet(cryptocurrency=BTC, hd=BIP32HD).from_private_key(private_key=sha)
-	except:
-		return
-	wif1=pvk_to_wif2(sha)
-	w=f'{wif1}\n{hdwallet1.wif()}\n{hdwallet1.address("P2PKH")}\n{hdwallet1.address("P2SH")}\n{hdwallet1.address("P2TR")}\n{hdwallet1.address("P2WPKH")}\n{hdwallet1.address("P2WPKH-In-P2SH")}\n{hdwallet1.address("P2WSH")}\n{hdwallet1.address("P2WSH-In-P2SH")}\n\n'
+	y=base58.b58decode_check(x).hex()
+	w=f'{y}\n'
 	with open('output.txt','a') as outfile:
 		outfile.write(w)
 
