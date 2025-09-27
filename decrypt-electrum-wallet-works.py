@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 from Crypto.Util.Padding import unpad, pad
 from Crypto.Cipher import AES

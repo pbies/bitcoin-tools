@@ -39,7 +39,7 @@ def worker_loop(i_values, j_values, q):
 			go(i, j, q)
 
 # Main execution
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 q = queue.Queue()
 stop_event = threading.Event()

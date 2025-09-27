@@ -65,7 +65,7 @@ def go(args):
 if __name__ == '__main__':
 	th=28
 
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('Loading entropies...', flush=True)
 
 	if not os.path.exists('input.txt'):

@@ -46,7 +46,7 @@ def go(k):
 infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 print('Reading...', flush=True)
 lines = infile.read().splitlines()

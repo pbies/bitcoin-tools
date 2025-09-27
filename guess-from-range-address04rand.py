@@ -54,7 +54,7 @@ def go(p):
 	if a==addr:
 		log(f'\a\npvk: {hex(p)} addr: {a}\n')
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 while True:
 	z=random.randint(p1,p2)

@@ -34,7 +34,7 @@ def go(pvk):
 		sys.exit(0)
 
 def main():
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 	tmp=0
 	#random.seed(0)

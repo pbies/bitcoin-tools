@@ -36,7 +36,7 @@ CHUNK_SIZE=1024
 PROGRESS_COUNT = 1000
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	keys_checked = 0
 	start_time = time.time()
 	with Pool(processes=th) as pool, tqdm(total=size, unit='B', unit_scale=True) as pbar:

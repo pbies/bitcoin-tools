@@ -71,7 +71,7 @@ def private_key_to_uncompressed_wif(priv_key_bytes):
 	return base58.b58encode(extended_key + checksum).decode()
 
 def main():
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('Getting ready...', flush=True)
 
 	i_range = list(range(2, 129))

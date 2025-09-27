@@ -56,7 +56,7 @@ OFFSETS = [-65536, -65535, -31337, -1000, -100, -64, 0, 1, 64, 100, 1000, 31337,
 THREADS = 30
 
 # Czyszczenie terminala
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # Zakresy do przetworzenia
 i_range = list(range(2, 1025))

@@ -2,7 +2,7 @@
 
 import sys, os, re
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 def find_all_matches(pattern, string):
 	pat = re.compile(pattern)

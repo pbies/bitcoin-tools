@@ -33,7 +33,7 @@ def go(i):
 		print(f'\n\a{i} {str(b)} ETH', flush=True)
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	size = os.path.getsize('input.txt')
 	i = open('input.txt','rb')
 	if os.path.exists("output.txt"):

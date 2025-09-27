@@ -47,7 +47,7 @@ def save_results(results, output_file):
 				f.write(r)
 
 def main():
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('Getting ready...', flush=True)
 
 	i_range = list(range(2, 129))

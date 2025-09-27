@@ -52,7 +52,7 @@ def go(args):
 				outfile.writelines(result_lines)
 
 if __name__ == '__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 	if os.path.exists("output.txt"):
 		os.remove("output.txt")

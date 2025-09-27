@@ -36,7 +36,7 @@ def go(i):
 		print(f'\n\a{i} {str(b)} ETH', flush=True)
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('Reading...', flush=True)
 	i = open('input.txt','r').read().splitlines()
 	print('Writing...', flush=True)

@@ -35,7 +35,7 @@ cnt=10000
 
 def main():
 	try:
-		os.system('cls||clear')
+		os.system('cls' if os.name == 'nt' else 'clear')
 		print("Puzzle 68 random scanner")
 		print("Scanning random addresses in an infinite loop. Press Ctrl+C to stop.\n")
 

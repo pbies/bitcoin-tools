@@ -160,7 +160,7 @@ def call_keyhunt(start_int: int, end_int: int, target_hex: str) -> bool:
 	return found
 
 def main():
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('CUDA Puzzle 71 scanner – GPU (keyhunt)')
 
 	if not have_keyhunt():

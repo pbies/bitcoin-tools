@@ -37,7 +37,7 @@ def go(i):
 		print(f'\n\a{pvk} {address} {str(b)} ETH', flush=True)
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	c=0
 	cnt=10
 	th=2

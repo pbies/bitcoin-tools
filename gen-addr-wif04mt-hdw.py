@@ -35,7 +35,7 @@ def go(x):
 	o.flush()
 
 if __name__ == "__main__":
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	th=24
 	r=range(1, int(1e7)+1)
 	i=0

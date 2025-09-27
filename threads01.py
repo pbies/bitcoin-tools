@@ -36,7 +36,7 @@ def data_gen():
 		yield os.urandom(1024)
 
 def main():
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 	max_rate=0
 	max_rate_th=0

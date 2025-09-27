@@ -33,7 +33,7 @@ th=15
 cnt=100000
 tmp=0
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 for i in tqdm(range(2, 1025)):
 	for j in range(2, 1025):

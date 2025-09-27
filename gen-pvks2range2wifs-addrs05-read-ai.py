@@ -35,7 +35,7 @@ def generate_inputs():
 
 if __name__ == '__main__':
 	import os, sys
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 	inputs = list(generate_inputs())
 	num_workers = min(15, cpu_count())

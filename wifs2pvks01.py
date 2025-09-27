@@ -4,7 +4,7 @@ import sys, os, base58
 from multiprocessing import Pool, Lock, Manager
 from tqdm import tqdm
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 i = open('input.txt','r').read().splitlines()
 o = open('output.txt','w')

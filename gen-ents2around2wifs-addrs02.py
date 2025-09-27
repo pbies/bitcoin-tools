@@ -45,7 +45,7 @@ for i in i_range:
 		infile.append((i**j)%(1<<128))
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	with Pool(processes=th) as p, tqdm(total=total, unit='it', unit_scale=True) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):
 			pbar.update(1)

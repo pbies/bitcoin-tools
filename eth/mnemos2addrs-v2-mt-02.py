@@ -38,7 +38,7 @@ size = os.path.getsize('input.txt')
 th=24
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	pbar=tqdm(total=size)
 	with Pool(processes=th) as p, tqdm(total=size, unit='B', unit_scale=True) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=1000):

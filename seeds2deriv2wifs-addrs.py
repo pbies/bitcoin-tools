@@ -50,7 +50,7 @@ infile = open('input.txt','r')
 outfile = open('output.txt','w')
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print('Reading...', flush=True)
 	lines = infile.read().splitlines()
 	#lines = [x.strip() for x in lines]

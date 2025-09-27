@@ -5,7 +5,7 @@ from multiprocessing import Pool, Lock, Manager
 
 import os, sys, time, datetime
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 i = open('input.txt','rb')
 

@@ -35,7 +35,7 @@ outfile = open('output.txt','w')
 th=16
 
 if __name__=='__main__':
-	os.system('cls||clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	with Pool(processes=th) as p, tqdm(total=len(infile)) as pbar:
 		for result in p.imap_unordered(go, infile, chunksize=5000):
 			pbar.update()

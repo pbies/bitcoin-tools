@@ -12,7 +12,7 @@ import os, sys, time, datetime
 w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/"))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
-os.system('cls||clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # Example: list of mnemonics
 print('Reading...', flush=True)
