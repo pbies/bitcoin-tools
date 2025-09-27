@@ -253,3 +253,25 @@ if __name__ == "__main__":
 	assert unc_from_c == pub_u
 
 	print("sanity: OK")
+
+def _fast_count_lines(path: str, bufsize: int = 1024 * 1024) -> int:
+	cnt = 0
+	with open(path, 'rb', buffering=bufsize) as f:
+		while True:
+			chunk = f.read(bufsize)
+			if not chunk:
+				break
+			cnt += chunk.count(b'\n')
+	try:
+		if cnt == 0:
+			with open(path, 'rb') as g:
+				for _ in g:
+					cnt += 1
+			return cnt
+		with open(path, 'rb') as g:
+			g.seek(-1, os.SEEK_END)
+			if g.read(1) != b'\n':
+				cnt += 1
+	except OSError:
+		pass
+	return cnt
