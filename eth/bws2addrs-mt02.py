@@ -2,11 +2,10 @@
 
 from Crypto.Hash import keccak
 from ecpy.curves import Curve
-from tqdm import tqdm
-import hashlib
-from web3 import Web3
 from multiprocessing import Pool
 from tqdm import tqdm
+from web3 import Web3
+import hashlib
 import sys, base58, os
 
 infile=open('input.txt','rb')
