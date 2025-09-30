@@ -15,6 +15,10 @@ open('output.txt', 'w').close()
 c=10000
 t=0
 
+def go(x):
+	with open('output.txt','a') as outfile:
+		outfile.write(x)
+
 with Pool(processes=24) as p, tqdm(total=len(lines)) as pbar: # , unit='B', unit_scale=True
 	for result in p.imap_unordered(go, lines, chunksize=1000):
 		t=t+1

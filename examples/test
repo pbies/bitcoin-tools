@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+for file in *.py;
+do
+	echo Processing: "$file"...
+	timeout 10 ./"$file" > /dev/null 2>&1
+	echo "Output size (more=better): $(stat -c %s output.txt)"
+done

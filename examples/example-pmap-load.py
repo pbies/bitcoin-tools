@@ -5,6 +5,10 @@ from tqdm.contrib.concurrent import process_map
 import base58, re
 import os, sys, hashlib
 
+def go(x):
+	with open('output.txt','a') as outfile:
+		outfile.write(x)
+
 print('Reading...', flush=True)
 lines = open('input.txt','r').read().splitlines()
 

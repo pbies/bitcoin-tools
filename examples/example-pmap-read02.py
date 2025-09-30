@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# this script does not work
+
 from tqdm.contrib.concurrent import process_map
 import os
 import sys
