@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-curl -s -m 10 ipinfo.io/ip

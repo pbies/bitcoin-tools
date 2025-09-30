@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-while read -r p; do
-	python3 ./aescbc.py -d "$p"
-done < ckeys.txt

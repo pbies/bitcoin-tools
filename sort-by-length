@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-awk '{ print length, $0 }' < "$1" | sort -n | cut -d" " -f2- > "$2"

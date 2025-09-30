@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# 9900K Cygwin 1,81 GB/s
-# 9900K WSL 1,76 GB/s
-cat /dev/urandom | pv -B 1M > /dev/null

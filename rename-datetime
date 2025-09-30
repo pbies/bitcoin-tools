@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-for file in *;
-do
-	dt=$(date -r "$file" "+%Y%m%d-%H%M%S")
-	mv "$file" "$dt $file"
-done

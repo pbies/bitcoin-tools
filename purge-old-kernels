@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sudo apt-get purge $(dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | head -n -1)
-sudo apt-get autoremove
-echo Run update-grub2 on right device!

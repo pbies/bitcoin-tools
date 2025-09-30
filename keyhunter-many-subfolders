@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-find . -name *.dat -print0 | while IFS= read -r -d '' file
-do
-	echo "$file"
-	./keyhunter-v5.py "$file" > "$file.keys"
-done

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+clear
+
+# your code
+
+>&2 echo -ne "\a"

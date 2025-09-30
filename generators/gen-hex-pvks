@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+xxd -c32 -g32 -p < /dev/urandom

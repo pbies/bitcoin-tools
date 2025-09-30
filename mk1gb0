@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sync
-dd if=/dev/zero of=1GB0 conv=fdatasync bs=1M count=1k status=progress
-sync

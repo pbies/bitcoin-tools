@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-while IFS= read -r p; do
-	yt-dlp -i -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio --merge-output-format mp4 "$p"
-done < "list.txt"

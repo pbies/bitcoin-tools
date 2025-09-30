@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-c=$(tput cols)
-r=$(tput lines)
-echo "$c"x"$r"

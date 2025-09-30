@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sync
-pv -B 1M "$1" > /dev/null
-sync

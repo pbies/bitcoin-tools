@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-find . -type f \( -iname "*.txt" \) -exec vim -S to-utf8.vim {} \;

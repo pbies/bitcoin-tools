@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-for F in /dev/sd* ; do echo "$F    $(cygpath -w $F)" ; done

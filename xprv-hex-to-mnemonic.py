@@ -1,9 +1,0 @@
-#!/usr/bin/env python3
-from mnemonic import Mnemonic
-mnemo = Mnemonic("english")
-xprv = '452c66f309e5a6634d674a64e44171f82c3c15f643812fe3d5b40a35c29c56703dcd425402d56f4ef65905d275b59ed1ac18f49fb1bf21e9e45e3f61249aa18f54a1fb4dff390829cf13b262d2aef636c5ce9cc30d0652722200504a1dbfda8e'
-xprv2 = 'b949bca0230f0aad52fb55d8578d174bd6c7741dadfe36fad63f3a8b9a68d445265db6f8040cc5b94779a4ead395aa3303f3e6dc7a6333ea0537fbf64e6b2514b031676722927a2a816cd1ee882f5c5781e4f7eb59bd07ddd59462f43109b9d7'
-print(len(xprv))
-xprv_bytes = bytes.fromhex(xprv)
-print(len(xprv_bytes))
-print(mnemo.to_mnemonic(xprv_bytes))

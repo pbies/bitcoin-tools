@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-tr A-Z a-z < "$1" > "$2"
->&2 echo -ne "\a"

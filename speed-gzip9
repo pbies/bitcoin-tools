@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# 9900K Cygwin 260 MB/s
-# 9900K WSL 268 MB/s
-cat /dev/zero | pv -B 1M | gzip -9 > /dev/null

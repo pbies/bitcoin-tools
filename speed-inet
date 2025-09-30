@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-wget speed.hetzner.de/1GB.bin
-rm -f ./1GB.bin

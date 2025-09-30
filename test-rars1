@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-echo -n "Password: "
-read -s p
-echo
-for file in ./*.rar; do unrar t -p"$p" "$file"; done

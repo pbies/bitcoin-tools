@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-printf "\033c"

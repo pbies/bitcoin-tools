@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-apt-get -y update
-apt-get -y dist-upgrade
-apt-get -y upgrade
-apt-get -f -y install
-apt-get -y clean
-apt-get -y autoclean
-apt-get -y autoremove
-sync

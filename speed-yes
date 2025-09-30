@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# 9900K Cygwin 440 MB/s
-# 9900K WSL 3,80 GB/s
-yes | pv -B 1M > /dev/null

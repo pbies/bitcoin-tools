@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-LC_CTYPE=C grep -RLPz '[^\x00]' .

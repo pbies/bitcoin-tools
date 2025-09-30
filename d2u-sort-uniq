@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-for i in ./*.txt
-do
-	s=$(stat -c "%s" "$i" | numfmt --to=iec)
-	echo "$i - $s"
-	pv -cN in "$i" | dos2unix -f | sort -u | pv -cN out > tmp~.txt
-	mv tmp~.txt "$i"
-done
->&2 echo -ne "\a"

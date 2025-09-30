@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-pv -B 1M "/dev/$1" | tee >(sha256sum -b > "./$1.img.sha256") >"./$1.img"
-sync

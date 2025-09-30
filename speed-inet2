@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-curl -o /dev/null speed.hetzner.de/1GB.bin

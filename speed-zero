@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# 9900K Cygwin 36,5 GB/s
-# 9900K WSL 5,32 GB/s
-# must be cat as WSL does not accept < for /dev/null
-cat /dev/zero | pv -B 1M > /dev/null

@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-tar cf - "$1" | 7z a -si -m0=lzma2 -mx=9 -my=9 -hp -mhe=on "$1.tar.7z"

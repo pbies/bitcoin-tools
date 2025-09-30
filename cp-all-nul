@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-sync
-time find . -type f -exec pv -N {} {} \; | wc -c

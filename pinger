@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-ping -f -c 5 1.1.1.1 >/dev/null || echo "$(date "+%Y-%m-%d %H:%M:%S") ERROR pinging 1.1.1.1" >> /root/pinger.log 2>> /root/pinger.log

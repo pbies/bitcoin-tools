@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-for i in ./*; do
-	echo "$i"
-	convert "$i" "${i%.*}.mp4"
-done

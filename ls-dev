@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-{
-	ls /dev/mmc*
-	ls /dev/nvme*
-	ls /dev/sd*
-} | sort

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# UPPERCASE!!!
-echo -e "obase=16;\nibase=16;\n$@" | BC_LINE_LENGTH=0 bc

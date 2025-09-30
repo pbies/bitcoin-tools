@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# merge two files line by line
-in1="$1"
-in2="$2"
-paste -d" " "$in1" "$in2"

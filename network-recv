@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-nc -l -p 3333 | pv -W > /dev/null

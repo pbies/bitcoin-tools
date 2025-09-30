@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-find . -type f -print0 | pv | xargs -0 stat -c "%16s %n" | sort -k2
