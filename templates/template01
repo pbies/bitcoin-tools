@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+SECONDS=0
 clear
 
 # your code
 
+echo Execution took: $SECONDS seconds
 >&2 echo -ne "\a"
