@@ -5,7 +5,7 @@ from web3 import Web3
 from web3.auto import w3
 import sys
 
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/-ixFHz8NzHoGk2OOYc3EPLH9BxZpHfQ_"
+alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/"
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 
