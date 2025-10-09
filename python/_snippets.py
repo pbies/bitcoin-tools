@@ -697,3 +697,12 @@ def _fast_count_lines(path: str, bufsize: int = 1024 * 1024) -> int:
 	except OSError:
 		pass
 	return cnt
+
+def human(n):
+	units = ['','K','M','G','T','P','E']
+	i = 0
+	x = float(n)
+	while x >= 1000.0 and i < len(units)-1:
+		x /= 1000.0
+		i += 1
+	return f"{x:.2f}{units[i]}"
