@@ -20,10 +20,10 @@ def pvk_to_wif2(key_hex):
 def process_line(line: str) -> Optional[str]:
 	# TODO: put your custom per-line logic here
 	line = line.rstrip('\n')
-	#try:
-	hdwallet.from_private_key(private_key=line)
-	#except:
-	#	return None
+	try:
+		hdwallet.from_private_key(private_key=line)
+	except:
+		return None
 	wif=pvk_to_wif2(line)
 	a = f'{line}\n{wif}\n{hdwallet.wif()}\n{hdwallet.address("P2PKH")}\n{hdwallet.address("P2SH")}\n{hdwallet.address("P2TR")}\n{hdwallet.address("P2WPKH")}\n{hdwallet.address("P2WPKH-In-P2SH")}\n{hdwallet.address("P2WSH")}\n{hdwallet.address("P2WSH-In-P2SH")}\n\n'
 	return a
