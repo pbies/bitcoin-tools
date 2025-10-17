@@ -8,12 +8,9 @@ from pathlib import Path
 from typing import Optional, Iterable
 
 def process_line(line: str) -> Optional[str]:
-	# TODO: put your custom per-line logic here
-	# Example placeholder (replace or remove):
 	line = line.strip()
 	if not line:
 		return None
-	# return f"{line}\n"  # uncomment and modify for your own logic
 	return None
 
 def _worker_wrapper(line: str) -> Optional[str]:

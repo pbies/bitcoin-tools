@@ -9,7 +9,6 @@ from typing import Optional, Iterable
 from tqdm import tqdm
 
 def process_line(line: str) -> Optional[str]:
-	# TODO: put your custom per-line logic here
 	line = line.strip()
 	if not line:
 		return None
@@ -65,7 +64,7 @@ def main():
 	out_path.write_text('', encoding='utf-8')
 
 	total_lines = count_lines(in_path)
-	pbar = tqdm(total=total_lines, unit='lines', ncols=80)
+	pbar = tqdm(total=total_lines, unit='lines', ncols=132)
 
 	workers = max(1, args.workers)
 	if workers > cpu_count():
