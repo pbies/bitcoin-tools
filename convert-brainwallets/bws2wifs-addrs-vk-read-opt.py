@@ -1,31 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import argparse
-import sys, base58
-from multiprocessing import Pool, cpu_count
-from pathlib import Path
-from typing import Optional, Iterable
-from tqdm import tqdm
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as BTC
 from hdwallet.hds import BIP32HD
-from hdwallet.mnemonics import BIP39Mnemonic
+from multiprocessing import Pool, cpu_count
+from pathlib import Path
+from tqdm import tqdm
+from typing import Optional, Iterable
+import argparse
+import base58
+import hashlib
+import sys
 
-hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD)
+def pvk_to_wif2(key_bytes):
+	return base58.b58encode_check(b'\x80' + key_bytes).decode()
 
-def pvk_to_wif2(key_hex):
-	return base58.b58encode_check(b'\x80' + bytes.fromhex(key_hex)).decode()
-
-def process_line(line: str) -> Optional[str]:
-	line = line.rstrip('\n')
-	try:
-		hdwallet.from_private_key(private_key=line)
-	except:
-		return None
-	wif=pvk_to_wif2(line)
-	a = f'{line}\n{wif}\n{hdwallet.wif()}\n{hdwallet.address("P2PKH")}\n{hdwallet.address("P2SH")}\n{hdwallet.address("P2TR")}\n{hdwallet.address("P2WPKH")}\n{hdwallet.address("P2WPKH-In-P2SH")}\n{hdwallet.address("P2WSH")}\n{hdwallet.address("P2WSH-In-P2SH")}\n\n'
-	return a
+def process_line(x: bytes) -> Optional[str]:
+	x = x.rstrip('\n')
+	sha = hashlib.sha256(x.encode()).digest()
+	#try:
+	hdwallet.from_private_key(private_key=sha.hex())
+	#except Exception:
+	#	return None
+	out = (
+		f"{pvk_to_wif2(sha)}\n"
+		f"{hdwallet.wif()}\n"
+		f"{hdwallet.address('P2PKH')}\n"
+		f"{hdwallet.address('P2SH')}\n"
+		f"{hdwallet.address('P2TR')}\n"
+		f"{hdwallet.address('P2WPKH')}\n"
+		f"{hdwallet.address('P2WPKH-In-P2SH')}\n"
+		f"{hdwallet.address('P2WSH')}\n"
+		f"{hdwallet.address('P2WSH-In-P2SH')}\n\n"
+	)
+	return out
 
 def count_lines(file_path: Path) -> int:
 	with file_path.open('r', encoding='utf-8', errors='replace') as f:
@@ -55,6 +64,9 @@ def write_results(results: Iterable[str], out_path: Path) -> None:
 				f.write(r)
 
 def main():
+	global hdwallet
+	hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD)
+
 	parser = argparse.ArgumentParser(description="Template: read lines -> process_line -> write output")
 	parser.add_argument('-i','--input', type=str, default='input.txt', help='input file path')
 	parser.add_argument('-o','--output', type=str, default='output.txt', help='output file path')
@@ -93,7 +105,6 @@ def main():
 				write_results(results, out_path)
 				pbar.update(len(chunk))
 	pbar.close()
-	print('\a', end='', file=sys.stderr)
 
 if __name__ == '__main__':
 	main()

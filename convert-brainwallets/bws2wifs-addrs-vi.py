@@ -29,7 +29,7 @@ def go(x):
 
 def main():
 	print('Reading...', flush=True)
-	infile = open('input.txt','rb').read().splitlines()
+	infile = set(open('input.txt','rb').read().splitlines())
 	i=len(infile)
 	tmp = 0
 	cnt = 1000

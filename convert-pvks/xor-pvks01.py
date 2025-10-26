@@ -41,7 +41,7 @@ def main():
 
 	open(outfile_path, 'w').close()
 	print('Reading...', flush=True)
-	infile=open(infile_path,'r').read().splitlines()
+	infile=set(open(infile_path,'r').read().splitlines())
 	print('Writing...', flush=True)
 	t=0
 	with Pool(processes=num_processes) as pool, tqdm(total=len(infile)) as pbar:
