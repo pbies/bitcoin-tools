@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-time pv /mnt/d/Bitcoin/blocks/blk*.dat | grep -aoE "bc1[pq][0-9a-zA-Z]{38}" > bc1.txt
+time pv -B 100M /mnt/d/Bitcoin/blocks/blk*.dat | grep -aoE "bc1[pq][0-9a-zA-Z]{38}" > bc1.txt
 >&2 echo -ne "\a"

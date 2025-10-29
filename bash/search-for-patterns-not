@@ -5,5 +5,6 @@
 # $2 input: file in which you search for patterns
 # $3 output: file to which put found matches
 
-time grep -a -Ff <(pv -cN for -B 100M "$1") <(pv -cN in -B 100M "$2") > "$3"
+time grep -a -Fvf "$1" "$2" > "$3"
+
 >&2 echo -ne "\a"

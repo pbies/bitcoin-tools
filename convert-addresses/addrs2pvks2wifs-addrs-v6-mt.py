@@ -12,7 +12,7 @@ import sys
 hdwallet = HDWallet(cryptocurrency=BTC, hd=BIP32HD)
 
 print('Reading...', flush=True)
-infile = open('input.txt','rb').read().splitlines()
+infile = set(open('input.txt','rb').read().splitlines())
 open('output.txt','w').close()
 
 def pvk_to_wif2(key_hex):

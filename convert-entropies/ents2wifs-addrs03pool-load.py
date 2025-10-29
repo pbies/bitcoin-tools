@@ -43,7 +43,7 @@ def go(k):
 		o.write(r)
 
 print('Reading...', flush=True)
-lines = open('input.txt','r').read().splitlines()
+lines = set(open('input.txt','r').read().splitlines())
 
 print('Writing...', flush=True)
 open('output.txt', 'w').close()

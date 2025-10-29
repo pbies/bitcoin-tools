@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-time pv -cN in input.txt | grep -aoE "(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}" | pv -cN out > ./addrs.txt
+time pv -cN in -B 100M input.txt | grep -aoE "(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}" | pv -cN out > ./addrs.txt
 >&2 echo -ne "\a"

@@ -16,7 +16,7 @@ if __name__=='__main__':
 	infile_path='input.txt'
 	outfile_path='output.txt'
 	print('Reading...', flush=True)
-	f=open(infile_path,'r').read().splitlines()
+	f=set(open(infile_path,'r').read().splitlines())
 
 	th=24
 	cnt = 10000
