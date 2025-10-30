@@ -67,6 +67,9 @@ def int_to_bytes(value: int, length: int | None = None) -> bytes:
 def int_to_hex(i: int) -> str:
 	return format(i, "x")  # czysty hex, bez "0x"
 
+def int_to_hex64(i: int) => str:
+	return format(i, "064x")
+
 def int_to_str(i: int) -> str:
 	return str(i)
 
@@ -691,6 +694,28 @@ def _fast_count_lines(path: str, bufsize: int = 1024 * 1024) -> int:
 					cnt += 1
 			return cnt
 		with open(path, 'rb') as g:
+			g.seek(-1, os.SEEK_END)
+			if g.read(1) != b'\n':
+				cnt += 1
+	except OSError:
+		pass
+	return cnt
+
+def _fast_count_lines2(file_path: Path, bufsize: int = 1024 * 1024) -> int:
+	cnt = 0
+	with file_path.open('rb', buffering=bufsize) as f:
+		while True:
+			chunk = f.read(bufsize)
+			if not chunk:
+				break
+			cnt += chunk.count(b'\n')
+	try:
+		if cnt == 0:
+			with file_path.open('rb') as g:
+				for _ in g:
+					cnt += 1
+			return cnt
+		with file_path.open('rb') as g:
 			g.seek(-1, os.SEEK_END)
 			if g.read(1) != b'\n':
 				cnt += 1
