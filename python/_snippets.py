@@ -67,8 +67,8 @@ def int_to_bytes(value: int, length: int | None = None) -> bytes:
 def int_to_hex(i: int) -> str:
 	return format(i, "x")  # czysty hex, bez "0x"
 
-def int_to_hex64(i: int) => str:
-	return format(i, "064x")
+def int_to_hex64(i: int) -> str:
+	return f"{i:064x}"
 
 def int_to_str(i: int) -> str:
 	return str(i)
