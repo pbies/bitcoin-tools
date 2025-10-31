@@ -21,7 +21,7 @@ import requests
 from bs4 import BeautifulSoup
 
 BASE_URL = 'https://bitinfocharts.com/top-100-richest-bitcoin-addresses.html'
-HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; PiotrBiesiadaBot/1.0; +https://biesiada.pro)'}
+HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; AftermathTzeeckBot/1.0; +https://google.com)'}
 
 OUTFILE = 'rich_gt_5000BTC.txt'
 MIN_BALANCE = 5000.0  # BTC
