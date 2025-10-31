@@ -6,7 +6,7 @@ do
 	echo -n "File size = "
 	printf "%'d" $FILESIZE
 	echo " bytes ; Using $TH threads"
-	time pv -cN input "$file" | dos2unix -f | LC_ALL=C sort -u --parallel=$TH | pv -cN output -s $FILESIZE > "$file.sorted~"
+	time pv -cN input -B 100M "$file" | dos2unix -f | LC_ALL=C sort -S1G -u --parallel=$TH | pv -cN output -s $FILESIZE > "$file.sorted~"
 	if [[ -s "$file.sorted~" ]]
 	then
 		mv "$file.sorted~" "$file"
