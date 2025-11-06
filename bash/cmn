@@ -2,4 +2,4 @@
 time LC_ALL=C comm -12 <(pv -cN in1 "$1") <(pv -cN in2 "$2") | (pv -cN out) > "$3"
 echo -e "\nResult file has $(wc -l < "$3") lines, head:"
 head "$3"
->&2 echo -ne "\a"
+>&2 printf '\a'

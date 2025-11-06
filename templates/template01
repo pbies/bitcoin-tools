@@ -6,4 +6,4 @@ clear
 # your code
 
 echo Execution took: $SECONDS seconds
->&2 echo -ne "\a"
+>&2 printf '\a'

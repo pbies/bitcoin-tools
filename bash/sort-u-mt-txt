@@ -15,4 +15,4 @@ do
 		echo Error!
 	fi
 done
->&2 echo -ne "\a"
+>&2 printf '\a'

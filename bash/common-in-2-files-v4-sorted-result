@@ -2,4 +2,4 @@
 comm -12 <(pv -cN 1st "$1") <(pv -cN 2nd "$2") > "$3"
 echo "Result file has $(wc -l < "$3") lines, head:"
 head "$3"
->&2 echo -ne "\a"
+>&2 printf '\a'

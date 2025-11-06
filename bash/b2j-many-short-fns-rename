@@ -4,4 +4,4 @@ for f in *.dat; do
 	b=${a:12:64}
 	mv "$f" "$b.dat"
 done
->&2 echo -ne "\a"
+>&2 printf '\a'

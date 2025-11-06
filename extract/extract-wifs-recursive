@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 time grep -aorhE "[5KL][1-9A-HJ-NP-Za-km-z]{50,51}" . > ./output.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

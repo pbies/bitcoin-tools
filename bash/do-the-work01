@@ -2,4 +2,4 @@
 clear
 sort-u-mt output.txt
 cmn addrs-with-bal.txt output.txt r.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

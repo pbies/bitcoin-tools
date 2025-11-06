@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 time grep -oaE '[5KL][1-9A-HJ-NP-Za-km-z]{50,51}|[0-9a-fA-F]{64}' ./blk*.dat > found.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

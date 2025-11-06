@@ -5,4 +5,4 @@ for f in $(find . -name "*.dat"|sort); do
 	[ -z "$h" ] || echo "$h:$f"|tee -a ./hashes.txt
 done
 unset IFS; set +f
->&2 echo -ne "\a"
+>&2 printf '\a'

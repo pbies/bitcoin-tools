@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # not tested! test it!
 pv input.txt | perl -p -e 's/\n/ 0\n/' > output.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

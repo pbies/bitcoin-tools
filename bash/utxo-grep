@@ -1,2 +1,2 @@
 pv -B 1M utxodump.csv | grep -oE '[0-9a-f]{64}' | sort -u > hex64.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

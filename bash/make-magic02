@@ -7,4 +7,4 @@ pv blockchair_bitcoin_addresses_and_balance_LATEST.tsv.gz | gunzip > blockchair_
 echo Sorting...
 pv -B 1M -cN input blockchair_bitcoin_addresses_and_balance_LATEST.tsv | cut -f 1 | sort -u | pv -cN output > addrs-with-bal.txt
 echo Done!
->&2 echo -ne "\a"
+>&2 printf '\a'

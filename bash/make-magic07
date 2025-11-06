@@ -13,4 +13,4 @@ aria2c -x4 http://alladdresses.loyce.club/all_Bitcoin_addresses_ever_used_sorted
 echo Unpacking...
 pv all_Bitcoin_addresses_ever_used_sorted.txt.gz | gunzip > addrs-all-ever-used.txt
 echo Done!
->&2 echo -ne "\a"
+>&2 printf '\a'

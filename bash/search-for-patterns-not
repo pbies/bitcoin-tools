@@ -7,4 +7,4 @@
 
 time grep -a -Fvf "$1" "$2" > "$3"
 
->&2 echo -ne "\a"
+>&2 printf '\a'

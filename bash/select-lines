@@ -8,4 +8,4 @@ fr="$3"
 to1="$4"
 to2=$((to1+1))
 sed -n "${fr},${to1}p;${to2}q" "$i" > "$o"
->&2 echo -ne "\a"
+>&2 printf '\a'

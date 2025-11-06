@@ -25,4 +25,4 @@ for f in *.dat; do
 	echo -en "\rDoing $all/$cnt... plain=$plain damaged=$damaged encrypted=$encrypted"
 done
 echo -e "\rDone $all/$cnt. plain=$plain damaged=$damaged encrypted=$encrypted              "
->&2 echo -ne "\a"
+>&2 printf '\a'

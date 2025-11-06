@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
->&2 echo -ne "\a"
+>&2 printf '\a'

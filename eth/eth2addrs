@@ -7,4 +7,4 @@ do
     i=$(( i + 1 ))
     >&2 echo -ne "\rDone: $i/$c"
 done < input.txt > output.txt
->&2 echo -ne "\a"
+>&2 printf '\a'

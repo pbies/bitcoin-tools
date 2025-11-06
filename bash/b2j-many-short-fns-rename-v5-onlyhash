@@ -14,4 +14,4 @@ for f in *.dat; do
 	echo -ne "$i/$c\r"
 done
 echo
->&2 echo -ne "\a"
+>&2 printf '\a'

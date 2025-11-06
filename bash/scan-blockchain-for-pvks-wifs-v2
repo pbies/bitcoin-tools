@@ -3,4 +3,4 @@
 time (
 	pv ./blk*.dat | grep -oaE '[5KL][1-9A-HJ-NP-Za-km-z]{50,51}|[0-9a-fA-F]{64}' >> found.txt
 )
->&2 echo -ne "\a"
+>&2 printf '\a'

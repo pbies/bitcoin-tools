@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 time pv -B 100M input.txt | grep -vaE "[0-9a-fA-F]{64}" > output.txt
->&2 echo -ne "\a"
+>&2 printf '\a'
