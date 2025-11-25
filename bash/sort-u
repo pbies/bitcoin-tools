@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+pv -cN input -B 100M "$1" | dos2unix -f | sort -u | pv -cN output > "$1.sorted~"
+if [[ -s "$1.sorted~" ]]
+then
+	mv "$1.sorted~" "$1"
+	echo Done.
+else
+	echo Error!
+fi
+>&2 printf '\a'

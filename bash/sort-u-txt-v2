@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+for file in *.txt;
+do
+	echo "$file"
+	pv -cN input "$file" | dos2unix -f | sort -u | pv -cN output > "$file.sorted~"
+	mv "$file.sorted~" "$file"
+done
+>&2 printf '\a'

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 TH=$(echo $(nproc --all)/2 | bc)
-time pv -cN input -B 100M | dos2unix -f | LC_ALL=C sort -S20% -u --parallel=$TH | pv -cN output
+time pv -cN input -B 100M | dos2unix -f | LC_ALL=C sort -S50% -u --parallel=$TH | pv -cN output
 >&2 printf '\a'
