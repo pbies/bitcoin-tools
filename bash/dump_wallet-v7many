@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# sudo apt-get install db-util
+
+for file in *.dat;
+do
+	echo "$file"
+	db_dump "$file" > "$file"_dump
+done
