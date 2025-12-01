@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# 4 MB/s
+
 import sys, os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import deque
@@ -52,9 +54,9 @@ def main():
 
 	# Submit batches while reading; collect results concurrently
 	while True:
-		# read up to 12 lines, stop only on real EOF
+		# read up to 11 lines, stop only on real EOF
 		lines = []
-		for _ in range(12):
+		for _ in range(11):
 			line = infile.readline()
 			if not line:  # real EOF
 				break

@@ -29,7 +29,7 @@ def go(x):
 	c=hex(i-y)[2:].zfill(64)
 	d=hex(j-y)[2:].zfill(64)
 	e=hex(k-y)[2:].zfill(64)
-	w=f'{a}\n{b}\n{c}\n{d}\n{e}\n\n'
+	w=f'{x}\n{a}\n{b}\n{c}\n{d}\n{e}\n\n'
 	with open(outfile_path, 'a') as outfile:
 		outfile.write(w)
 
