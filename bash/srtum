@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+for file in *.txt;
+do
+	FILESIZE=$(stat -c%s "$file") || exit 1
+	[[ -s "$file" ]] || echo Empty file, omitting... || continue
+	TH=$(echo $(nproc --all)/2 | bc)
+	echo -n "File size = "
+	LC_NUMERIC=en_US.UTF-8 printf "%'d" $FILESIZE
+	echo " bytes ; Using $TH threads"
+	time pv -cN input -B 100M "$file" | dos2unix -f | LC_ALL=C sort -S50% -u --parallel=$TH | pv -cN output -s $FILESIZE > "$file.sorted~"
+	if [[ -s "$file.sorted~" ]]
+	then
+		mv "$file.sorted~" "$file"
+		echo Done.
+	else
+		echo Error!
+	fi
+done
+>&2 printf '\a'
