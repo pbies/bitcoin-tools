@@ -19,9 +19,12 @@ def pvk_to_wif2(key_hex):
 
 def process_line(line: str) -> Optional[str]:
 	# TODO: put your custom per-line logic here
-	line = line.rstrip('\n')
+	line = line.rstrip('\n').split(' ')[0]
 
-	first_encode = base58.b58decode(line)
+	try:
+		first_encode = base58.b58decode(line)
+	except:
+		return None
 	private_key_full = binascii.hexlify(first_encode)
 	private_key = private_key_full[2:-8].decode('utf-8')
 	if len(private_key)==66:

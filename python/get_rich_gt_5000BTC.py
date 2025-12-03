@@ -44,29 +44,33 @@ def scrape_page(url):
 	results = []
 	# Each entry typically has an <a> linking to the address and nearby text containing 'Balance:'
 	# Find all address links
+	c=0
 	for a in soup.find_all('a', href=True):
 		href = a['href']
-		if '/bitcoin/address/' in href or re.match(r'^[13mnBC][A-Za-z0-9]{25,}$', a.text.strip()) or a.text.strip().startswith('bc1'):
+		if '/bitcoin/address/' in href:
+			addr=href.rsplit('/',1)[-1]
+		else:
 			addr = a.text.strip()
 			# Look around the element for balance text
-			parent = a.parent
-			balance_text = ''
-			# Search siblings and parent text for 'Balance'
-			for node in parent.find_all(text=True):
-				if 'BTC' in node:
-					balance_text = node.strip()
-					break
-			if not balance_text:
-				# fallback: search whole parent
-				balance_text = parent.get_text(separator=' ', strip=True)
-			bal = parse_balance(balance_text)
-			if bal is not None:
-				results.append((addr, bal))
+		parent = a.parent
+		balance_text = ''
+		# Search siblings and parent text for 'Balance'
+		for node in parent.find_all(string=True):
+			if 'BTC' in node:
+				balance_text = node.strip()
+				break
+		if not balance_text:
+			# fallback: search whole parent
+			balance_text = parent.get_text(separator=' ', strip=True)
+		bal = parse_balance(balance_text)
+		if bal is not None:
+			results.append((addr, bal))
 	return results
 
 def main():
 	page = 0
 	all_addresses = {}
+	c=0
 	while True:
 		url = BASE_URL if page == 0 else BASE_URL.replace('.html', f'-{page+1}.html')
 		print(f'Fetching {url}', file=sys.stderr)
@@ -88,6 +92,9 @@ def main():
 		if new_found == 0 and page > 0:
 			break
 		page += 1
+		c+=1
+		if c==5:
+			break
 		# polite delay
 		time.sleep(1.0)
 
@@ -96,7 +103,7 @@ def main():
 	filtered.sort(key=lambda x: x[1], reverse=True)
 	with open(OUTFILE, 'w', encoding='utf-8') as f:
 		for addr, bal in filtered:
-			f.write(f"{addr},{bal:.8f}\\n")
+			f.write(f"{addr},{int(bal)}\n")
 	print(f'\aWrote {len(filtered)} addresses to {OUTFILE}', file=sys.stderr)
 
 if __name__ == '__main__':

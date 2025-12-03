@@ -2,6 +2,7 @@
 
 SECONDS=0
 clear
+echo "$0 $@"
 
 # your code
 

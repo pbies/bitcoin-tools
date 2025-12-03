@@ -13,7 +13,7 @@ i = open('input.txt','r').read().splitlines()
 open('output.txt','w').close()
 open('errors.txt','w').close()
 
-alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/vyNyoamdEv_67zitim9G09wuPVUSKkLG'
+alchemy_url = 'https://eth-mainnet.g.alchemy.com/v2/'
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 w3.eth.account.enable_unaudited_hdwallet_features()
 

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# use in dedicated folder!
+
+e=/home/user/.local/bin/electrum
+
+"$e" --version --offline
+"$e" stop
+"$e" daemon -d -D .
+
+for file in ./*;
+do
+	echo Using wallet: $file
+	"$e" daemon -d -D .
+	"$e" load_wallet -w "./$file" -D . --password qq
+	if [[ $? -ne 0 ]]; then
+		echo ERROR
+		continue
+	fi
+	"$e" unlock -w "./$file" -D . --password qq
+	"$e" listaddresses -w "./$file" -D . | "$e" getprivatekeys - -D . -w "./$file" | jq -r ".[]"
+	"$e" close_wallet -w "./$file" -D .
+done 2> /dev/null
+
+"$e" stop
