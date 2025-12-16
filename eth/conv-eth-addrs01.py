@@ -7,7 +7,7 @@ def main():
 	print('Program started: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 	start_time=time.time()
 
-	i=open('input.txt','r').read().splitlines()
+	i=set(open('input.txt','r').read().splitlines())
 	for j in i:
 		w=f'{j}\n{j[2:]}\n{j.lower()}\n{j[2:].lower()}\n'
 		with open('output.txt','a') as o:

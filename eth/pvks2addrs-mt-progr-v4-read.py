@@ -2,11 +2,10 @@
 
 from Crypto.Hash import keccak
 from ecpy.curves import Curve
-from tqdm import tqdm
-import hashlib
-from web3 import Web3
 from multiprocessing import Pool
 from tqdm import tqdm
+from web3 import Web3
+import hashlib
 import sys, base58, os
 
 infile=open('input.txt','rb')
@@ -23,7 +22,7 @@ def go(l):
 	l=l.decode().rstrip('\n')
 	private_key = int(l, 16)
 
-	cv     = Curve.get_curve('secp256k1')
+	cv = Curve.get_curve('secp256k1')
 	try:
 		pu_key = private_key * cv.generator # just multiplying the private key by generator point (EC multiplication)
 		concat_x_y = pu_key.x.to_bytes(32, byteorder='big') + pu_key.y.to_bytes(32, byteorder='big')

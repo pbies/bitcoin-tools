@@ -23,3 +23,5 @@ do
 done 2> /dev/null
 
 "$e" stop
+
+>&2 printf '\a'

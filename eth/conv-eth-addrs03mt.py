@@ -15,7 +15,7 @@ def main():
 	print('Program started: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 	start_time=time.time()
 
-	i=open('input.txt','r').read().splitlines()
+	i=set(open('input.txt','r').read().splitlines())
 
 	c=1000
 	t=0
