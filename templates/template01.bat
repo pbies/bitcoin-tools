@@ -1,6 +1,8 @@
 @echo off
 chcp 65001
 title %~f0
+cls
+echo %~f0
 
 rem your code
 
