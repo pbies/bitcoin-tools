@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 from __future__ import annotations
 from bech32 import bech32_encode, convertbits

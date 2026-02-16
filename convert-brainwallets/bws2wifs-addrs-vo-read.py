@@ -55,7 +55,7 @@ def process_line(line: str) -> Optional[str]:
 	#	return None
 	wif = pvk_to_wif2(h)
 	a = (
-		#f"{line}\n"
+		f"{line}\n"
 		f"{wif}\n"
 		f"{hdwallet.wif()}\n"
 		f"{hdwallet.address('P2PKH')}\n"

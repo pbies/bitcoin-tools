@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 def b58encode(b: bytes) -> str:
 	n = int.from_bytes(b, "big")
 	out = bytearray()
@@ -151,3 +153,9 @@ def read_jsonfile(filename):
 def write_jsonfile(filename, array):
 	with open(filename, 'w') as filout:
 		filout.write(json.dumps(array, sort_keys=True, indent=0))
+
+def hex2str(hex_str):
+	return ''.join([chr(int(hex_str[i:i+2], 16)) for i in range(0, len(hex_str), 2)])
+
+def cls():
+	os.system('cls' if os.name == 'nt' else 'clear')
