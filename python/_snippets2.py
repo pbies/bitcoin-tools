@@ -159,3 +159,17 @@ def hex2str(hex_str):
 
 def cls():
 	os.system('cls' if os.name == 'nt' else 'clear')
+
+import time
+class Timer:
+	def __enter__(self):
+		self.start = time.perf_counter()
+	def __exit__(self, type, value, traceback):
+		self.end = time.perf_counter()
+		print(f"This took: {self.end - self.start: .5f} seconds")
+# with Timer():
+
+def thousands_separator(i):
+	return '{:,}'.format(i)
+
+curve_order = 115792089237316195423570985008687907852837564279074904382605163141518161494337

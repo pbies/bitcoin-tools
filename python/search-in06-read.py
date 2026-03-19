@@ -45,6 +45,9 @@ def main():
 				leave=True
 		     ) as pbar:
 
+			# FIX: iterate through the file once (not once per remaining pattern).
+			# The outer loop now reads blocks of 11 lines until EOF; the inner
+			# set-intersection check handles all remaining patterns per block.
 			while patterns:
 				lines = []
 				bytes_read = 0
@@ -57,6 +60,7 @@ def main():
 					lines.append(raw.rstrip(b'\n').decode(errors='ignore'))
 
 				if not lines:
+					# EOF reached before all patterns were found — stop gracefully
 					break
 
 				pbar.update(bytes_read)
@@ -71,6 +75,11 @@ def main():
 					out.flush()
 
 				patterns -= hits
+
+			# Drain the progress bar to 100% if we stopped early (all patterns found)
+			remaining = search_size - pbar.n
+			if remaining > 0:
+				pbar.update(remaining)
 
 	except FileNotFoundError as e:
 		print(f"Błąd: Nie znaleziono pliku - {e}")
