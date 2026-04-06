@@ -76,7 +76,7 @@ def main():
 				
 				with open('output.txt', 'a') as o:
 					o.write(result+'\n')
-				res=requests.get(f'https://biesiada.pro/?pvk={result}')
+				res=requests.get(f'https://yoursite.com/?pvk={result}')
 				print('\a')  # Sygnał dźwiękowy
 				exit()
 
