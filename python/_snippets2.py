@@ -152,7 +152,7 @@ def read_jsonfile(filename):
 
 def write_jsonfile(filename, array):
 	with open(filename, 'w') as filout:
-		filout.write(json.dumps(array, sort_keys=True, indent=0))
+		filout.write(json.dumps(array, sort_keys=True, indent=4))
 
 def hex2str(hex_str):
 	return ''.join([chr(int(hex_str[i:i+2], 16)) for i in range(0, len(hex_str), 2)])
@@ -173,3 +173,19 @@ def thousands_separator(i):
 	return '{:,}'.format(i)
 
 curve_order = 115792089237316195423570985008687907852837564279074904382605163141518161494337
+
+def reverse_by_bytes(hex_str):
+	hex_str = hex_str.replace(" ", "").lower()
+	if len(hex_str) % 2 != 0:
+		raise ValueError("Hex string must have even length")
+
+	bytes_list = [hex_str[i:i+2] for i in range(0, len(hex_str), 2)]
+	return "".join(bytes_list[::-1])
+
+def reverse_hex_pairs(hex_str):
+	hex_str = hex_str.replace(" ", "").replace("0x", "")
+	pairs = [hex_str[i:i+2] for i in range(0, len(hex_str), 2)]
+	return "".join(reversed(pairs))
+
+def rev_hex(s):
+	return bytes.fromhex(s)[::-1].hex()

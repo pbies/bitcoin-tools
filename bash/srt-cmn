@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo Sorting...
+srt < output.txt > output2.txt
+
+echo Comparing...
+cmn addrs-with-bal.txt output2.txt r.txt
+
+echo Done!
+>&2 printf '\a'

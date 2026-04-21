@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+python3 -c "
+import sys
+B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+def b58dec(s):
+    n = 0
+    for c in s:
+        n = n * 58 + B58.index(c)
+    return n.to_bytes(25, 'big')
+for line in sys.stdin:
+    addr = line.strip()
+    if not addr: continue
+    raw = b58dec(addr)
+    print(raw[1:21].hex())
+" < addrs-with-bal.txt > hashes.txt

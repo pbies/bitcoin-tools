@@ -58,7 +58,8 @@ def process_line(line: str) -> Optional[str]:
 		return None
 	#wif = pvk_to_wif2(line)
 	a = (
-		f"{line}\n"
+		f"{hdwallet.wif(wif_type='wif')}\n"
+		f"{hdwallet.wif(wif_type='wif-compressed')}\n"
 		f"{hdwallet.address('P2PKH')}\n"
 		f"{hdwallet.address('P2SH')}\n"
 		f"{hdwallet.address('P2TR')}\n"
