@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Dump private keys for all UTXOs via bitcoin-cli
+
+./bitcoin-cli walletpassphrase "password" 60
+
+WALLET="surv-fix"  # set wallet name if using named wallets, else leave empty
+
+cli() {
+	if [ -n "$WALLET" ]; then
+		./bitcoin-cli -rpcwallet="$WALLET" "$@"
+	else
+		./bitcoin-cli "$@"
+	fi
+}
+
+# Get all unspent addresses (unique)
+addresses=$(cli listunspent | python3 -c "
+import sys, json
+utxos = json.load(sys.stdin)
+seen = set()
+for u in utxos:
+	a = u.get('address','')
+	if a and a not in seen:
+		seen.add(a)
+		print(a)
+")
+
+while IFS= read -r addr; do
+	wif=$(cli dumpprivkey "$addr" 2>/dev/null)
+	if [ $? -eq 0 ]; then
+		echo "$addr $wif"
+	else
+		echo "$addr ERROR_could_not_dump" >&2
+	fi
+done <<< "$addresses"

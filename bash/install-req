@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+sudo apt install python3-pip
+python3 -m pip install --upgrade pip setuptools wheel
+pip3 install hdwallet tqdm web3 bip32utils requests base58 ecdsa mnemonic

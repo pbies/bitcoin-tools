@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# Dependencies: aria2, pv (optional), pigz (optional for faster gzip)
+# Purpose: Robust, resumable fetch + verified unpack of LoyceV's latest addresses dump.
+
+set -Eeuo pipefail
+
+URL="http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz"
+GZ="Bitcoin_addresses_LATEST.txt.gz"
+OUT="addrs-with-bal.txt"
+
+# Temporary files
+TMP_GZ="$(mktemp --suffix=".gz")"
+TMP_OUT="$(mktemp --suffix=".txt")"
+
+cleanup() {
+	# Remove only temp files if they still exist
+	[[ -f "$TMP_GZ" ]] && rm -f -- "$TMP_GZ" || true
+	[[ -f "$TMP_OUT" ]] && rm -f -- "$TMP_OUT" || true
+}
+trap cleanup EXIT
+
+echo "Checking remote headers..."
+# -fSIL: fail on HTTP errors, silent, show headers only, follow redirects
+headers="$(curl -fSIL "$URL")"
+
+# Extract Content-Length (if provided)
+cl="$(printf '%s\n' "$headers" | awk -F': ' 'BEGIN{IGNORECASE=1} /^Content-Length:/ {print $2; exit}')"
+cl="${cl//[$'\r\n ']/}"
+
+if [[ -z "${cl:-}" ]] || ! [[ "$cl" =~ ^[0-9]+$ ]]; then
+	echo "No valid Content-Length; continuing without size pre-check." >&2
+	cl=""
+fi
+
+# If existing file matches remote size -> skip download
+if [[ -n "$cl" && -f "$GZ" ]]; then
+	local_size="$(stat -c%s "$GZ" 2>/dev/null || echo 0)"
+	if [[ "$local_size" == "$cl" ]]; then
+		echo "Already up-to-date (size match)."
+		# Proceed to unpack existing file
+		use_existing=1
+		exit
+	else
+		use_existing=0
+	fi
+else
+	use_existing=0
+fi
+
+if [[ "$use_existing" -eq 0 ]]; then
+	echo "Downloading with aria2c..."
+	# -x16: 16 connections per server, -s16: 16 splits, -k1M: 1 MiB piece size, -c: continue
+	aria2c -x16 -s16 -k1M -c -o "$(basename "$TMP_GZ")" -d "$(dirname "$TMP_GZ")" "$URL"
+
+	# Verify size if Content-Length known
+	if [[ -n "$cl" ]]; then
+		got="$(stat -c%s "$TMP_GZ")"
+		if [[ "$got" != "$cl" ]]; then
+			echo "Size mismatch: expected $cl, got $got" >&2
+			exit 1
+		fi
+	fi
+
+	# Atomic replace
+	mv -f -- "$TMP_GZ" "$GZ"
+fi
+
+echo "Unpacking..."
+if command -v pigz >/dev/null 2>&1; then
+	# Fast parallel gzip
+	if command -v pv >/dev/null 2>&1; then
+		pv "$GZ" | pigz -dc > "$TMP_OUT"
+	else
+		pigz -dc "$GZ" > "$TMP_OUT"
+	fi
+else
+	# Fallback to gzip
+	if command -v pv >/dev/null 2>&1; then
+		pv "$GZ" | gzip -dc > "$TMP_OUT"
+	else
+		gzip -dc "$GZ" > "$TMP_OUT"
+	fi
+fi
+
+# Atomic move for final output
+mv -f -- "$TMP_OUT" "$OUT"
+
+echo "Grepping..."
+pv -B 100M "$OUT" | grep -E "^1" > addrs.txt
+
+echo "Converting..."
+./b58_to_hashes.py
+
+echo "Sorting..."
+srtu hashes.txt
+
+echo "Done."
+# Terminal bell
+>&2 printf '\a'

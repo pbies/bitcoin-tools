@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Dependencies: aria2, pv (optional), pigz (optional for faster gzip)
+# Purpose: Robust, resumable fetch + verified unpack of LoyceV's latest addresses dump.
+
+set -Eeuo pipefail
+
+URL="http://addresses.loyce.club/Bitcoin_addresses_LATEST.txt.gz"
+GZ="Bitcoin_addresses_LATEST.txt.gz"
+OUT="addrs-with-bal.txt"
+
+# Temporary files
+TMP_GZ="$(mktemp --suffix=".gz")"
+TMP_OUT="$(mktemp --suffix=".txt")"
+
+echo "Grepping..."
+pv -B 100M "$OUT" | grep -E "^1" > addrs.txt
+
+echo "Converting..."
+./b58_to_hashes.py
+
+echo "Sorting..."
+srtu hashes.txt
+
+echo "Done."
+# Terminal bell
+>&2 printf '\a'

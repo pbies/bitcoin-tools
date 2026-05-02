@@ -1,0 +1,30 @@
+# 2026-04-03
+
+# Self-test
+python3 ecdsa_analysis.py --demo
+
+# Generate a test CSV
+python3 ecdsa_analysis.py --gen-sample sample.csv
+
+# Known-k attack (default k = K_FEE)
+python3 ecdsa_analysis.py --known-k your_sigs.csv
+
+# Known-k with a different k (e.g. k=1, k=12345678)
+python3 ecdsa_analysis.py --known-k your_sigs.csv --k 0x1
+
+# Nonce-reuse (groups by r automatically, any number of sigs)
+python3 ecdsa_analysis.py --nonce-reuse your_sigs.csv
+
+# Pubkey recovery only
+python3 ecdsa_analysis.py --recover your_sigs.csv --out pubkeys.csv
+
+###
+
+# Generate sample nonces file
+python3 ecdsa_analysis.py --gen-nonces nonces.txt
+
+# Multi-nonce attack — tries all k values against all sigs
+python3 ecdsa_analysis.py --known-k sigs.csv --nonces nonces.txt
+
+# Single k still works as before
+python3 ecdsa_analysis.py --known-k sigs.csv --k 0x12345678

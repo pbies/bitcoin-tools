@@ -2,7 +2,7 @@
 
 SECONDS=0
 clear
-echo "$0 $@"
+echo "$(realpath $0) $@"
 
 # your code
 

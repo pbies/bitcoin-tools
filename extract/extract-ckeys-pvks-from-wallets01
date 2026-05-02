@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+for f in *.dat; do
+	echo $f
+	./extract-ckeys-pvks-from-wallets01.py "$f" | tee -a extract-ckeys-pvks-from-wallets01.txt
+done
+>&2 printf '\a'
