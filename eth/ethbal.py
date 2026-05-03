@@ -42,7 +42,7 @@ def save_valid_address(output_file, address, balance):
 	with open(output_file, 'a') as f:
 		f.write(f'Address: {address}\nBalance: {balance} Ether\n')
 
-ETHERSCAN_API_KEY = '2EM2PYTD6MTQEPKCKHHP92V1BWZE5DYVJX'
+ETHERSCAN_API_KEY = '34 chars'
 input_file = 'input.txt'
 output_file = 'output.txt'
 log_file = 'log.txt'
