@@ -7,6 +7,8 @@
 
 	Commit messages are draft, not production.
 
+	https://github.com/pbies/bitcoin-tools
+
 	(C) 2019-2025 me
 
 	Other copyrights are for their respective owners.
