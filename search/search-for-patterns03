@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# command line parameters:
+# $1 input: file with patterns to search for
+# $2 input: glob pattern for files to search in (quote it: "*.txt")
+# $3 output: file to which put found matches
+
+shopt -s nullglob
+files=( $2 )
+
+if [[ ${#files[@]} -eq 0 ]]; then
+    >&2 echo "No files matched: $2"
+    exit 1
+fi
+
+time grep -a -Ff <(pv -cN for -B 100M "$1") <(cat "${files[@]}" | pv -cN in -B 100M) > "$3"
+>&2 printf '\a'

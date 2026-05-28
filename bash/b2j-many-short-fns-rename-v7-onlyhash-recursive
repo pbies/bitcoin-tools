@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 i=0
-c=$(ls -1q *.dat | wc -l)
-for f in *.dat; do
+mapfile -d '' files < <(find . -name "*.dat" -print0)
+c=${#files[@]}
+for f in "${files[@]}"; do
 	a=$(./b2jshort02.py "$f")
 	b=${a:12:64}
 	if [ -z "$b" ]; then
@@ -9,12 +10,13 @@ for f in *.dat; do
 		echo -ne "$i/$c\r"
 		continue
 	fi
-	#n="$f"
-	while [ -f "$b.dat" ]
+	d=$(dirname "$f")
+	nb="$d/$b"
+	while [ -f "$nb.dat" ]
 	do
-		b="${b}_"
+		nb="${nb}_"
 	done
-	mv "$f" "$b.dat"
+	mv "$f" "$nb.dat"
 	i=$((i+1))
 	echo -ne "$i/$c\r"
 done

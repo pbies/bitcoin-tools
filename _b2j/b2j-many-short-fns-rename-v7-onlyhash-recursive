@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+i=0
+mapfile -d '' files < <(find . -name "*.dat" -print0)
+c=${#files[@]}
+for f in "${files[@]}"; do
+	i=$((i+1))
+	sz=$(stat -c%s "$f")
+	echo -e "$i/$c [$sz B] $f\033[K\r"
+	a=$(./b2j-tzeeck05.py "$f")
+	b=${a:12:64}
+	if [ -z "$b" ]; then
+		continue
+	fi
+	d=$(dirname "$f")
+	nb="$d/$b"
+	while [ -f "$nb.dat" ]
+	do
+		nb="${nb}_"
+	done
+	mv "$f" "$nb.dat"
+done
+echo
+>&2 printf '\a'

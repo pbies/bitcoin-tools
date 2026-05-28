@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+grep -LaP '\x04mkey' *.dat 2>/dev/null

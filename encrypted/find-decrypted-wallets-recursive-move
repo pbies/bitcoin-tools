@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+dest="$1"
+if [ -z "$dest" ]; then
+    echo "Usage: $0 <destination-folder>" >&2
+    exit 1
+fi
+mkdir -p "$dest"
+find . -name '*.dat' -print0 | xargs -0 grep -LaP '\x04mkey' 2>/dev/null | xargs -I{} mv {} "$dest/"
