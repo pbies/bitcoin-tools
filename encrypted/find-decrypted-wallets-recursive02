@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+find . -name '*.dat' -print0 | xargs -0 grep -LaP '\x04mkey' 2>/dev/null | xargs -I{} echo {}
+>&2 printf '\a'

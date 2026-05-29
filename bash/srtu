@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
+# srtu file_to_sort.txt # file is replaced
+[[ $# -eq 0 ]] && { echo "Usage: srtu <file>"; exit 1; }
 FILESIZE=$(stat -c%s "$1") || exit 1
-TH=$(echo $(nproc --all)/2 | bc)
+TH=$(( $(nproc --all) - 2 ))
+(( TH < 1 )) && TH=1
 echo -n "File size = "
-LC_NUMERIC=en_US.UTF-8 printf "%'d" $FILESIZE
-echo " bytes ; Using $TH threads"
-time pv -cN input -B 100M "$1" | dos2unix -f | LC_ALL=C sort -S50% -u --parallel=$TH | pv -cN output -s $FILESIZE > "$1.sorted~"
+LC_NUMERIC=en_US.UTF-8 /usr/bin/printf "%'d" "$FILESIZE"
+F=$(df -h . | tail -1 | awk '{print $4}')
+echo " bytes ; Using $TH threads ; Free here: $F"
+time pv -cN input -B 200M "$1" | dos2unix -f | TMPDIR="$(dirname "$1")" LC_ALL=C sort -S80% -u --parallel=$TH | pv -cN output -s "$FILESIZE" > "$1.sorted~"
 if [[ -s "$1.sorted~" ]]
 then
 	mv "$1.sorted~" "$1"
+	OUTSIZE=$(stat -c%s "$1")
+	echo -n "Written: "
+	LC_NUMERIC=en_US.UTF-8 /usr/bin/printf "%'d bytes\n" "$OUTSIZE"
 	echo Done.
 else
 	echo Error!
+	exit 1
 fi
 >&2 printf '\a'
