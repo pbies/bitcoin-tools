@@ -1,5 +1,5 @@
 @echo off
-chcp 65001
+chcp 65001 > nul
 title %~f0
 cls
 echo %~f0

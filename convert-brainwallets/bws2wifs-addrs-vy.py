@@ -94,7 +94,7 @@ def main():
 	print(f"Using {workers} worker processes", file=sys.stderr)
 
 	with Pool(workers, initializer=init_worker) as p, \
-		 open(out, 'a', buffering=8*1024*1024) as fo, \
+		 open(out, 'a', encoding='utf-8', buffering=8*1024*1024) as fo, \
 		 tqdm(total=total_bytes, unit='B', unit_scale=True, desc="Processing") as bar:
 
 		# imap_unordered consumes the generator lazily: each block is read

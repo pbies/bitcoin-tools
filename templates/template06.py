@@ -8,7 +8,7 @@ start_time=0
 def main():
 	os.system('cls' if os.name == 'nt' else 'clear')
 	print(f'{__file__} = {sys.argv[0]}')
-	start_msg='Program started: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	start_msg='Started: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 	print(start_msg)
 	global start_time
 	start_time=time.time()
@@ -19,7 +19,7 @@ def main():
 
 	stop_time=time.time()
 	print(start_msg)
-	print('Program stopped: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+	print('Stopped: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 	print(f'Execution took: {str(datetime.timedelta(seconds=stop_time-start_time))}')
 	print('\a', end='', file=sys.stderr)
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		print('\nKeyboard break!\a')
 		stop_time=time.time()
 		print(start_msg)
-		print('Program stopped: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+		print('Stopped: '+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 		print(f'Execution took: {str(datetime.timedelta(seconds=stop_time-start_time))}')
 		print('\a', end='', file=sys.stderr)
 		try:
