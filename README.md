@@ -7,9 +7,11 @@
 
 	Commit messages are draft, not production.
 
+	No more updates from 2026-06-19 because of folder structure change. Sorry!
+
 	https://github.com/pbies/bitcoin-tools
 
-	(C) 2019-2025 me
+	(C) 2019-2026 me
 
 	Other copyrights are for their respective owners.
 
